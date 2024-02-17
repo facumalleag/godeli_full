@@ -1,0 +1,34 @@
+{
+    "cli": {
+      "version": ">= 7.2.0"
+    },
+    "build": {
+      "development": {
+        "developmentClient": true,
+        "distribution": "internal",
+        "ios": {
+          "resourceClass": "m1-medium",
+          "simulator": true
+        }
+      },
+      "preview": {
+        "distribution": "internal",
+        "ios": {
+          "resourceClass": "m1-medium"
+        }
+      },
+      "preview2": {
+        "android": {
+          "gradleCommand": ":app:assembleRelease"
+        }
+      },
+      "production": {
+        "ios": {
+          "resourceClass": "m1-medium"
+        }
+      }
+    },
+    "submit": {
+      "production": {}
+    }
+  }
