@@ -36,16 +36,41 @@ const RecetaItem = (props: Props) => {
                 elevation: 7,
                 width: window_width * 0.43
             }}>
+                                
+                <FadeInImage
+                    //source={{uri: props.recetaImagen}}
+                    uri={props.recetaImagen}
+                    style={{
+                        marginTop:5,
+                        height: 190,
+                        width: 160,
+                        alignSelf:'center',
+                        borderRadius:40,
+                        position: 'absolute',
+                    }}
+                />
+                <View>
+                    <Text style={{
+                        color: 'white',
+                        fontSize: 12,
+                        fontWeight: 'bold',
+                        bottom: -120,
+                        left: 5
+                    }}>
+                        {props.recetaTitulo}
+                        {'\n#' + props.recetaNombre} {/* //Direccion */}
+                         {/* //precio */}
+                    </Text>
+                </View>
                 <TouchableOpacity
                     style={{
                         borderRadius: 80,
                         backgroundColor: '#1F4068',
                         height: 30,
                         width: 30,
-                        alignItems: 'center',
                         position: 'relative',
-                        top: 4,
-                        right: -140
+                        top: -20,
+                        right: -130
                     }}
                     onPress={() => {
                         Alert.alert('button pressed')
@@ -54,29 +79,6 @@ const RecetaItem = (props: Props) => {
                     {/*  <Icon name='close-outline' size={23} color='white' /> */}
 
                 </TouchableOpacity>
-
-                <View>
-                    <Text style={{
-                        color: '#1F4068',
-                        fontSize: 10,
-                        fontWeight: 'bold',
-                        bottom: -120,
-                        left: 5
-                    }}>
-                        {props.recetaNombre} {/* //Direccion */}
-                        {'\n#' + props.recetaPuntaje} {/* //precio */}
-                        {props.recetaTitulo}
-                    </Text>
-                </View>
-                <FadeInImage
-                    //source={{uri: props.recetaImagen}}
-                    uri={props.recetaImagen}
-                    style={{
-                        height: 160,
-                        width: 150,
-                        position: 'absolute',
-                    }}
-                />
 
                 <TouchableOpacity
                     style={{
