@@ -1,21 +1,19 @@
-import React from 'react'
-import { FlatList, Text, View } from 'react-native';
+import React, { useState } from 'react'
+import { ActivityIndicator, FlatList, Text, View } from 'react-native';
 import { screenHomeStyles } from '../../theme/screenHomeStyles';
-import RecetaItem from '../../components/RecetaItem';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import RecetaItem from '../RecetaItem';
 import SearchInput from '../../components/SearchInput';
 import useProfilePaginated from '../../hooks/useProfilePaginated';
 import { Link } from 'expo-router';
 import useRecipesHomePaginated from '../../hooks/useRecipesHomePaginated';
 import { FadeInImage } from '../../components/FadeImage';
+import useRecipesPaginated from '../../hooks/useRecipesPaginated';
 
 
 
 const HomeScreen = () => {
-  const {simpleRecipesList}=useRecipesHomePaginated()
-  //console.log(simpleRecipesList)
+  const {simpleRecipesList,getRecipes}=useRecipesHomePaginated()
   const { nombre, foto } = useProfilePaginated()
-
 
   return (
     <View style={
@@ -42,6 +40,12 @@ const HomeScreen = () => {
         data={simpleRecipesList}
         keyExtractor={(receta)=>receta.id_receta.toString()}
         numColumns={2}
+        onEndReached={getRecipes}
+        onEndReachedThreshold={0.4}
+        ListFooterComponent={<ActivityIndicator style={{height:100}}
+        size={20}
+        color="grey"
+        />}
         renderItem={({ item }) =>
           <RecetaItem recetaKey={item.id_receta.toString()} recetaImagen={item.imagen} recetaNombre={item.nombre} recetaPuntaje={item.puntaje} recetaTitulo={item.titulo}/>
         }

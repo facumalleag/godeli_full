@@ -60,18 +60,9 @@ export default function Login() {
 
       if (response.status === 200) {
         console.log('Login successful');
-        console.log(response.data);
-        // navigation.navigate('TabNavigator')
-        //console.log(response.data.access_token);
 
         await SecureStore.setItemAsync('access_token', response.data.access_token);
         await SecureStore.setItemAsync('refresh_token', response.data.refresh_token);
-        const token = await SecureStore.getItemAsync('access_token');
-          console.log('token: ', token);
-        return (
-           <Redirect href="/tabs/HomeScreen" />
-        )
-
       } else {
         console.error(`Login failed with status code`);
       }
