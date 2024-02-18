@@ -14,11 +14,15 @@ import * as SecureStore from 'expo-secure-store';
 
 const configureGoogleSignIn = () => {
   GoogleSignin.configure({
-    webClientId: process.env.WEB_CLIENT_ID,
-    androidClientId: process.env.ANDROID_CLIENT_ID,
-    iosClientId: process.env.IOS_CLIENT_ID,
+    webClientId:
+      "441344649242-h0sfbuk4m7al7lr5o0i69s3rvnt9j74m.apps.googleusercontent.com",
+    androidClientId:
+      "441344649242-vbs53htmmmpd9sqs46nmtrt1qujfp0nq.apps.googleusercontent.com",
+    iosClientId:
+      "441344649242-ie1h43u7hl6b9676vhetiom8qninilsr.apps.googleusercontent.com",
   });
 };
+
 
 export default function Login() {
     const [error, setError] = useState(null);
@@ -53,10 +57,6 @@ export default function Login() {
 
         if (response.status === 200) {
           console.log('Login successful');
-          console.log(response.data);
-          
-          
-          
           // navigation.navigate('TabNavigator')
           console.log(response.data.access_token);
 
