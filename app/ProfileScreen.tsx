@@ -56,8 +56,8 @@ const ProfileScreen = () => {
             </View>
 
             <TouchableOpacity style={styles.btnGreen} onPress={logout}>
-                <Link href='/Login'>
-                    <Text style={styles.textBtnGreen}>Cerrar sesión</Text>
+                <Link href='/Login' style={styles.textBtnGreen}>
+                    <Text>Cerrar sesión</Text>
                 </Link>
             </TouchableOpacity>
             <TouchableOpacity style={styles.btnRed}>
