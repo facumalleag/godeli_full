@@ -2,6 +2,12 @@ import React from 'react';
 import { Tabs } from 'expo-router';
 import { MaterialCommunityIcons, Feather } from '@expo/vector-icons';
 import { Fontisto } from '@expo/vector-icons';
+import { LogBox } from 'react-native';
+
+LogBox.ignoreLogs(['Warning: ...']);
+LogBox.ignoreLogs(['source.uri ']);
+LogBox.ignoreLogs(['ReactImageView: ']);
+
 
 const TabsNav = () => {
     return (

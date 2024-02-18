@@ -12,11 +12,11 @@ const [isLoading, setIsLoading] = useState(true)
     getRecipes()
   }, [])
 
-  const nextPageUrl = useRef("http://godeli.mooo.com:3000/api/v1/recipes?limit=40&puntaje=5")
+  const nextPageUrl = useRef("http://godeli.mooo.com:3000/api/v1/recipes?limit=10&puntaje=5")
 
   const getRecipes = async () => {
     setIsLoading(true);
-
+    
     const clave = await SecureStore.getItemAsync('access_token');
     const resp = await recipesApi.get(nextPageUrl.current, {
       headers: {
@@ -29,7 +29,14 @@ const [isLoading, setIsLoading] = useState(true)
 
   const mapSimpleRecipeList = (recipesList: Datum[]) => {
     const newRecipeList: SimpleRecipe[] = recipesList.map(({ id_receta, titulo, imagen, nombre, puntaje }) => {
+      /*  const id=id_receta;
+       const titulo_receta=titulo;
+       const foto=imagen;
+       const ranking=puntaje;
+       const name=nombre; */
+
       return {
+        // name,ranking,foto,titulo_receta,id
         id_receta, titulo, imagen, nombre, puntaje
       }
     });
@@ -41,7 +48,8 @@ const [isLoading, setIsLoading] = useState(true)
 
   return{
     isLoading,
-    simpleRecipesList
+    simpleRecipesList,
+    getRecipes
   }
 }
 

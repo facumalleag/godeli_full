@@ -1,7 +1,7 @@
 import React from 'react'
 import { Alert, Dimensions, Text, TouchableOpacity, View } from "react-native";
-import { FadeInImage } from './FadeImage';
-
+import { FadeInImage } from '../components/FadeImage';
+import { Link, router } from 'expo-router';
 const window_width = Dimensions.get('window').width
 
 interface Props {
@@ -12,13 +12,15 @@ interface Props {
     recetaImagen:string,
 }
 
-
 const RecetaItem = (props: Props) => {
-
+    //const { nombre, email, foto}=useProfilePaginated()
     return (
         <TouchableOpacity
             activeOpacity={0.9}
-            onPress={() => { }}
+            onPress={()=>router.push({
+                pathname: "/RecipeScreen",
+                params: {  id: props.recetaKey  }
+            })}
         >
             <View style={{
                 marginHorizontal: 5,
@@ -41,8 +43,9 @@ const RecetaItem = (props: Props) => {
                     //source={{uri: props.recetaImagen}}
                     uri={props.recetaImagen}
                     style={{
+                        //opacity:0.7,
                         marginTop:5,
-                        height: 190,
+                        height: 150,
                         width: 160,
                         alignSelf:'center',
                         borderRadius:40,
@@ -51,10 +54,10 @@ const RecetaItem = (props: Props) => {
                 />
                 <View>
                     <Text style={{
-                        color: 'white',
+                        color: '#129575',
                         fontSize: 12,
                         fontWeight: 'bold',
-                        bottom: -120,
+                        bottom: -155,
                         left: 5
                     }}>
                         {props.recetaTitulo}
@@ -100,6 +103,7 @@ const RecetaItem = (props: Props) => {
 
             </View>
         </TouchableOpacity>
+
     )
 }
 
