@@ -1,17 +1,19 @@
 import React from 'react'
 import { Alert, Dimensions, Text, TouchableOpacity, View } from "react-native";
-//import Icon from 'react-native-vector-icons/Ionicons'
 import { FadeInImage } from './FadeImage';
 
 const window_width = Dimensions.get('window').width
 
 interface Props {
     recetaKey: string,
-    recetaDesc: string,
+    recetaTitulo: string,
+    recetaPuntaje:string,
+    recetaNombre:string,
+    recetaImagen:string,
 }
 
 
-const RecetaItem = ({ recetaDesc, recetaKey }: Props) => {
+const RecetaItem = (props: Props) => {
 
     return (
         <TouchableOpacity
@@ -22,7 +24,6 @@ const RecetaItem = ({ recetaDesc, recetaKey }: Props) => {
                 marginHorizontal: 5,
                 backgroundColor: '#EAEAEA',
                 height: 200,
-
                 marginBottom: 25,
                 borderRadius: 30,
                 shadowColor: "#000",
@@ -35,7 +36,6 @@ const RecetaItem = ({ recetaDesc, recetaKey }: Props) => {
                 elevation: 7,
                 width: window_width * 0.43
             }}>
-
                 <TouchableOpacity
                     style={{
                         borderRadius: 80,
@@ -63,15 +63,14 @@ const RecetaItem = ({ recetaDesc, recetaKey }: Props) => {
                         bottom: -120,
                         left: 5
                     }}>
-                        {recetaKey} {/* //Direccion */}
-                        {'\n#' + recetaDesc} {/* //precio */}
-                        DATOS DATOS
+                        {props.recetaNombre} {/* //Direccion */}
+                        {'\n#' + props.recetaPuntaje} {/* //precio */}
+                        {props.recetaTitulo}
                     </Text>
                 </View>
-
                 <FadeInImage
-                    //source={{uri: item.picture}}
-                    uri={'assets/favicon.png'}
+                    //source={{uri: props.recetaImagen}}
+                    uri={props.recetaImagen}
                     style={{
                         height: 160,
                         width: 150,
