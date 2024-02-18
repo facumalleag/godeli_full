@@ -1,6 +1,9 @@
 import { StyleSheet } from "react-native";
 
 export const  guardadoStyle = StyleSheet.create({
+    container:{
+        backgroundColor:'white',
+    },
     globalMargin:{
         marginHorizontal:20,
         marginTop:40,

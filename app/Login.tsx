@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { View, ImageBackground, Image, Text, StyleSheet  } from 'react-native';
+import { View, ImageBackground, Image, Text, StyleSheet } from 'react-native';
 import NetworkController from '../controller/NetworkController';
 import { styles } from '../theme/LandingStyle';
 import InternetAlert from '../components/InternetAlert';
-import { Link } from 'expo-router';
+import { Link, Redirect } from 'expo-router';
 import {
   GoogleSignin,
   GoogleSigninButton,
@@ -12,7 +12,9 @@ import {
 import axios from "axios";
 import * as SecureStore from 'expo-secure-store';
 
+
 const configureGoogleSignIn = () => {
+
   GoogleSignin.configure({
     webClientId: process.env.WEB_CLIENT_ID,
     androidClientId: process.env.ANDROID_CLIENT_ID,
@@ -20,79 +22,87 @@ const configureGoogleSignIn = () => {
   });
 };
 
+
 export default function Login() {
-    const [error, setError] = useState(null);
-    const [userInfo, setUserInfo] = useState();
+  const [error, setError] = useState(null);
+  const [userInfo, setUserInfo] = useState();
 
-    useEffect(() => {
-      configureGoogleSignIn();
-    });
+  useEffect(() => {
+    configureGoogleSignIn();
+  });
 
-    const signIn = async () => {
-      console.log("Pressed sign in");
 
-      const saveSecureValue = async (key, value) => {
-        await SecureStore.setItemAsync(key, value);
-      };
+  
+
+  const signIn = async () => {
+    console.log("Pressed sign in");
     
-      const retrieveSecureValue = async (key) => {
-        let result = await SecureStore.getItemAsync(key);
-      };
-    
-      try {
-        await GoogleSignin.hasPlayServices();
-        const userInfo = await GoogleSignin.signIn();
-        setUserInfo(userInfo);
-
-        const response = await axios.post("http://godeli.mooo.com:3000/api/v1/auth/login", {
-          id_google: userInfo.user.id,
-          nombre: userInfo.user.name,
-          correo_electronico: userInfo.user.email,
-          url_imagen_perfil: userInfo.user.photo,
-        });
-
-        if (response.status === 200) {
-          console.log('Login successful');
-          console.log(response.data);
-          
-          
-          
-          // navigation.navigate('TabNavigator')
-          console.log(response.data.access_token);
-
-          await SecureStore.setItemAsync('access_token', response.data.access_token);
-          await SecureStore.setItemAsync('refresh_token', response.data.refresh_token);
-        } else {
-          console.error(`Login failed with status code`);
-        }
-
-        setError(null);
-      } catch (e) {
-        setError(e);
-      }
+/* 
+    const saveSecureValue = async (key, value) => {
+      await SecureStore.setItemAsync(key, value);
     };
 
-    useEffect(() => {
-    const checkConnection =  async () => {
+    const retrieveSecureValue = async (key) => {
+      let result = await SecureStore.getItemAsync(key);
+    }; */
+
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      setUserInfo(userInfo);
+
+      const response = await axios.post("http://godeli.mooo.com:3000/api/v1/auth/login", {
+        id_google: userInfo.user.id,
+        nombre: userInfo.user.name,
+        correo_electronico: userInfo.user.email,
+        url_imagen_perfil: userInfo.user.photo,
+      });
+
+      if (response.status === 200) {
+        console.log('Login successful');
+        console.log(response.data);
+        // navigation.navigate('TabNavigator')
+        //console.log(response.data.access_token);
+
+        await SecureStore.setItemAsync('access_token', response.data.access_token);
+        await SecureStore.setItemAsync('refresh_token', response.data.refresh_token);
+        const token = await SecureStore.getItemAsync('access_token');
+          console.log('token: ', token);
+        return (
+           <Redirect href="/tabs/HomeScreen" />
+        )
+
+      } else {
+        console.error(`Login failed with status code`);
+      }
+
+      setError(null);
+    } catch (e) {
+      setError(e);
+    }
+  };
+
+  useEffect(() => {
+    const checkConnection = async () => {
       const isConnected = await NetworkController.checkInternetConnection();
       const type = await NetworkController.checkInternetConnection();
       if (!isConnected) {
         console.log('Sin internet'),
-        <InternetAlert titulo='Sin conexión a internet' texto='Comprueba tu conexión a Wi-Fi o datos móviles' />
+          <InternetAlert titulo='Sin conexión a internet' texto='Comprueba tu conexión a Wi-Fi o datos móviles' />
       } else {
         if (type!.includes("CELLULAR")) {
           console.log('redes moviles'),
-          <InternetAlert titulo='Conexión a Internet establecida' texto='Conectado a redes móviles' />
+            <InternetAlert titulo='Conexión a Internet establecida' texto='Conectado a redes móviles' />
         } else {
           console.log('WIFI'),
-          <InternetAlert titulo='Conexión a Internet establecida' texto='Conectado Wi-Fi' />
+            <InternetAlert titulo='Conexión a Internet establecida' texto='Conectado Wi-Fi' />
         }
 
       }
     };
 
     checkConnection();
-  },[]);
+  }, []);
 
 
   return (
@@ -106,12 +116,13 @@ export default function Login() {
             <Text style={styles.greetingText}>Hola,</Text>
             <Text style={styles.welcomeText}>Genial verte de nuevo!</Text>
           </View>
-          <View style={stylesLogin.buttonGoogle}>
+          <View style={stylesLogin.buttonGoogle} >
+              <Link href='/tabs/HomeScreen' onPress={signIn}>
               <GoogleSigninButton
-              size={GoogleSigninButton.Size.Standard}
-              color={GoogleSigninButton.Color.Dark}
-              onPress={signIn}
+                size={GoogleSigninButton.Size.Standard}
+                color={GoogleSigninButton.Color.Dark}
               />
+              </Link>
           </View>
         </View>
       </ImageBackground>
