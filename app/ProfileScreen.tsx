@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { Text, TextInput, TouchableOpacity, View } from 'react-native'
-import { Ionicons } from '@expo/vector-icons';
 import { styles } from '../theme/ProfileStyle';
 import useProfilePaginated from '../hooks/useProfilePaginated';
 import { FadeInImage } from '../components/FadeImage';
@@ -9,25 +8,27 @@ import {
     GoogleSigninButton,
     statusCodes,
 } from "@react-native-google-signin/google-signin";
-import { Link, Redirect } from 'expo-router';
+import { Link, router } from 'expo-router';
+import * as SecureStore from 'expo-secure-store'
 
 
 const ProfileScreen = () => {
-
 
     const logout = async () => {
         console.log("Pressed logout");
         GoogleSignin.revokeAccess();
         GoogleSignin.signOut();
+        await SecureStore.deleteItemAsync('access_token');
+        await SecureStore.deleteItemAsync('refresh_token');
+        router.replace('/Login');
+
     };
     const { nombre, foto, email } = useProfilePaginated()
 
     return (
         <View>
             <View style={styles.globalMargin}>
-                {/* <Ionicons name="skull-outline" size={180} color="#129575" /> */}
                 <FadeInImage
-                    //source={{uri: item.picture}}
                     uri={foto}
                     style={{
                         height: 160,
@@ -41,7 +42,7 @@ const ProfileScreen = () => {
                 <TextInput
                     style={styles.textName
                     }
-                    placeholder={nombre}//"blblblbl"
+                    placeholder={nombre}
                     autoCapitalize='none'
                     autoCorrect={false}
                 />
@@ -49,16 +50,14 @@ const ProfileScreen = () => {
                 <TextInput
                     style={styles.textName
                     }
-                    placeholder={email}//'johndoe@mai.com'
+                    placeholder={email}
                     autoCapitalize='none'
                     autoCorrect={false}
                 />
             </View>
 
             <TouchableOpacity style={styles.btnGreen} onPress={logout}>
-                <Link href='/Login' style={styles.textBtnGreen}>
-                    <Text>Cerrar sesión</Text>
-                </Link>
+                    <Text style={styles.textBtnGreen}>Cerrar sesión</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.btnRed}>
                 <Text style={styles.textBtnRed}>Dar de baja la cuenta</Text>
