@@ -17,7 +17,7 @@ const configureGoogleSignIn = () => {
   GoogleSignin.configure({
     webClientId: process.env.WEB_CLIENT_ID,
     androidClientId: process.env.ANDROID_CLIENT_ID,
-    iosClientId: process.env.IOS_CLIENT_ID,
+    iosClientId: process.env.IOS_CLIENT_ID
   });
 };
 
@@ -30,7 +30,6 @@ export default function Login() {
     configureGoogleSignIn();
     checkGoogleAuth();
   });
-
 
   const checkGoogleAuth = async () => {
     const isSignedIn = await GoogleSignin.isSignedIn();
@@ -85,8 +84,10 @@ export default function Login() {
       const type = await NetworkController.checkInternetConnection();
       if (!isConnected) {
         console.log('Sin internet'),
+        //mostrar sin conexion a la red
           <InternetAlert titulo='Sin conexión a internet' texto='Comprueba tu conexión a Wi-Fi o datos móviles' />
       } else {
+        //ocultar sin conexion
         if (type!.includes("CELLULAR")) {
           console.log('redes moviles'),
             <InternetAlert titulo='Conexión a Internet establecida' texto='Conectado a redes móviles' />
