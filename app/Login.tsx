@@ -81,23 +81,6 @@ export default function Login() {
     }
   };
 
-  const unsubscribe = NetInfo.addEventListener(state => {
-    if (state.isConnected === false) {
-      Alert.alert('No Internet!', 'Please reconnect!', [
-        {
-          text: 'Reload App',
-          onPress: () => RNRestart.restart(),
-        },
-      ]);
-    } else if (state.isConnected === true) {
-      console.log('Connected');
-    }
-  });
-
-  useEffect(() => {
-    unsubscribe();
-  });
-
   useEffect(() => {
     const checkConnection = async () => {
       const isConnected = await NetworkController.checkInternetConnection();
