@@ -48,7 +48,7 @@ import * as SecureStore from 'expo-secure-store'
         id_receta, titulo, imagen, nombre, puntaje
       }
     });
-    setSimpleRecipesList([...simpleRecipesList, ...newRecipeList])
+    setSimpleRecipesList([...newRecipeList])
     setIsLoading(false)
     // recipesList.forEach(recipe=> console.log(recipe.imagen)) 
 
