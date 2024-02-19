@@ -12,7 +12,7 @@ const [isLoading, setIsLoading] = useState(true)
     getRecipes()
   }, [])
 
-  const nextPageUrl = useRef("http://godeli.mooo.com:3000/api/v1/recipes?limit=10&puntaje=5")
+  const nextPageUrl = useRef("http://godeli.mooo.com:3000/api/v1/recipes?limit=20&puntaje=5")
 
   const getRecipes = async () => {
     setIsLoading(true);
@@ -40,7 +40,7 @@ const [isLoading, setIsLoading] = useState(true)
         id_receta, titulo, imagen, nombre, puntaje
       }
     });
-    setSimpleRecipesList([...simpleRecipesList, ...newRecipeList])
+    setSimpleRecipesList([...newRecipeList])
     setIsLoading(false)
     // recipesList.forEach(recipe=> console.log(recipe.imagen)) 
 

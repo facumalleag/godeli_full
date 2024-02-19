@@ -18,8 +18,8 @@ const RecetaItem = (props: Props) => {
         <TouchableOpacity
             activeOpacity={0.9}
             onPress={()=>router.push({
-                pathname: "/RecipeScreen",
-                params: {  id: props.recetaKey  }
+               pathname: "/RecipeScreen",
+                params: {  id: props.recetaKey, nombre:props.recetaNombre  }
             })}
         >
             <View style={{

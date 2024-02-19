@@ -7,7 +7,6 @@ import useProfilePaginated from '../../hooks/useProfilePaginated';
 import { Link } from 'expo-router';
 import useRecipesHomePaginated from '../../hooks/useRecipesHomePaginated';
 import { FadeInImage } from '../../components/FadeImage';
-import useRecipesPaginated from '../../hooks/useRecipesPaginated';
 
 
 
@@ -40,7 +39,7 @@ const HomeScreen = () => {
         data={simpleRecipesList}
         keyExtractor={(receta)=>receta.id_receta.toString()}
         numColumns={2}
-        onEndReached={getRecipes}
+        onEndReached={getRecipes} 
         onEndReachedThreshold={0.4}
         ListFooterComponent={<ActivityIndicator style={{height:100}}
         size={20}

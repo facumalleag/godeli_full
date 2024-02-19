@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { recipesFullApi } from '../api/recipesFullApi'
-import { Datum, SimpleRecipe } from '../interfaces/RecipesHomeInterface';
 import * as SecureStore from 'expo-secure-store'
-import { RecetaFull, Ingrediente } from '../interfaces/RecipesInterface';
 
 
 
@@ -17,8 +15,9 @@ const [isLoading, setIsLoading] = useState(true)
   const [grasas, setGrasas] = useState('')
   const [proteinas, setProteinas] = useState('')
   const [preparacion, setPreparacion] = useState('')
-  const [ingredientes, setIngredientes] = useState('')
-  const [imagenes, setImagenes] = useState('')
+  const [ingredientes, setIngredientes] = useState([])
+  const [imagenes, setImagenes] = useState([])
+  const [titulo, setTitulo] = useState('')
 
   useEffect(() => {
     getRecipes()
@@ -36,7 +35,8 @@ const [isLoading, setIsLoading] = useState(true)
       }
       
     })
-   // console.log(resp.data.data[0].ingredientes)
+    //console.log(resp.data.data[0].imagenes)
+    setTitulo(resp.data.data[0].titulo)
     setCalorias(resp.data.data[0].calorias)
     setYoutube(resp.data.data[0].youtube)
     setTiempo_preparacion(resp.data.data[0].tiempo_preparacion)
@@ -62,6 +62,7 @@ const [isLoading, setIsLoading] = useState(true)
     proteinas,
     preparacion,
     ingredientes,
+    titulo,
     imagenes,
   }
 }
