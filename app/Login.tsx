@@ -3,7 +3,7 @@ import { View, ImageBackground, Image, Text, StyleSheet } from 'react-native';
 import NetworkController from '../controller/NetworkController';
 import { styles } from '../theme/LandingStyle';
 import InternetAlert from '../components/InternetAlert';
-import { Link, Redirect } from 'expo-router';
+import { Link, Redirect, router } from 'expo-router';
 import {
   GoogleSignin,
   GoogleSigninButton,
@@ -11,7 +11,6 @@ import {
 } from "@react-native-google-signin/google-signin";
 import axios from "axios";
 import * as SecureStore from 'expo-secure-store';
-
 
 const configureGoogleSignIn = () => {
 
@@ -29,19 +28,21 @@ export default function Login() {
 
   useEffect(() => {
     configureGoogleSignIn();
+    checkGoogleAuth();
   });
+
+  const checkGoogleAuth = async () => {
+    const isSignedIn = await GoogleSignin.isSignedIn();
+    const clave = await SecureStore.getItemAsync('access_token');
+    if (isSignedIn && clave) {
+      router.replace('./tabs/HomeScreen');
+    }
+    console.log('clave', clave);
+    
+  }
 
   const signIn = async () => {
     console.log("Pressed sign in");
-    
-/* 
-    const saveSecureValue = async (key, value) => {
-      await SecureStore.setItemAsync(key, value);
-    };
-
-    const retrieveSecureValue = async (key) => {
-      let result = await SecureStore.getItemAsync(key);
-    }; */
 
     try {
       await GoogleSignin.hasPlayServices();
@@ -58,8 +59,15 @@ export default function Login() {
       if (response.status === 200) {
         console.log('Login successful');
 
-        await SecureStore.setItemAsync('access_token', response.data.access_token);
-        await SecureStore.setItemAsync('refresh_token', response.data.refresh_token);
+        try {
+          await SecureStore.setItemAsync('access_token', response.data.access_token);
+          await SecureStore.setItemAsync('refresh_token', response.data.refresh_token);
+          console.log('Stored access token and refresh token');
+          router.replace('./tabs/HomeScreen');    
+        } catch (error) {
+          console.log('Error storing access token and refresh token:', error);
+        }
+
       } else {
         console.error(`Login failed with status code`);
       }
@@ -107,12 +115,11 @@ export default function Login() {
             <Text style={styles.welcomeText}>Genial verte de nuevo!</Text>
           </View>
           <View style={stylesLogin.buttonGoogle} >
-              <Link href='/tabs/HomeScreen' onPress={signIn}>
               <GoogleSigninButton
                 size={GoogleSigninButton.Size.Standard}
                 color={GoogleSigninButton.Color.Dark}
+                onPress={signIn}
               />
-              </Link>
           </View>
         </View>
       </ImageBackground>
