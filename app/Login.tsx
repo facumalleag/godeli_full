@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, ImageBackground, Image, Text, StyleSheet } from 'react-native';
+import { View, ImageBackground, Image, Text, StyleSheet, Alert } from 'react-native';
 import NetworkController from '../controller/NetworkController';
 import { styles } from '../theme/LandingStyle';
 import InternetAlert from '../components/InternetAlert';
@@ -11,6 +11,9 @@ import {
 } from "@react-native-google-signin/google-signin";
 import axios from "axios";
 import * as SecureStore from 'expo-secure-store';
+import NetInfo from '@react-native-community/netinfo';
+import { addEventListener } from "@react-native-community/netinfo";
+import RNRestart from 'react-native-restart';
 
 const configureGoogleSignIn = () => {
 
