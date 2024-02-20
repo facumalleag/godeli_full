@@ -39,7 +39,7 @@ import { Datum } from '../interfaces/MisRecetasInterface'
         id_receta,nombre,imagen,puntaje,tiempo_preparacion,titulo
       }
     });
-    setSimpleMisRecetasList([...newMisRecetasList])
+    setSimpleMisRecetasList([...simpleMisRecetasList,...newMisRecetasList])
     setIsLoading(false)
   }
 
