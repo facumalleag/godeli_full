@@ -1,17 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, ScrollView, StyleSheet } from 'react-native';
 
 interface ProcessComponentProps {
   editable?: boolean;
   textoProcedimiento?: string;
+  updateRecipeTabProc?: (newProc: string) => void;
 }
 
 const ProcessComponent: React.FC<ProcessComponentProps> = ({
   editable,
   textoProcedimiento,
-  updateRecipeTabProc,
+  updateRecipeTabProc
 }) => {
+  const [newText, setNewText] = useState(textoProcedimiento);
+  const handleChange = (text) => {
+    setNewText(text);
+    updateRecipeTabProc(text);
+  };
 
+  useEffect(() => {
+    setNewText(textoProcedimiento);
+  }, [textoProcedimiento]);
 
   return (
     <View style={styles.container}>
@@ -20,9 +29,9 @@ const ProcessComponent: React.FC<ProcessComponentProps> = ({
         <TextInput
           style={styles.textInput}
           multiline={true}
-          value={textoProcedimiento}
+          value={newText}
           placeholder="Ingrese el procedimiento"
-          onChangeText={(text) => {}}
+          onChangeText={handleChange}
         />
       ) : (
         <ScrollView style={styles.scrollView}>

@@ -1,56 +1,101 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, View, Text, Button, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
-import AutoCompleteDropdown from './autoCompleteDropdown'; 
+import {
+  Modal,
+  View,
+  Text,
+  Button,
+  TouchableOpacity,
+  TextInput,
+  StyleSheet,
+} from 'react-native';
+import AutoCompleteDropdown from './autoCompleteDropdown';
 
 interface IngredientModalProps {
   modalVisible: boolean;
   onClose: () => void;
-  onAddIngredient: (ingredient: { nombre: string; cantidad: string; unidad: string }) => void;
+  onAddIngredient: (ingredient: {
+    id_ingrediente: number;
+    name: string;
+    count: string;
+    unit: string;
+  }) => void;
 }
 
-const IngredientModal: React.FC<IngredientModalProps> = ({ modalVisible, onClose, onAddIngredient }) => {
-  const [selectedIngredient, setSelectedIngredient] = useState('');
+const IngredientModal: React.FC<IngredientModalProps> = ({
+  modalVisible,
+  onClose,
+  onAddIngredient,
+}) => {
+  const [selectedIngredient, setSelectedIngredient] = useState<{ id: number, descripcion: string }>({ id: 0, descripcion: '' });
   const [count, setCount] = useState('');
   const [unit, setUnit] = useState('gr');
   const [isComplete, setIsComplete] = useState(false);
+  const [selectedUnit, setSelectedUnit] = useState<{ id: number, descripcion: string }>({ id: 0, descripcion: '' });
 
-    useEffect(() => {
-    if (selectedIngredient && count && unit) {
+  useEffect(() => {
+    if (selectedIngredient.id && count && unit && selectedUnit.id) {
       setIsComplete(true);
     } else {
       setIsComplete(false);
     }
-  }, [selectedIngredient, count, unit]);
+  }, [selectedIngredient, count, unit, selectedUnit]);
 
-  const ingredientesData = [
-    'Lechuga', 'Tomate', 'Huevo', 'Leche', 'Papa', 'Cebolla', 'Morron', 'Carne', 'Porotos'
+  const dataUnit = [
+    {
+      id: 3,
+      descripcion: 'Cm 3',
+      abreviatura: 'cm3'
+    },
+    {
+      id: 2,
+      descripcion: "Gramos",
+      abreviatura: "gr",
+    },
+    {
+      id: 1,
+      descripcion: "Unidades",
+      abreviatura: "Uni",
+    }
   ];
-  const ingredientesData2 = [
-        {
-            "id": 123,
-            "descripcion": "Aceitunas"
-        },
-        {
-            "id": 124,
-            "descripcion": "Aceitunas negras"
-        },
-        {
-            "id": 125,
-            "descripcion": "Aceitunas verdes"
-        },
-        {
-            "id": 249,
-            "descripcion": "Macedonia de frutas"
-        },
-        {
-            "id": 443,
-            "descripcion": "Trigo sarraceno"
-        }
-    ]
+  const ingredientesData = [
+    {
+      id: 123,
+      descripcion: 'Aceitunas',
+    },
+    {
+      id: 124,
+      descripcion: 'Aceitunas negras',
+    },
+    {
+      id: 125,
+      descripcion: 'Aceitunas verdes',
+    },
+    {
+      id: 249,
+      descripcion: 'Macedonia de frutas',
+    },
+    {
+      id: 443,
+      descripcion: 'Trigo sarraceno',
+    },
+  ];
 
+useEffect(() => {
+    // Buscar el objeto de tipo unidad correspondiente al valor de 'unit'
+    const selected = dataUnit.find(item => item.descripcion === unit);
+    if (selected) {
+      setSelectedUnit(selected);
+    }
+  }, [unit]);
 
   const handleAddIngredient = () => {
-    const nuevoIngrediente = { name: selectedIngredient, count, unit };
+    const nuevoIngrediente = {
+      id_ingrediente: selectedIngredient.id,
+      name: selectedIngredient.descripcion,
+      count,
+      typeUnit: selectedUnit.id,
+      unit: selectedUnit.abreviatura,
+    };
     onAddIngredient(nuevoIngrediente);
     onClose();
   };
@@ -61,29 +106,32 @@ const IngredientModal: React.FC<IngredientModalProps> = ({ modalVisible, onClose
         <View style={styles.modalContent}>
           <AutoCompleteDropdown
             data={ingredientesData}
-            onSelect={item => setSelectedIngredient(item)}
+            onSelect={(item) => setSelectedIngredient(item)}
           />
           <TextInput
             placeholder="Cantidad"
             value={count}
-            onChangeText={text => setCount(text)}
+            onChangeText={(text) => setCount(text)}
             keyboardType="numeric"
             style={styles.input}
           />
           <View style={styles.units}>
             <Text>Unidad:</Text>
-            <TouchableOpacity onPress={() => setUnit('uni')}>
-              <Text style={[styles.unitText, unit === 'uni' && styles.selectedUnit]}>Uni</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setUnit('gr')}>
-              <Text style={[styles.unitText, unit === 'gr' && styles.selectedUnit]}>gr</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setUnit('cm3')}>
-              <Text style={[styles.unitText, unit === 'cm3' && styles.selectedUnit]}>cm3</Text>
-            </TouchableOpacity>
+            {dataUnit.map((item, index) => (
+              <TouchableOpacity key={index} onPress={() => setUnit(item.descripcion)}>
+                <Text style={[styles.unitText, unit === item.descripcion && styles.selectedUnit]}>
+                  {item.abreviatura}
+                </Text>
+              </TouchableOpacity>
+            ))}
           </View>
           <View style={styles.buttons}>
-            <Button title="Guardar" onPress={handleAddIngredient} color="#129575" disabled={!isComplete} />
+            <Button
+              title="Guardar"
+              onPress={handleAddIngredient}
+              color="#129575"
+              disabled={!isComplete}
+            />
             <Button title="Cancelar" onPress={onClose} color="#129575" />
           </View>
         </View>
@@ -120,7 +168,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   selectedUnit: {
-    color: 'green', 
+    color: 'green',
   },
   input: {
     borderWidth: 1,

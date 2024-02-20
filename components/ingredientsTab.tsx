@@ -9,26 +9,32 @@ import {
 import IngredientModal from './IngredientModal';
 
 interface Ingredient {
+  id: number; 
   name: string;
   count: string;
   unit: string;
+  typeUnit: number;
 }
 
 interface IngredientsTabProps {
   editable?: boolean;
   ingredients?: Ingredient[];
+  updateRecipeTabIng: (ingredients: Ingredient[]) => void;
 }
+
 
 const IngredientsTab: React.FC<IngredientsTabProps> = ({
   editable,
   ingredients,
-  updateRecipeTabIng,
+  updateRecipeTabIng
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [ingredientes, setIngredientes] = useState<Ingredient[]>(ingredients);
   const [cantidadIngredientesState, setCantidadIngredientesState] = useState(
     ingredients.length
   );
+
+  
 
   useEffect(() => {
     setIngredientes(ingredients);
@@ -57,7 +63,7 @@ const IngredientsTab: React.FC<IngredientsTabProps> = ({
             {item.name} - {item.count} {item.unit}
           </Text>
           {editable && (
-            <TouchableOpacity onPress={() => handleDeleteIngredient(item.name)}>
+            <TouchableOpacity onPress={() => handleDeleteIngredient(item.id)}>
               <Text style={{ color: 'red' }}>❌</Text>
             </TouchableOpacity>
           )}
@@ -66,9 +72,9 @@ const IngredientsTab: React.FC<IngredientsTabProps> = ({
     );
   };
 
-  const handleDeleteIngredient = (name: string) => {
+  const handleDeleteIngredient = (id: number) => {
     const newIngredients = ingredientes.filter(
-      (ingrediente) => ingrediente.name !== name
+      (ingrediente) => ingrediente.id !== id
     );
     setIngredientes(newIngredients);
     updateRecipeTabIng(newIngredients)

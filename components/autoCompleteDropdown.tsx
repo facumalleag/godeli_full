@@ -2,21 +2,22 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput, FlatList, StyleSheet } from 'react-native';
 
 interface AutocompleteDropdownProps {
-  data: string[];
-  onSelect: (item: string) => void;
+  data: { id: number; descripcion: string }[];
+  onSelect: (item: { id: number; descripcion: string }) => void;
 }
 
 const AutocompleteDropdown: React.FC<AutocompleteDropdownProps> = ({ data, onSelect }) => {
   const [query, setQuery] = useState('');
   const [showResults, setShowResults] = useState(false);
   const [selectedItem, setSelectedItem] = useState('');
+  console.log("En prop")
+  console.log(data)
+  const filteredData = data.filter(item => item.descripcion.toLowerCase().includes(query.toLowerCase()));
 
-  const filteredData = data.filter(item => item.toLowerCase().includes(query.toLowerCase()));
-
-  const handleSelect = (item: string) => {
+  const handleSelect = (item: { id: number; descripcion: string }) => {
     onSelect(item);
-    setSelectedItem(item); 
-    setQuery(item); 
+    setSelectedItem(item);
+    setQuery(item.descripcion);
     setShowResults(false);
   };
 
@@ -35,7 +36,7 @@ const AutocompleteDropdown: React.FC<AutocompleteDropdownProps> = ({ data, onSel
           data={filteredData}
           renderItem={({ item }) => (
             <TouchableOpacity onPress={() => handleSelect(item)}>
-              <Text style={selectedItem === item ? styles.selectedItem : styles.item}>{item}</Text>
+              <Text style={selectedItem?.id === item.id ? styles.selectedItem : styles.item}>{item.descripcion}</Text>
             </TouchableOpacity>
           )}
           keyExtractor={(item, index) => index.toString()}
