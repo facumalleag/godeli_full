@@ -5,14 +5,15 @@ import { screenMisRecetasStyles } from '../../theme/screenMisRecetasStyles'
 import { Link, Redirect } from 'expo-router'
 import useProfilePaginated from '../../hooks/useProfilePaginated'
 import { FadeInImage } from '../../components/FadeImage'
-
-const tieneRecetas=true 
+import useMisRecetasPaginated from '../../hooks/useMisRecetasPaginated'
 
 const MisRecetasScreen = () => {
   const { foto } = useProfilePaginated()
+  const { simpleMisRecetasList } = useMisRecetasPaginated()
+console.log(simpleMisRecetasList)
 
   return (
-    (!tieneRecetas)?
+    simpleMisRecetasList.length==0?
     (
     <View style={
       screenMisRecetasStyles.container
