@@ -52,6 +52,9 @@ const RecipeScreenEdit: React.FC<RecipeScreenProps> = ({
   const [grasasState, setGrasasState] = useState(recipeGra);
   const [tiempoState, setTiempoState] = useState(recipeTime);
   const [porcionesState, setPorcionesState] = useState(recipePorc);
+  const [newTitle, setNewTitle] = useState(recipeTitle);
+  const [newDesc, setNewDesc] = useState(recipeDesc);
+  const [newImages, setNewImages] = useState(images);
 
   const updateRecipeValues = (newRecipeValues) => {
     setCaloriasState(newRecipeValues.recipeCal);
@@ -66,10 +69,12 @@ const RecipeScreenEdit: React.FC<RecipeScreenProps> = ({
 
   const updateRecipeTitle = (newRecipeTitle) => {
     console.log('Nuevos titulos' + JSON.stringify(newRecipeTitle));
+    setNewTitle(newRecipeTitle.title);
+    setNewDesc(newRecipeTitle.description);
   };
 
   const updateRecipeImages = (newImages) => {
-    console.log('Nuevas fotos' + JSON.stringify(newImages));
+    setNewImages(newImages)
   };
 
   const updateRecipeTab = (newRecipeTab) => {
@@ -79,10 +84,10 @@ const RecipeScreenEdit: React.FC<RecipeScreenProps> = ({
   const handleSave = () => {
     console.log('Guardando los datos...');
     const data = {
-      images,
+      newImages,
       linkVideo: videoLink,
-      recipeTitle,
-      recipeDesc,
+      newTitle,
+      newDesc,
       caloriasState,
       proteinasState,
       grasasState,

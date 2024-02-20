@@ -8,7 +8,7 @@ const ImagePickerModal = ({ visible, onClose, onImageSelect }) => {
       allowsEditing: true,
       quality: 1,
     });
-    if (!result.cancelled) {
+    if (!result.canceled) {
       onImageSelect(result.assets[0].uri);
       onClose();
     }
@@ -19,7 +19,7 @@ const ImagePickerModal = ({ visible, onClose, onImageSelect }) => {
       allowsEditing: true,
       quality: 1,
     });
-    if (!result.cancelled) {
+    if (!result.canceled) {
       onImageSelect(result.assets[0].uri);
       onClose();
     }
@@ -67,4 +67,3 @@ const styles = StyleSheet.create({
 });
 
 export default ImagePickerModal;
-

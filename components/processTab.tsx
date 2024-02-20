@@ -9,9 +9,9 @@ interface ProcessComponentProps {
 const ProcessComponent: React.FC<ProcessComponentProps> = ({
   editable,
   textoProcedimiento,
+  updateRecipeTabProc,
 }) => {
-  console.log('procedimiento edit: ' + editable);
-  console.log('ProcedimientoTab: ' + textoProcedimiento);
+
 
   return (
     <View style={styles.container}>

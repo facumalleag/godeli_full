@@ -22,6 +22,7 @@ interface IngredientsTabProps {
 const IngredientsTab: React.FC<IngredientsTabProps> = ({
   editable,
   ingredients,
+  updateRecipeTabIng,
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [ingredientes, setIngredientes] = useState<Ingredient[]>(ingredients);
@@ -45,6 +46,7 @@ const IngredientsTab: React.FC<IngredientsTabProps> = ({
 
   const handleAddIngredient = (nuevoIngrediente: Ingredient) => {
     setIngredientes([...ingredientes, nuevoIngrediente]);
+    updateRecipeTabIng([...ingredientes, nuevoIngrediente])
   };
 
   const renderItem = ({ item }: { item: Ingredient }) => {
@@ -69,6 +71,7 @@ const IngredientsTab: React.FC<IngredientsTabProps> = ({
       (ingrediente) => ingrediente.name !== name
     );
     setIngredientes(newIngredients);
+    updateRecipeTabIng(newIngredients)
   };
 
   return (

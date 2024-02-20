@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, View, Text, Button, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
 import AutoCompleteDropdown from './autoCompleteDropdown'; 
 
@@ -12,6 +12,15 @@ const IngredientModal: React.FC<IngredientModalProps> = ({ modalVisible, onClose
   const [selectedIngredient, setSelectedIngredient] = useState('');
   const [count, setCount] = useState('');
   const [unit, setUnit] = useState('gr');
+  const [isComplete, setIsComplete] = useState(false);
+
+    useEffect(() => {
+    if (selectedIngredient && count && unit) {
+      setIsComplete(true);
+    } else {
+      setIsComplete(false);
+    }
+  }, [selectedIngredient, count, unit]);
 
   const ingredientesData = [
     'Lechuga', 'Tomate', 'Huevo', 'Leche', 'Papa', 'Cebolla', 'Morron', 'Carne', 'Porotos'
@@ -74,7 +83,7 @@ const IngredientModal: React.FC<IngredientModalProps> = ({ modalVisible, onClose
             </TouchableOpacity>
           </View>
           <View style={styles.buttons}>
-            <Button title="Guardar" onPress={handleAddIngredient} color="#129575" />
+            <Button title="Guardar" onPress={handleAddIngredient} color="#129575" disabled={!isComplete} />
             <Button title="Cancelar" onPress={onClose} color="#129575" />
           </View>
         </View>
@@ -123,6 +132,3 @@ const styles = StyleSheet.create({
 });
 
 export default IngredientModal;
-
-
-

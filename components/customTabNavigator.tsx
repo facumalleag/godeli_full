@@ -10,10 +10,19 @@ const CustomTabNavigator = ({
   updateRecipeTab,
 }) => {
   const [activeTab, setActiveTab] = useState('ingredients');
-  console.log('ingredientes');
-  console.log(ingredients);
+  const [newIngredients, setNewIngredients] = useState(ingredients);
+  const [newProc, setNewProc] = useState(textoProcedimiento);
+
   const handleTabChange = (tab) => {
     setActiveTab(tab);
+  };
+
+  const updateRecipeTabIng = (newIngredients) => {
+    setNewIngredients(newIngredients);
+  };
+
+  const updateRecipeTabProc = (newProc) => {
+    setNewProc(newProc);
   };
 
   return (
@@ -42,11 +51,16 @@ const CustomTabNavigator = ({
         </TouchableOpacity>
       </View>
       {activeTab === 'ingredients' ? (
-        <IngredientsTab editable={editable} ingredients={ingredients} />
+        <IngredientsTab
+          editable={editable}
+          ingredients={newIngredients}
+          updateRecipeTab={updateRecipeTabIng} // Actualiza los ingredientes en CustomTabNavigator
+        />
       ) : (
         <ProcessComponent
           editable={editable}
-          textoProcedimiento={textoProcedimiento}
+          textoProcedimiento={newProc}
+          updateRecipeTab={updateRecipeTabProc} 
         />
       )}
     </View>

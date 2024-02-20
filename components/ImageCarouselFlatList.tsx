@@ -29,7 +29,6 @@ const ImageCarouselFlatList = ({
   const [selectedImage, setSelectedImage] = useState(null);
   const [updatedImages, setUpdatedImages] = useState(images);
 
-
   const [addModalVisible, setAddModalVisible] = useState(false); // Estado para el modal de agregar imágenes
 
   const renderItem = ({ item }) => (
@@ -60,21 +59,19 @@ const ImageCarouselFlatList = ({
   const handleDeleteImage = (image) => {
     const filteredImages = updatedImages.filter((img) => img.id !== image.id);
     setUpdatedImages(filteredImages);
-    console.log(filteredImages)
     updateRecipeImages(filteredImages);
   };
 
   const handleSelectImage = (uri) => {
     const newImage = { id: Date.now().toString(), uri };
     setUpdatedImages([...updatedImages, newImage]);
-    console.log([...updatedImages, newImage])
     updateRecipeImages([...updatedImages, newImage]);
   };
-  const handleVideoButtonPress = () => {};
 
+  const handleVideoButtonPress = () => {};
   return (
     <View style={styles.container}>
-      {images.length > 0 ? (
+      {updatedImages.length > 0 ? (
         <FlatList
           data={updatedImages}
           renderItem={renderItem}
