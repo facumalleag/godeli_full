@@ -36,7 +36,7 @@ console.log(simpleMisRecetasList)
         <FontAwesome6 name="face-meh" size={100} color="#129575" style={screenMisRecetasStyles.icon}  />
       </View>
       <Text style={screenMisRecetasStyles.addText}>Creá la tuya:</Text>
-      <Link href='/AgregarRecetaScreen'  style={screenMisRecetasStyles.addIcon} >
+      <Link href='/RecipeScreenEdit'  style={screenMisRecetasStyles.addIcon} >
         <Ionicons name='add-circle' size={70} color="#129575"
         />
       </Link>
