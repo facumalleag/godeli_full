@@ -11,16 +11,13 @@ import {
 } from "@react-native-google-signin/google-signin";
 import axios from "axios";
 import * as SecureStore from 'expo-secure-store';
-import NetInfo from '@react-native-community/netinfo';
-import { addEventListener } from "@react-native-community/netinfo";
-import RNRestart from 'react-native-restart';
 
 const configureGoogleSignIn = () => {
 
   GoogleSignin.configure({
-    webClientId: "441344649242-h0sfbuk4m7al7lr5o0i69s3rvnt9j74m.apps.googleusercontent.com",
-    androidClientId: "441344649242-vbs53htmmmpd9sqs46nmtrt1qujfp0nq.apps.googleusercontent.com",
-    iosClientId: "441344649242-ie1h43u7hl6b9676vhetiom8qninilsr.apps.googleusercontent.com",
+    webClientId: process.env.WEB_CLIENT_ID,
+    androidClientId: process.env.ANDROID_CLIENT_ID,
+    iosClientId: process.env.IOS_CLIENT_ID
   });
 };
 
