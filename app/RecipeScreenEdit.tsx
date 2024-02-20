@@ -83,21 +83,21 @@ const RecipeScreenEdit: React.FC<RecipeScreenProps> = ({
 
   const handleSave = () => {
     console.log('Guardando los datos...');
+    const fileIma = {newImages}
     const data = {
-      newImages,
-      linkVideo: videoLink,
-      newTitle,
-      newDesc,
-      caloriasState,
-      proteinasState,
-      grasasState,
-      tiempoState,
-      porcionesState,
-      ingredients,
-      arrayIngredientes,
-      textoProcedimiento,
-      editable,
+      titulo: newTitle,
+      descripcion: newDesc,
+      preparacion: textoProcedimiento,
+      youtube: videoLink,
+      tiempo_preparacion: tiempoState,
+      rendimiento: porcionesState,
+      calorias: caloriasState,
+      proteinas: proteinasState,
+      grasas: grasasState,
+      ingredientes: ingredients,
+      //tags: [{"id_tag": 1}]
     };
+    console.log('Archivos guardados:', fileIma);
     console.log('Datos guardados:', data);
   };
 
