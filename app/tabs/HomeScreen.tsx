@@ -39,7 +39,7 @@ const HomeScreen = () => {
         data={simpleRecipesList}
         keyExtractor={(receta)=>receta.id_receta.toString()}
         numColumns={2}
-        onEndReached={getRecipes} 
+        onEndReached={getRecipes}
         onEndReachedThreshold={0.4}
         ListFooterComponent={<ActivityIndicator style={{height:100}}
         size={20}
@@ -49,7 +49,6 @@ const HomeScreen = () => {
           <RecetaItem recetaKey={item.id_receta.toString()} recetaImagen={item.imagen} recetaNombre={item.nombre} recetaPuntaje={item.puntaje} recetaTitulo={item.titulo}/>
         }
       />
-
     </View>
     </View>
 
