@@ -7,13 +7,15 @@ import useProfilePaginated from '../../hooks/useProfilePaginated';
 import { Link } from 'expo-router';
 import useRecipesHomePaginated from '../../hooks/useRecipesHomePaginated';
 import { FadeInImage } from '../../components/FadeImage';
+import usePostMisRecetaPaginated from '../../hooks/usePostMisRecetaPaginated';
 
 
 
 const HomeScreen = () => {
+
   const {simpleRecipesList,getRecipes}=useRecipesHomePaginated()
   const { nombre, foto } = useProfilePaginated()
-
+  usePostMisRecetaPaginated()
   return (
     <View style={
       screenHomeStyles.container

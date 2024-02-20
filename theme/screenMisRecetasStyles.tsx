@@ -38,7 +38,6 @@ export const  screenMisRecetasStyles = StyleSheet.create({
     },
     addIcon:{
         alignSelf:"center",
-        marginBottom:15
     },
     addText:{
         alignSelf:"center",
