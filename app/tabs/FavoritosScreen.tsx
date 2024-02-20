@@ -1,36 +1,56 @@
 import React from 'react'
-import { FlatList, Text, View } from 'react-native'
-import RecetaItemGuardada from '../../components/RecetaItemGuardada'
+import { ActivityIndicator, FlatList, Text, View } from 'react-native'
+import RecetaItemGuardada from '../RecetaItemGuardada'
 import { guardadoStyle } from '../../theme/RecetasGuardadasStyle';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Link } from 'expo-router';
+import useProfilePaginated from '../../hooks/useProfilePaginated';
+import { FadeInImage } from '../../components/FadeImage';
+import useFavoritesPaginated from '../../hooks/useFavoritesPaginated';
 
 
-const FavoritosScreen = (prop:any) => {
+const FavoritosScreen = () => {
+  const { foto } = useProfilePaginated()
+const {  simpleFavoriteList,isLoading} = useFavoritesPaginated()
   return (
+    
+    <View
+    style={
+      guardadoStyle.container}>
     <View style={
       guardadoStyle.globalMargin
     }>
       <View style={{}}>
       <Link href='/ProfileScreen' style={guardadoStyle.profileStyle}>
-      <MaterialCommunityIcons name="face-man-profile" size={50} color="#FFCE80"   />
-      </Link>
+            <FadeInImage
+              uri={foto}
+              style={{
+                height: 50,
+                width: 50,
+                borderRadius:55
+              }}
+            />
+          </Link>
         <Text style={guardadoStyle.title}>Recetas Guardadas</Text>
       </View>
       <FlatList
-        showsVerticalScrollIndicator={false}
-        data={[
-          { key: '1', name: 'Nicolas' },
-          { key: '2', name: 'Rover plate' },
-          { key: '3', name: 'Velze Sarsfield' },
-          { key: '4', name: 'Chapalmadal' },
-          { key: '5', name: 'Mar del plata' },
-        ]}
+          showsVerticalScrollIndicator={false}
+        data={simpleFavoriteList}
+        keyExtractor={(receta)=>receta.id_receta.toString()}
+        numColumns={2}
+        //onEndReached={getFavorites} 
+        onEndReachedThreshold={0.4}
+        ListFooterComponent={isLoading? <ActivityIndicator style={{height:100}}
+        size={20}
+        color="grey"
+        />
+      :
+    null}
         renderItem={({ item }) =>
-          <RecetaItemGuardada recetaKey={item.key} recetaDesc={item.name} />
+          <RecetaItemGuardada recetaKey={item.id_receta.toString()} recetaImagen={item.imagen} recetaNombre={item.nombre} recetaPuntaje={item.puntaje} recetaTitulo={item.titulo}/>
         }
       />
 
+    </View>
     </View>
   )
 }

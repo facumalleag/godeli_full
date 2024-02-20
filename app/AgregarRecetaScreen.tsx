@@ -3,8 +3,6 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Image, Text, TextInput, View } from 'react-native';
 import { agregarRecetaStyle } from '../theme/AgregarRecetasStyle';
 import { Ionicons } from '@expo/vector-icons';
-import {Camera, CameraType} from 'expo-camera'
-import * as MediaLibrary from 'expo-media-library'
 import { useRef } from 'react';
 
 

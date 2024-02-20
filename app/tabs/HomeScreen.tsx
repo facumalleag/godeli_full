@@ -1,43 +1,56 @@
-import React from 'react'
-import { FlatList, Text, View } from 'react-native';
+import React, { useState } from 'react'
+import { ActivityIndicator, FlatList, Text, View } from 'react-native';
 import { screenHomeStyles } from '../../theme/screenHomeStyles';
-import RecetaItem from '../../components/RecetaItem';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import RecetaItem from '../RecetaItem';
 import SearchInput from '../../components/SearchInput';
 import useProfilePaginated from '../../hooks/useProfilePaginated';
 import { Link } from 'expo-router';
+import useRecipesHomePaginated from '../../hooks/useRecipesHomePaginated';
+import { FadeInImage } from '../../components/FadeImage';
 
 
 
 const HomeScreen = () => {
-  useProfilePaginated()
+  const {simpleRecipesList,getRecipes}=useRecipesHomePaginated()
+  const { nombre, foto } = useProfilePaginated()
 
- //console.log()
   return (
+    <View style={
+      screenHomeStyles.container
+    }>
     <View style={
       screenHomeStyles.globalMargin
     }>
        <Link href='/ProfileScreen' style={screenHomeStyles.profileStyle}>
-      <MaterialCommunityIcons name="face-man-profile" size={50} color="#FFCE80" />
+       <FadeInImage
+          uri={foto}
+          style={{
+            height: 50,
+            width: 50,
+            borderRadius:55
+          }}
+        /> 
       </Link>
-      <Text style={screenHomeStyles.title}>Hola Christian</Text>
+      <Text style={screenHomeStyles.title}>Hola {nombre}</Text>
       <Text style={screenHomeStyles.subtitle}>¿Que vas a cocinar hoy?</Text>
       <SearchInput />
       <FlatList
         showsVerticalScrollIndicator={false}
-        data={[
-          { key: '1', name: 'Nicolas' },
-          { key: '2', name: 'Rover plate' },
-          { key: '3', name: 'Velze Sarsfield' },
-          { key: '4', name: 'Chapalmadal' },
-          { key: '5', name: 'Mar del plata' },
-        ]}
+        data={simpleRecipesList}
+        keyExtractor={(receta)=>receta.id_receta.toString()}
         numColumns={2}
+        onEndReached={getRecipes} 
+        onEndReachedThreshold={0.4}
+        ListFooterComponent={<ActivityIndicator style={{height:100}}
+        size={20}
+        color="grey"
+        />}
         renderItem={({ item }) =>
-          <RecetaItem recetaKey={item.key} recetaDesc={item.name} />
+          <RecetaItem recetaKey={item.id_receta.toString()} recetaImagen={item.imagen} recetaNombre={item.nombre} recetaPuntaje={item.puntaje} recetaTitulo={item.titulo}/>
         }
       />
 
+    </View>
     </View>
 
   )

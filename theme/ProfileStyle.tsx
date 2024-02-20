@@ -4,7 +4,6 @@ export const  styles = StyleSheet.create({
     globalMargin:{
         alignSelf:"center",
         marginTop:40,
-        borderWidth:5,
         borderRadius:40,
         borderColor:"#129575",
     },
@@ -34,8 +33,7 @@ export const  styles = StyleSheet.create({
         height:40,
         alignSelf:"center",
         marginTop:100,
-        marginBottom:20
-
+        marginBottom:20,
     },
     textBtnGreen:{
         color:'white',

@@ -1,28 +1,31 @@
 import React from 'react'
 import { Alert, Dimensions, Text, TouchableOpacity, View } from "react-native";
-//import Icon from 'react-native-vector-icons/Ionicons'
-import { FadeInImage } from './FadeImage';
-
+import { FadeInImage } from '../components/FadeImage';
+import { Link, router } from 'expo-router';
 const window_width = Dimensions.get('window').width
 
 interface Props {
     recetaKey: string,
-    recetaDesc: string,
+    recetaTitulo: string,
+    recetaPuntaje:string,
+    recetaNombre:string,
+    recetaImagen:string,
 }
 
-
-const RecetaItem = ({ recetaDesc, recetaKey }: Props) => {
-
+const RecetaItem = (props: Props) => {
+    //const { nombre, email, foto}=useProfilePaginated()
     return (
         <TouchableOpacity
             activeOpacity={0.9}
-            onPress={() => { }}
+            onPress={()=>router.push({
+               pathname: "/RecipeScreen",
+                params: {  id: props.recetaKey, nombre:props.recetaNombre  }
+            })}
         >
             <View style={{
                 marginHorizontal: 5,
                 backgroundColor: '#EAEAEA',
                 height: 200,
-
                 marginBottom: 25,
                 borderRadius: 30,
                 shadowColor: "#000",
@@ -35,17 +38,42 @@ const RecetaItem = ({ recetaDesc, recetaKey }: Props) => {
                 elevation: 7,
                 width: window_width * 0.43
             }}>
-
+                                
+                <FadeInImage
+                    //source={{uri: props.recetaImagen}}
+                    uri={props.recetaImagen}
+                    style={{
+                        //opacity:0.7,
+                        marginTop:5,
+                        height: 150,
+                        width: 160,
+                        alignSelf:'center',
+                        borderRadius:40,
+                        position: 'absolute',
+                    }}
+                />
+                <View>
+                    <Text style={{
+                        color: '#129575',
+                        fontSize: 12,
+                        fontWeight: 'bold',
+                        bottom: -155,
+                        left: 5
+                    }}>
+                        {props.recetaTitulo}
+                        {'\n#' + props.recetaNombre} {/* //Direccion */}
+                         {/* //precio */}
+                    </Text>
+                </View>
                 <TouchableOpacity
                     style={{
                         borderRadius: 80,
                         backgroundColor: '#1F4068',
                         height: 30,
                         width: 30,
-                        alignItems: 'center',
                         position: 'relative',
-                        top: 4,
-                        right: -140
+                        top: -20,
+                        right: -130
                     }}
                     onPress={() => {
                         Alert.alert('button pressed')
@@ -54,30 +82,6 @@ const RecetaItem = ({ recetaDesc, recetaKey }: Props) => {
                     {/*  <Icon name='close-outline' size={23} color='white' /> */}
 
                 </TouchableOpacity>
-
-                <View>
-                    <Text style={{
-                        color: '#1F4068',
-                        fontSize: 10,
-                        fontWeight: 'bold',
-                        bottom: -120,
-                        left: 5
-                    }}>
-                        {recetaKey} {/* //Direccion */}
-                        {'\n#' + recetaDesc} {/* //precio */}
-                        DATOS DATOS
-                    </Text>
-                </View>
-
-                <FadeInImage
-                    //source={{uri: item.picture}}
-                    uri={'assets/favicon.png'}
-                    style={{
-                        height: 160,
-                        width: 150,
-                        position: 'absolute',
-                    }}
-                />
 
                 <TouchableOpacity
                     style={{
@@ -99,6 +103,7 @@ const RecetaItem = ({ recetaDesc, recetaKey }: Props) => {
 
             </View>
         </TouchableOpacity>
+
     )
 }
 
