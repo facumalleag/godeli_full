@@ -14,7 +14,7 @@ import { Datum } from '../interfaces/MisRecetasInterface'
 
   const getMisRecetas = async () => {
     setIsLoading(true);
-    let misRecetas = "http://godeli.mooo.com:3000/api/v1//recipes/?user=me"
+    let misRecetas = "http://godeli.mooo.com:3000/api/v1/recipes/?user=me"
     
     const clave = await SecureStore.getItemAsync('access_token');
     const resp = await misRecetasApi.get(misRecetas, {
@@ -39,7 +39,7 @@ import { Datum } from '../interfaces/MisRecetasInterface'
         id_receta,nombre,imagen,puntaje,tiempo_preparacion,titulo
       }
     });
-    setSimpleMisRecetasList([...newMisRecetasList])
+    setSimpleMisRecetasList([...simpleMisRecetasList,...newMisRecetasList])
     setIsLoading(false)
   }
 

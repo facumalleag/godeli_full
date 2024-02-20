@@ -39,7 +39,7 @@ import { Datum } from '../interfaces/FavoritesInterface'
         id_receta,nombre,imagen,puntaje,tiempo_preparacion,titulo
       }
     });
-    setSimpleFavoriteList([...newFavoriteList])
+    setSimpleFavoriteList([...simpleFavoriteList,...newFavoriteList])
     setIsLoading(false)
   }
 
