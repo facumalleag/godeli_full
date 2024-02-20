@@ -64,9 +64,6 @@ const RecipeScreen = () => {
           style={styles.videoIcon}
         />
       </View>
-      {/*       <View style={styles.videoInput}>
-        
-      </View> */}
       <View style={styles.valores}>
         <Text style={{ ...styles.styleValues, marginLeft: 1 }}>{calorias} calorías</Text>
         <Text style={styles.styleValues}>{proteinas} proteínas</Text>
