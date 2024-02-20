@@ -7,7 +7,8 @@ const CustomTabNavigator = ({
   editable = true,
   ingredients = [],
   textoProcedimiento = '',
-  updateRecipeTab,
+  handleTabIng,
+  handleTabProc,
 }) => {
   const [activeTab, setActiveTab] = useState('ingredients');
   const [newIngredients, setNewIngredients] = useState(ingredients);
@@ -19,10 +20,12 @@ const CustomTabNavigator = ({
 
   const updateRecipeTabIng = (newIngredients) => {
     setNewIngredients(newIngredients);
+    handleTabIng(newIngredients)
   };
 
   const updateRecipeTabProc = (newProc) => {
     setNewProc(newProc);
+    handleTabProc(newProc)
   };
 
   return (
@@ -54,13 +57,13 @@ const CustomTabNavigator = ({
         <IngredientsTab
           editable={editable}
           ingredients={newIngredients}
-          updateRecipeTab={updateRecipeTabIng} // Actualiza los ingredientes en CustomTabNavigator
+          updateRecipeTabIng={updateRecipeTabIng}
         />
       ) : (
         <ProcessComponent
           editable={editable}
           textoProcedimiento={newProc}
-          updateRecipeTab={updateRecipeTabProc} 
+          updateRecipeTabProc={updateRecipeTabProc}
         />
       )}
     </View>

@@ -55,6 +55,8 @@ const RecipeScreenEdit: React.FC<RecipeScreenProps> = ({
   const [newTitle, setNewTitle] = useState(recipeTitle);
   const [newDesc, setNewDesc] = useState(recipeDesc);
   const [newImages, setNewImages] = useState(images);
+  const [newIngredients, setNewIngredients] = useState(ingredients);
+  const [newProc, setNewProc] = useState(textoProcedimiento);
 
   const updateRecipeValues = (newRecipeValues) => {
     setCaloriasState(newRecipeValues.recipeCal);
@@ -74,27 +76,38 @@ const RecipeScreenEdit: React.FC<RecipeScreenProps> = ({
   };
 
   const updateRecipeImages = (newImages) => {
-    setNewImages(newImages)
+    setNewImages(newImages);
   };
 
-  const updateRecipeTab = (newRecipeTab) => {
-    console.log('Nuevos tabs' + JSON.stringify(newRecipeTab));
+  const handleTabIng = (newIngredients) => {
+    setNewIngredients(newIngredients);
+  };
+
+  const handleTabProc = (newProc) => {
+    setNewProc(newProc);
   };
 
   const handleSave = () => {
     console.log('Guardando los datos...');
-    const fileIma = {newImages}
+    const fileIma = { newImages };
+    const formattedIngredients = newIngredients.map((ingredient) => {
+      return {
+        id_ingrediente: ingredient.id_ingrediente,
+        cantidad: ingredient.count,
+        id_unidad: ingredient.typeUnit,
+      };
+    });
     const data = {
       titulo: newTitle,
       descripcion: newDesc,
-      preparacion: textoProcedimiento,
+      preparacion: newProc,
       youtube: videoLink,
       tiempo_preparacion: tiempoState,
       rendimiento: porcionesState,
       calorias: caloriasState,
       proteinas: proteinasState,
       grasas: grasasState,
-      ingredientes: ingredients,
+      ingredientes: formattedIngredients,
       //tags: [{"id_tag": 1}]
     };
     console.log('Archivos guardados:', fileIma);
@@ -146,6 +159,8 @@ const RecipeScreenEdit: React.FC<RecipeScreenProps> = ({
         editable={editable}
         ingredients={ingredients}
         textoProcedimiento={textoProcedimiento}
+        handleTabIng={handleTabIng}
+        handleTabProc={handleTabProc}
       />
       {editable && (
         <>
