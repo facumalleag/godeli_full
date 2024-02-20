@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { recipesFullApi } from '../api/recipesFullApi'
 import * as SecureStore from 'expo-secure-store'
+import { Ingrediente } from '../interfaces/RecipesInterface';
 
 
 
@@ -35,7 +36,6 @@ const [isLoading, setIsLoading] = useState(true)
       }
       
     })
-    //console.log(resp.data.data[0].imagenes)
     setTitulo(resp.data.data[0].titulo)
     setCalorias(resp.data.data[0].calorias)
     setYoutube(resp.data.data[0].youtube)

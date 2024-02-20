@@ -49,7 +49,6 @@ const {  simpleFavoriteList,isLoading} = useFavoritesPaginated()
           <RecetaItemGuardada recetaKey={item.id_receta.toString()} recetaImagen={item.imagen} recetaNombre={item.nombre} recetaPuntaje={item.puntaje} recetaTitulo={item.titulo}/>
         }
       />
-
     </View>
     </View>
   )
