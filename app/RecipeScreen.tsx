@@ -64,9 +64,6 @@ const RecipeScreen = () => {
           style={styles.videoIcon}
         />
       </View>
-      {/*       <View style={styles.videoInput}>
-        
-      </View> */}
       <View style={styles.valores}>
         <Text style={{ ...styles.styleValues, marginLeft: 1 }}>{calorias} calorías</Text>
         <Text style={styles.styleValues}>{proteinas} proteínas</Text>
@@ -101,13 +98,13 @@ const RecipeScreen = () => {
 
       <View style={styles.valores}>
         {rendimiento == "1" ?
-          <FontAwesome6 name="plate-wheat" size={12} color="#A9A9A9" style={styles.styleValues }> {rendimiento} porción</FontAwesome6>
+          <FontAwesome6 name="plate-wheat" size={12} color="#A9A9A9" style={styles.styleValues}> {rendimiento} porción</FontAwesome6>
           // <Text style={styles.txtporciones}>{rendimiento} porción</Text> 
           :
           <FontAwesome6 name="plate-wheat" size={12} color="#A9A9A9" style={styles.styleValues}> {rendimiento} porciones</FontAwesome6>
           //<Text style={styles.txtporciones}>{rendimiento} porciones</Text>
         }
-        <Ionicons name="newspaper-outline" size={13} color="#A9A9A9" style={styles.styleValues}> {ingredientes.length} INGREDIENTES</Ionicons>
+        <Ionicons name="newspaper-outline" size={14} color="#A9A9A9" style={styles.styleValues}> {ingredientes.length} INGREDIENTES</Ionicons>
 
       </View>
       {

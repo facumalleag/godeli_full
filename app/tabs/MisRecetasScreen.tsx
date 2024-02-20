@@ -2,7 +2,7 @@ import { FontAwesome6, Ionicons } from '@expo/vector-icons'
 import React from 'react'
 import {  Text, View } from 'react-native'
 import { screenMisRecetasStyles } from '../../theme/screenMisRecetasStyles'
-import { Link } from 'expo-router'
+import { Link, Redirect } from 'expo-router'
 import useProfilePaginated from '../../hooks/useProfilePaginated'
 import { FadeInImage } from '../../components/FadeImage'
 
@@ -12,7 +12,7 @@ const MisRecetasScreen = () => {
   const { foto } = useProfilePaginated()
 
   return (
-    (tieneRecetas)?
+    (!tieneRecetas)?
     (
     <View style={
       screenMisRecetasStyles.container
@@ -44,11 +44,7 @@ const MisRecetasScreen = () => {
     )
     :
     (
-      <View style={
-        screenMisRecetasStyles.globalMargin
-      }>
-         <Text style={screenMisRecetasStyles.title}>Tenés recetas en algun lugar</Text>
-      </View>
+      <Redirect href='/MisRecetasCreadasScreen'/>
     )
   )
 }
