@@ -39,7 +39,7 @@ export const FadeInImage = ({ uri, style = {} } : Props) => {
             }
 
             <Animated.Image 
-                source={{ uri }}
+                source={{ uri: uri || 'https://res.cloudinary.com/dhcjaxmp5/image/upload/v1708389060/njfxvnr83sfbtawhnrrp.png'}}
                 onError={ onError } 
                 onLoad={ finishLoading }
                 style={{

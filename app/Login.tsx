@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, ImageBackground, Image, Text, StyleSheet } from 'react-native';
+import { View, ImageBackground, Image, Text, StyleSheet, Alert } from 'react-native';
 import NetworkController from '../controller/NetworkController';
 import { styles } from '../theme/LandingStyle';
 import InternetAlert from '../components/InternetAlert';
