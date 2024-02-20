@@ -7,8 +7,8 @@ import axios, { AxiosHeaders } from 'axios';
 
 
 
-const usePostMisRecetaPaginated = (/* formData,jsonData */) => {
-
+const usePostMisRecetaPaginated = (data) => {
+    //console.log(data)
     const [isLoading, setIsLoading] = useState(true)
     
    const formData = new FormData();
@@ -63,7 +63,7 @@ const usePostMisRecetaPaginated = (/* formData,jsonData */) => {
         ]
     }
     ;
-    formData.append('data', JSON.stringify(jsonData), { contentType: 'application/json' });
+    formData.append('data', JSON.stringify(data), { contentType: 'application/json' });
 
 
     useEffect(() => {
@@ -91,14 +91,14 @@ const usePostMisRecetaPaginated = (/* formData,jsonData */) => {
       
         setIsLoading(false); */
         const clave = await SecureStore.getItemAsync('access_token');
-        
+
         axios({
             method: "POST",
             url: "http://godeli.mooo.com:3000/api/v1/recipes",
             data: formData,
             headers: { 
             Authorization: `Bearer ${clave}`,
-            'Content-Type':'Multipart/Form-Data',
+            'Content-Type':'multipart/form-data',
           }}
           )
             .then(function (response) {
@@ -109,6 +109,7 @@ const usePostMisRecetaPaginated = (/* formData,jsonData */) => {
               //handle error
               console.log(" segundo "+response);
             });
+            console.log(JSON.stringify(data))
       
         setIsLoading(false);
 

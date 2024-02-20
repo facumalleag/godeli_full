@@ -15,7 +15,7 @@ const HomeScreen = () => {
 
   const {simpleRecipesList,getRecipes}=useRecipesHomePaginated()
   const { nombre, foto } = useProfilePaginated()
-  usePostMisRecetaPaginated()
+  
   return (
     <View style={
       screenHomeStyles.container

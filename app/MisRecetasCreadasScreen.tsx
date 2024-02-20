@@ -57,7 +57,7 @@ const MisRecetasCreadasScreen = () => {
           }
         />
         <View style={{ flexDirection: 'column' }}>
-          <Link href='/AgregarRecetaScreen' style={screenMisRecetasStyles.addIcon} >
+          <Link href='/RecipeScreenEdit' style={screenMisRecetasStyles.addIcon} >
             <Ionicons name='add-circle' size={70} color="#129575"
             />
           </Link>
