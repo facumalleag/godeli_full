@@ -81,21 +81,22 @@ const RecipeScreenEdit: React.FC<RecipeScreenProps> = ({
 
   const handleTabIng = (newIngredients) => {
     setNewIngredients(newIngredients);
-    console.log('nuevo ingredientes screen');
-    console.log(newIngredients);
-    console.log('nuevo ingredientes screen');
   };
 
   const handleTabProc = (newProc) => {
     setNewProc(newProc);
-    console.log('nuevo ingredientes screen');
-    console.log(newProc);
-    console.log('nuevo ingredientes screen');
   };
 
   const handleSave = () => {
     console.log('Guardando los datos...');
     const fileIma = { newImages };
+    const formattedIngredients = newIngredients.map((ingredient) => {
+      return {
+        id_ingrediente: ingredient.id_ingrediente,
+        cantidad: ingredient.count,
+        id_unidad: ingredient.typeUnit,
+      };
+    });
     const data = {
       titulo: newTitle,
       descripcion: newDesc,
@@ -106,7 +107,7 @@ const RecipeScreenEdit: React.FC<RecipeScreenProps> = ({
       calorias: caloriasState,
       proteinas: proteinasState,
       grasas: grasasState,
-      ingredientes: newIngredients,
+      ingredientes: formattedIngredients,
       //tags: [{"id_tag": 1}]
     };
     console.log('Archivos guardados:', fileIma);
