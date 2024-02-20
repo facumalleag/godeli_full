@@ -5,14 +5,12 @@ import { CreateRecipePaginatedPost } from '../interfaces/CreateRecipeInterface';
 import axios, { AxiosHeaders } from 'axios';
 
 
+
+
 const usePostMisRecetaPaginated = (/* formData,jsonData */) => {
 
-   
     const [isLoading, setIsLoading] = useState(true)
-    const data = {
-        description:"sarasa"
-      }
-
+    
    const formData = new FormData();
     //formData.append('file',"SAAS");
     const jsonData = {
@@ -104,8 +102,8 @@ const usePostMisRecetaPaginated = (/* formData,jsonData */) => {
           }}
           )
             .then(function (response) {
-              //handle success
-              console.log(" Primero "+JSON.stringify(response.data));
+              console.log(response.status)
+              console.log(JSON.stringify(response.data));
             })
             .catch(function (response) {
               //handle error
