@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput, FlatList, StyleSheet } from 'react-native';
 
+
 interface AutocompleteDropdownProps {
   data: { id: number; descripcion: string }[];
   onSelect: (item: { id: number; descripcion: string }) => void;
 }
+
 
 const AutocompleteDropdown: React.FC<AutocompleteDropdownProps> = ({ data, onSelect }) => {
   const [query, setQuery] = useState('');

@@ -9,6 +9,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import AutoCompleteDropdown from './autoCompleteDropdown';
+import ingredientesData from '../assets/ingredientes.json';
 
 interface IngredientModalProps {
   modalVisible: boolean;
@@ -57,6 +58,7 @@ const IngredientModal: React.FC<IngredientModalProps> = ({
       abreviatura: "Uni",
     }
   ];
+  /*
   const ingredientesData = [
     {
       id: 123,
@@ -78,7 +80,7 @@ const IngredientModal: React.FC<IngredientModalProps> = ({
       id: 443,
       descripcion: 'Trigo sarraceno',
     },
-  ];
+  ];*/
 
 useEffect(() => {
     // Buscar el objeto de tipo unidad correspondiente al valor de 'unit'
@@ -105,7 +107,7 @@ useEffect(() => {
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
           <AutoCompleteDropdown
-            data={ingredientesData}
+            data={ingredientesData.ingredientes}
             onSelect={(item) => setSelectedIngredient(item)}
           />
           <TextInput
