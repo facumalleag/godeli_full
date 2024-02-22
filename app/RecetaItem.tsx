@@ -25,7 +25,7 @@ const RecetaItem = (props: Props) => {
             <View style={{
                 marginHorizontal: 5,
                 backgroundColor: '#EAEAEA',
-                height: 200,
+                height: 250,
                 marginBottom: 25,
                 borderRadius: 30,
                 shadowColor: "#000",
@@ -46,7 +46,7 @@ const RecetaItem = (props: Props) => {
                         //opacity:0.7,
                         marginTop:5,
                         height: 150,
-                        width: 160,
+                        width: 170,
                         alignSelf:'center',
                         borderRadius:40,
                         position: 'absolute',
@@ -72,7 +72,7 @@ const RecetaItem = (props: Props) => {
                         height: 30,
                         width: 30,
                         position: 'relative',
-                        top: -20,
+                        top: 20,
                         right: -130
                     }}
                     onPress={() => {

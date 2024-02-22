@@ -1,6 +1,6 @@
 {
   "expo": {
-    "scheme":"godeli",
+    "scheme": "godeli",
     "name": "godeli",
     "slug": "godeli",
     "version": "1.0.0",
@@ -16,7 +16,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,"bundleIdentifier": "com.xxx.desarrollos.godeli",
+      "supportsTablet": true,
+      "bundleIdentifier": "com.xxx.facu.godeli",
       "infoPlist": {
         "CFBundleURLTypes": [
           {
@@ -32,19 +33,22 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.xxx.desarrollos.godeli"
+      "package": "com.xxx.facu.godeli"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "extra": {
-      "eas": {
-        "projectId": "01725307-f957-4d75-8ce5-100d9c0d7525"
-      }
-    },
     "plugins": [
       "@react-native-google-signin/google-signin",
       "expo-router"
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "a58fe4f2-9bb8-4abc-b098-e60edc6d2109"
+      }
+    }
   }
 }
