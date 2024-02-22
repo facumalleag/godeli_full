@@ -11,7 +11,7 @@ export const screenHomeStyles = StyleSheet.create({
     },
     title: {
         color: '#129575',
-        fontSize: 30,
+        fontSize: 24,
         fontWeight: "bold",
         alignSelf: "flex-start",
         marginTop: -40

@@ -10,10 +10,13 @@ import {
 } from "@react-native-google-signin/google-signin";
 import { Link, router } from 'expo-router';
 import * as SecureStore from 'expo-secure-store'
+import LogOutModal from '../components/LogOutModal';
+import DeleteAccountModal from '../components/DeleteAccountModal';
 
 
 const ProfileScreen = () => {
 
+    //Necesito esto en LogOutModal
     const logout = async () => {
         console.log("Pressed logout");
         GoogleSignin.revokeAccess();
@@ -23,7 +26,25 @@ const ProfileScreen = () => {
         router.replace('/Login');
 
     };
-    const { nombre, foto, email } = useProfilePaginated()
+    const { nombre, foto, email } = useProfilePaginated();
+    const [modalVisibleLogOut, setModalVisibleLogOut] = useState(false);
+    const [modalVisibleDeleteAcc, setModalVisibleDeleteAcc] = useState(false);
+
+    const handleOpenLogOutModal = () => {
+        setModalVisibleLogOut(true);
+    };
+
+    const handleCloseLogOutModal = () => {
+        setModalVisibleLogOut(false);
+    };
+
+    const handleOpenDeleteAccModal = () => {
+        setModalVisibleDeleteAcc(true);
+    };
+
+    const handleCloseDeleteAccModal = () => {
+        setModalVisibleDeleteAcc(false);
+    };
 
     return (
         <View>
@@ -56,15 +77,16 @@ const ProfileScreen = () => {
                 />
             </View>
 
-            <TouchableOpacity style={styles.btnGreen} onPress={logout}>
+            <TouchableOpacity style={styles.btnGreen} onPress={handleOpenLogOutModal}>
                     <Text style={styles.textBtnGreen}>Cerrar sesión</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.btnRed}>
+            <TouchableOpacity style={styles.btnRed} onPress={handleOpenDeleteAccModal}>
                 <Text style={styles.textBtnRed}>Dar de baja la cuenta</Text>
             </TouchableOpacity>
+            <LogOutModal modalVisible={modalVisibleLogOut} onClose={handleCloseLogOutModal}></LogOutModal>
+            <DeleteAccountModal modalVisible={modalVisibleDeleteAcc} onClose={handleCloseDeleteAccModal}></DeleteAccountModal>
         </View>
-
     )
 }
 
-export default ProfileScreen
+export default ProfileScreen;
