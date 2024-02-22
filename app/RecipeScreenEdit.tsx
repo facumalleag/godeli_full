@@ -6,12 +6,15 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
 import ImageCarouselFlatList from '../components/ImageCarouselFlatList';
 import RecipeTitle from '../components/recipeTitle';
 import RecipesValues from '../components/recipesValues';
 import { MaterialIcons } from '@expo/vector-icons';
 import CustomTabNavigator from '../components/customTabNavigator';
+import { router } from 'expo-router';
+import axios from "axios";
+import useRecipeCreation from '../hooks/useRecipeCreation';
 
 interface RecipeScreenProps {
   images?: { id: number; uri: string }[];
@@ -57,12 +60,17 @@ const RecipeScreenEdit: React.FC<RecipeScreenProps> = ({
   const [newImages, setNewImages] = useState(images);
   const [newIngredients, setNewIngredients] = useState(ingredients);
   const [newProc, setNewProc] = useState(textoProcedimiento);
+  const [isSuccess, setIsSuccess] = useState(false)
+  const { createRecipe, loading, error } = useRecipeCreation();
+
 
   const updateRecipeValues = (newRecipeValues) => {
+    console.log(newRecipeValues)
     setCaloriasState(newRecipeValues.recipeCal);
     setProteinasState(newRecipeValues.recipePro);
     setGrasasState(newRecipeValues.recipeGra);
     setTiempoState(newRecipeValues.recipeTime);
+    setPorcionesState(newRecipeValues.recipePer);
   };
 
   const handleVideoLinkChange = (text: string) => {
@@ -87,17 +95,34 @@ const RecipeScreenEdit: React.FC<RecipeScreenProps> = ({
     setNewProc(newProc);
   };
 
+  useEffect(() => {
+    // Aquí puedes realizar acciones basadas en el estado de loading y error
+    if (loading) {
+      // Puedes mostrar una animación de carga o un mensaje de carga
+      console.log('Cargando...');
+    } else if (error) {
+      // Puedes manejar el error mostrando un mensaje de error al usuario
+      console.error('Error:', error);
+    } else {
+      // La receta se creó con éxito, puedes realizar acciones adicionales aquí
+      console.log('Receta creada con éxito');
+    }
+  }, [loading, error]);
+
+
   const handleSave = () => {
     console.log('Guardando los datos...');
     const fileIma = { newImages };
+    console.log('imagen', newImages);
     const formattedIngredients = newIngredients.map((ingredient) => {
+      const cant = parseInt(ingredient.count, 10);
       return {
         id_ingrediente: ingredient.id_ingrediente,
-        cantidad: ingredient.count,
+        cantidad: cant,
         id_unidad: ingredient.typeUnit,
       };
     });
-    const data = {
+    const jsonData = {
       titulo: newTitle,
       descripcion: newDesc,
       preparacion: newProc,
@@ -110,8 +135,13 @@ const RecipeScreenEdit: React.FC<RecipeScreenProps> = ({
       ingredientes: formattedIngredients,
       //tags: [{"id_tag": 1}]
     };
+    
+    console.log('===============================');
+    console.log(JSON.stringify(jsonData));
+    createRecipe(JSON.stringify(jsonData), fileIma);
+    console.log('===============================');
     console.log('Archivos guardados:', fileIma);
-    console.log('Datos guardados:', data);
+    console.log('Datos guardados:', jsonData);
   };
 
   return (
@@ -171,7 +201,7 @@ const RecipeScreenEdit: React.FC<RecipeScreenProps> = ({
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.floatingButton, styles.cancelButton]}
-            onPress={() => {}}>
+            onPress={() => { }}>
             <Text style={styles.buttonText}>Cancelar</Text>
           </TouchableOpacity>
         </>
