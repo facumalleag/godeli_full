@@ -18,8 +18,8 @@ const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({
     <Modal visible={modalVisible} animationType="slide" transparent={true}>
         <View style={styles.modalContainer}>
             <View style={styles.modalContent}>
-                <Text>Eliminar cuenta</Text>
-                <Text>Al eliminar la cuenta perderás toda la información</Text>
+                <Text style={styles.title}>Eliminar cuenta</Text>
+                <Text style={styles.subtitle}>Al eliminar la cuenta perderás toda la información</Text>
                 <View style={styles.buttons}>
                     <Button title="Eliminar" onPress={handleDeleteAccount} color="#951A12"></Button>
                     <Button title="Cancelar" onPress={onClose} color="#9D9D9D"></Button>
@@ -43,12 +43,22 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         width: '80%'
     },
+    title: {
+        textAlign: 'center',
+        fontSize: 25
+    },
+    subtitle: {
+        textAlign: 'center',
+        marginTop: 10
+    },
     buttons: {
         flexDirection: 'row',
         justifyContent: 'space-around',
         marginTop: 20,
-        borderRadius: 20
     },
+    button: {
+        borderRadius: 20
+    }
 });
 
 export default DeleteAccountModal;

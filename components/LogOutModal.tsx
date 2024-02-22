@@ -18,7 +18,7 @@ const LogOutModal: React.FC<LogOutModalProps> = ({
     <Modal visible={modalVisible} animationType="slide" transparent={true}>
         <View style={styles.modalContainer}>
             <View style={styles.modalContent}>
-                <Text>¿Desea cerrar sesión?</Text>
+                <Text style={styles.title}>¿Desea cerrar sesión?</Text>
                 <View style={styles.buttons}>
                     <Button title="Cerrar sesión" onPress={handleLogOut} color="#129575"></Button>
                     <Button title="Cancelar" onPress={onClose} color="#9D9D9D"></Button>
@@ -41,6 +41,10 @@ const styles = StyleSheet.create({
         padding: 20,
         borderRadius: 10,
         width: '80%'
+    },
+    title: {
+        textAlign: 'center',
+        fontSize: 20
     },
     buttons: {
         flexDirection: 'row',
