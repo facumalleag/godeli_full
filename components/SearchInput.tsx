@@ -2,6 +2,7 @@ import React from 'react'
 import { View, StyleSheet, TextInput, Platform } from 'react-native'
 import { EvilIcons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
+import { router } from 'expo-router';
 
 const SearchInput = () => {
     return (
@@ -9,7 +10,7 @@ const SearchInput = () => {
             top: (Platform.OS ==='ios') ? 0 : 9
             }}>
             <View style={styles.textBackground}>
-                <EvilIcons name="search" size={40} color="#D9D9D9"/>
+                <EvilIcons name="search" size={40} color="#D9D9D9" style={{marginTop:-10}}/>
                 <TextInput
                     style={styles.textSearch
                     }
@@ -17,8 +18,7 @@ const SearchInput = () => {
                     autoCapitalize='none'
                     autoCorrect={false}
                 />
-                <Feather name="filter" size={35} color="#129575" style={styles.icon} onPress={()=>{
-}}/>
+                <Feather name="filter" size={35} color="#129575" style={styles.icon} onPress={()=>router.navigate('/FilterRecipeModal')}/>
             </View>
         </View>
     )
@@ -26,7 +26,7 @@ const SearchInput = () => {
 
 const styles = StyleSheet.create({
     icon: {
-        marginLeft:137
+        marginLeft:137,
     },
     container: {
         paddingBottom: 20,

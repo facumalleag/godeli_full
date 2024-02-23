@@ -178,7 +178,7 @@ const RecipeScreenEdit: React.FC<RecipeScreenProps> = ({
     console.log('Datos guardados:'); */
   };
 console.log(handleSave())
-usePostMisRecetaPaginated(handleSave())
+//usePostMisRecetaPaginated(handleSave())
 
 
   return (
@@ -238,7 +238,7 @@ usePostMisRecetaPaginated(handleSave())
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.floatingButton, styles.cancelButton]}
-            onPress={() => router.navigate('/HomeScreen')}>
+            onPress={() => router.navigate('tabs/HomeScreen')}>
             <Text style={styles.buttonText}>Cancelar</Text>
           </TouchableOpacity>
         </>

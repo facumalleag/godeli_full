@@ -15,9 +15,12 @@ import * as SecureStore from 'expo-secure-store';
 const configureGoogleSignIn = () => {
 
   GoogleSignin.configure({
+    webClientId:'595358216050-bv7tduumn5qi23u49sufqg547dmpmtmf.apps.googleusercontent.com',
+    androidClientId:'595358216050-4gkd63v4v0mglm3ipvrg9e1qejrafile.apps.googleusercontent.com',
+    iosClientId:'595358216050-qhkqbc0u2g8uuhc28mtl27c9psk3h750.apps.googleusercontent.com',/* 
     webClientId: process.env.WEB_CLIENT_ID,
     androidClientId: process.env.ANDROID_CLIENT_ID,
-    iosClientId: process.env.IOS_CLIENT_ID
+    iosClientId: process.env.IOS_CLIENT_ID  */
   });
 };
 
