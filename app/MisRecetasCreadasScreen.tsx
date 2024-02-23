@@ -23,11 +23,19 @@ const MisRecetasCreadasScreen = () => {
     <View
       style={
         guardadoStyle.container}>
-      <View style={
-        guardadoStyle.globalMargin
+      <View style={{
+         marginHorizontal:20,
+         marginTop:40,
+         marginBottom:25
+      }
       }>
-        <View style={{}}>
-          <Link href='/ProfileScreen' style={guardadoStyle.profileStyle}>
+        <View style={{flexDirection:'row',marginBottom:-45}}>
+          <Link href='tabs/HomeScreen' asChild>
+          <Ionicons name="arrow-back-circle-outline" onPress={() => router.navigate('/HomeScreen')} size={45} color="#A9A9A9" style={{  }} />
+          </Link>
+          <Text style={guardadoStyle.title}>Tus Recetas</Text>
+        </View>
+        <Link href='/ProfileScreen' style={{alignSelf:"flex-end", marginBottom:5}}>
             <FadeInImage
               uri={foto}
               style={{
@@ -37,8 +45,6 @@ const MisRecetasCreadasScreen = () => {
               }}
             />
           </Link>
-          <Text style={guardadoStyle.title}>Tus Recetas</Text>
-        </View>
         <FlatList
           showsVerticalScrollIndicator={false}
           data={simpleMisRecetasList}//{}simpleFavoriteList
@@ -46,7 +52,6 @@ const MisRecetasCreadasScreen = () => {
           numColumns={2}
           onEndReached={getMisRecetas}
           onEndReachedThreshold={0.4}
-
           renderItem={({ item }) =>
             <RecetaItem recetaKey={item.id_receta.toString()} recetaImagen={item.imagen} recetaNombre={item.nombre} recetaPuntaje={item.puntaje} recetaTitulo={item.titulo} />
           }
@@ -56,20 +61,9 @@ const MisRecetasCreadasScreen = () => {
             <Ionicons name='add-circle' size={70} color="#129575"
             />
           </Link>
-          <Link href='tabs/HomeScreen' asChild>
-            <TouchableOpacity style={{
-              borderRadius: 10,
-              paddingVertical: 10,
-              paddingHorizontal: 30,
-              backgroundColor: 'white',
-              borderColor:'#129575',
-              borderWidth:3,
-              alignSelf: "center",//#129575
-            }}>
-              <Text style={{ color: '#71B1A1', fontSize: 16, }}>Atrás</Text>
-            </TouchableOpacity>
-          </Link>
+         
         </View>
+        
       </View>
     </View>
   )

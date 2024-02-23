@@ -17,6 +17,7 @@ import axios from "axios";
 import useRecipeCreation from '../hooks/useRecipeCreation';
 import CustomModal from '../components/CustomModal';
 
+
 interface RecipeScreenProps {
   images?: { id: number; uri: string }[];
   linkVideo?: string;
@@ -48,6 +49,8 @@ const RecipeScreenEdit: React.FC<RecipeScreenProps> = ({
   textoProcedimiento = '',
   editable = true,
 }) => {
+
+   
   const windowHeight = Dimensions.get('window').height;
   const [selectedIngredient, setSelectedIngredient] = useState('');
   const [videoLink, setVideoLink] = useState(linkVideo);
@@ -128,6 +131,7 @@ const RecipeScreenEdit: React.FC<RecipeScreenProps> = ({
     const fileIma = { newImages };
     console.log('imagen', newImages);
     const formattedIngredients = newIngredients.map((ingredient) => {
+
       const cant = parseInt(ingredient.count, 10);
       return {
         id_ingrediente: ingredient.id_ingrediente,
@@ -140,6 +144,7 @@ const RecipeScreenEdit: React.FC<RecipeScreenProps> = ({
       descripcion: newDesc,
       preparacion: newProc,
       youtube: videoLink,
+
       tiempo_preparacion: tiempoState,
       rendimiento: porcionesState,
       calorias: caloriasState,
@@ -147,6 +152,7 @@ const RecipeScreenEdit: React.FC<RecipeScreenProps> = ({
       grasas: grasasState,
       ingredientes: formattedIngredients,
       //tags: [{"id_tag": 1}]
+
     };
 
     console.log('===============================');
@@ -156,7 +162,11 @@ const RecipeScreenEdit: React.FC<RecipeScreenProps> = ({
     console.log('Archivos guardados:', fileIma);
     setModalVisible(true);
     console.log('Datos guardados:', jsonData);
+
   };
+console.log(handleSave())
+//usePostMisRecetaPaginated(handleSave())
+
 
   return (
     <View style={styles.container}>

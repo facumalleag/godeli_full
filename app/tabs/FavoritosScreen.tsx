@@ -6,18 +6,26 @@ import { Link } from 'expo-router';
 import useProfilePaginated from '../../hooks/useProfilePaginated';
 import { FadeInImage } from '../../components/FadeImage';
 import useFavoritesPaginated from '../../hooks/useFavoritesPaginated';
+import { Dimensions, StyleSheet } from "react-native";
 
+const window_width = Dimensions.get('window').width
+const window_height = Dimensions.get('window').height
 
 const FavoritosScreen = () => {
   const { foto } = useProfilePaginated()
-const {  simpleFavoriteList,isLoading} = useFavoritesPaginated()
+const {  simpleFavoriteList,isLoading,getFavorites} = useFavoritesPaginated()
   return (
     
     <View
-    style={
-      guardadoStyle.container}>
-    <View style={
-      guardadoStyle.globalMargin
+    style={{
+      backgroundColor:'white',
+      width:window_width,
+      height:window_height
+    }}>
+    <View style={{
+        marginHorizontal:20,
+        marginTop:40,
+    }
     }>
       <View style={{}}>
       <Link href='/ProfileScreen' style={guardadoStyle.profileStyle}>
@@ -30,14 +38,14 @@ const {  simpleFavoriteList,isLoading} = useFavoritesPaginated()
               }}
             />
           </Link>
-        <Text style={guardadoStyle.title}>Recetas Guardadas</Text>
+        <Text style={{...guardadoStyle.title, marginTop:-30,marginBottom:20}}>Recetas Guardadas</Text>
       </View>
       <FlatList
           showsVerticalScrollIndicator={false}
         data={simpleFavoriteList}
         keyExtractor={(receta)=>receta.id_receta.toString()}
         numColumns={2}
-        //onEndReached={getFavorites} 
+        onEndReached={getFavorites} 
         onEndReachedThreshold={0.4}
         ListFooterComponent={isLoading? <ActivityIndicator style={{height:100}}
         size={20}

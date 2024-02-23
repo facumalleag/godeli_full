@@ -7,7 +7,7 @@ export const  guardadoStyle = StyleSheet.create({
     container:{
         backgroundColor:'white',
         width:window_width,
-        height:window_height
+        height:window_height*0.9
         },
     globalMargin:{
         marginHorizontal:20,
@@ -19,8 +19,6 @@ export const  guardadoStyle = StyleSheet.create({
         fontSize:30,
        fontWeight: "bold",
         alignSelf:"flex-start",
-        marginTop:-40,
-        marginBottom:20,
     },
     profileStyle:{
         alignSelf:"flex-end"

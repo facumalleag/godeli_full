@@ -10,7 +10,6 @@ import useMisRecetasPaginated from '../../hooks/useMisRecetasPaginated'
 const MisRecetasScreen = () => {
   const { foto } = useProfilePaginated()
   const { simpleMisRecetasList } = useMisRecetasPaginated()
-console.log(simpleMisRecetasList)
 
   return (
     simpleMisRecetasList.length==0?
