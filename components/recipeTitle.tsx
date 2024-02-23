@@ -66,11 +66,13 @@ const RecipeTitle: React.FC<RecipeTitleProps> = ({
         {editingTitle ? (
           <TextInput
             style={styles.titleInput}
+            placeholder='Ingrese el Titulo de la receta'
             value={newTitle}
             onChangeText={(text) => setNewTitle(text)}
             onBlur={handleSaveTitle}
             onSubmitEditing={handleSaveTitle}
           />
+          
         ) : (
           <>
             <Text style={styles.title}>{newTitle}</Text>
@@ -88,6 +90,8 @@ const RecipeTitle: React.FC<RecipeTitleProps> = ({
             style={styles.descriptionInput}
             value={newDescription}
             onChangeText={(text) => setNewDescription(text)}
+            placeholder="Ingrese la descipcion de la Receta"
+            placeholderTextColor="black"
             onBlur={handleSaveDescription}
             onSubmitEditing={handleSaveTitle}
           />

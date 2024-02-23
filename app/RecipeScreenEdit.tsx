@@ -6,14 +6,17 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ImageCarouselFlatList from '../components/ImageCarouselFlatList';
 import RecipeTitle from '../components/recipeTitle';
 import RecipesValues from '../components/recipesValues';
 import { MaterialIcons } from '@expo/vector-icons';
 import CustomTabNavigator from '../components/customTabNavigator';
-import usePostMisRecetaPaginated from '../hooks/usePostMisRecetaPaginated';
 import { router } from 'expo-router';
+import axios from "axios";
+import useRecipeCreation from '../hooks/useRecipeCreation';
+import CustomModal from '../components/CustomModal';
+
 
 interface RecipeScreenProps {
   images?: { id: number; uri: string }[];
@@ -61,12 +64,29 @@ const RecipeScreenEdit: React.FC<RecipeScreenProps> = ({
   const [newImages, setNewImages] = useState(images);
   const [newIngredients, setNewIngredients] = useState(ingredients);
   const [newProc, setNewProc] = useState(textoProcedimiento);
+  const [isComplete, setIsComplete] = useState(false);
+  const { createRecipe, loading, error } = useRecipeCreation();
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleAceptar = () => {
+    setModalVisible(false);
+  };
+
+  useEffect(() => {
+    if (newTitle && newDesc && newIngredients && caloriasState && proteinasState && grasasState && tiempoState && porcionesState) {
+      setIsComplete(true);
+    } else {
+      setIsComplete(false);
+    }
+  }, [newTitle, newDesc, newIngredients, caloriasState, proteinasState, grasasState, tiempoState, porcionesState]);
 
   const updateRecipeValues = (newRecipeValues) => {
+    console.log(newRecipeValues)
     setCaloriasState(newRecipeValues.recipeCal);
     setProteinasState(newRecipeValues.recipePro);
     setGrasasState(newRecipeValues.recipeGra);
     setTiempoState(newRecipeValues.recipeTime);
+    setPorcionesState(newRecipeValues.recipePer);
   };
 
   const handleVideoLinkChange = (text: string) => {
@@ -91,28 +111,40 @@ const RecipeScreenEdit: React.FC<RecipeScreenProps> = ({
     setNewProc(newProc);
   };
 
+  useEffect(() => {
+    // Aquí puedes realizar acciones basadas en el estado de loading y error
+    if (loading) {
+      // Puedes mostrar una animación de carga o un mensaje de carga
+      console.log('Cargando...');
+    } else if (error) {
+      // Puedes manejar el error mostrando un mensaje de error al usuario
+      console.error('Error:', error);
+    } else {
+      // La receta se creó con éxito, puedes realizar acciones adicionales aquí
+      console.log('Receta creada con éxito');
+    }
+  }, [loading, error]);
+
+
   const handleSave = () => {
     console.log('Guardando los datos...');
     const fileIma = { newImages };
+    console.log('imagen', newImages);
     const formattedIngredients = newIngredients.map((ingredient) => {
-      let res="" //`Bearer ${clave}`
-      newIngredients.forEach(ingredient => {
-      res+=`{"id_ingrediente": ${ingredient.name},
-      "cantidad": ${ingredient.count},
-      "id_unidad" : ${ingredient.unit}},`
-      }) 
-      //console.log(newIngredients)
-      /* return {
-        id_ingrediente: ingredient.name,
-        cantidad: ingredient.count,
-        id_unidad: ingredient.unit,
-      }; */
+
+      const cant = parseInt(ingredient.count, 10);
+      return {
+        id_ingrediente: ingredient.id_ingrediente,
+        cantidad: cant,
+        id_unidad: ingredient.typeUnit,
+      };
     });
-     /* const data= JSON.stringify({
-      "titulo": newTitle,
-      "descripcion": newDesc,
-      "preparacion": newProc,
-      "youtube": videoLink,
+    const jsonData = {
+      titulo: newTitle,
+      descripcion: newDesc,
+      preparacion: newProc,
+      youtube: videoLink,
+
       tiempo_preparacion: tiempoState,
       rendimiento: porcionesState,
       calorias: caloriasState,
@@ -120,62 +152,17 @@ const RecipeScreenEdit: React.FC<RecipeScreenProps> = ({
       grasas: grasasState,
       ingredientes: formattedIngredients,
       //tags: [{"id_tag": 1}]
-    })  */
-    const data={
-      "titulo": "titulo prueba",
-      "descripcion": "Si viajamos a Italia, hay 3 cosas que probar lógicamente, una buena pizza, una deliciosa pasta y un cremoso risotto. Hoy vamos a preparar un risotto de setas, una de las recetas top de la gastronomía italiana.",
-      "preparacion": "1.- Comenzamos pochando a fuego suave la cebolla y el ajo. Picados finamente hasta que se hagan.\r\n\r\n2.- Pasados unos 15 minutos agregamos las setas cortadas. Yo lo que hago es cortar una parte en trozos pequeños y otra en tiras, simplemente para que quede más vistoso.\r\n\r\n3.- Cuando tengamos hechas las setas, agregamos el arroz para anacararlos y que absorba todos los sabores.\r\n\r\n4.- Incorporamos la copa de vino blanco y dejamos que se evapore el alcohol.\r\n\r\n5.- Ahora llega el momento clave, ponemos el caldo de pollo o verduras en un cazo a calentar, también podemos usar agua caliente pero prefiero mil veces caldo.",
-      "youtube": null,
-      "tiempo_preparacion": 50,
-      "rendimiento": 3,
-      "calorias": 1500,
-      "proteinas": 45,
-      "grasas": 50,
-      "ingredientes": [
-          {
-              "id_ingrediente": 7,
-              "cantidad": 2,
-              "id_unidad" : 1
-          },
-          {
-              "id_ingrediente": 8,
-              "cantidad": 4,
-              "id_unidad" : 2
-          },
-          {
-              "id_ingrediente": 9,
-              "cantidad": 5,
-              "id_unidad" : 1
-          },
-          {
-              "id_ingrediente": 10,
-              "cantidad": 7,
-              "id_unidad" : 3
-          },
-          {
-              "id_ingrediente": 11,
-              "cantidad": 8,
-              "id_unidad" : 1
-          }
-      ],
-      "tags": [
-          {
-              "id_tag": 1
-          },
-          {
-              "id_tag": 2
-          },
-          {
-              "id_tag": 3
-          }
-      ]
-  }
-    return data
-    //return JSON.stringify(data)
-     
-    /* 
+
+    };
+
+    console.log('===============================');
+    console.log(JSON.stringify(jsonData));
+    //createRecipe(JSON.stringify(jsonData), fileIma);
+    console.log('===============================');
     console.log('Archivos guardados:', fileIma);
-    console.log('Datos guardados:'); */
+    setModalVisible(true);
+    console.log('Datos guardados:', jsonData);
+
   };
 console.log(handleSave())
 //usePostMisRecetaPaginated(handleSave())
@@ -229,16 +216,24 @@ console.log(handleSave())
         handleTabIng={handleTabIng}
         handleTabProc={handleTabProc}
       />
+      <CustomModal
+        visible={modalVisible}
+        titulo="Receta Cargada"
+        descripcion="Ya puedes verla en mis recetas"
+        onAceptar={handleAceptar}
+      />
       {editable && (
         <>
           <TouchableOpacity
             style={[styles.floatingButton, styles.saveButton]}
-            onPress={handleSave}>
+            onPress={handleSave}
+            disabled={!isComplete}>
+
             <Text style={styles.buttonText}>Guardar</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.floatingButton, styles.cancelButton]}
-            onPress={() => router.navigate('tabs/HomeScreen')}>
+            onPress={() => { }}>
             <Text style={styles.buttonText}>Cancelar</Text>
           </TouchableOpacity>
         </>
