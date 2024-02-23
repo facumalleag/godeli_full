@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import React, { useState , useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import ImageCarouselFlatList from '../components/ImageCarouselFlatList';
 import RecipeTitle from '../components/recipeTitle';
 import RecipesValues from '../components/recipesValues';
@@ -15,6 +15,7 @@ import CustomTabNavigator from '../components/customTabNavigator';
 import { router } from 'expo-router';
 import axios from "axios";
 import useRecipeCreation from '../hooks/useRecipeCreation';
+import CustomModal from '../components/CustomModal';
 
 interface RecipeScreenProps {
   images?: { id: number; uri: string }[];
@@ -60,9 +61,21 @@ const RecipeScreenEdit: React.FC<RecipeScreenProps> = ({
   const [newImages, setNewImages] = useState(images);
   const [newIngredients, setNewIngredients] = useState(ingredients);
   const [newProc, setNewProc] = useState(textoProcedimiento);
-  const [isSuccess, setIsSuccess] = useState(false)
+  const [isComplete, setIsComplete] = useState(false);
   const { createRecipe, loading, error } = useRecipeCreation();
+  const [modalVisible, setModalVisible] = useState(false);
 
+  const handleAceptar = () => {
+    setModalVisible(false);
+  };
+
+  useEffect(() => {
+    if (newTitle && newDesc && newIngredients && caloriasState && proteinasState && grasasState && tiempoState && porcionesState) {
+      setIsComplete(true);
+    } else {
+      setIsComplete(false);
+    }
+  }, [newTitle, newDesc, newIngredients, caloriasState, proteinasState, grasasState, tiempoState, porcionesState]);
 
   const updateRecipeValues = (newRecipeValues) => {
     console.log(newRecipeValues)
@@ -135,12 +148,13 @@ const RecipeScreenEdit: React.FC<RecipeScreenProps> = ({
       ingredientes: formattedIngredients,
       //tags: [{"id_tag": 1}]
     };
-    
+
     console.log('===============================');
     console.log(JSON.stringify(jsonData));
-    createRecipe(JSON.stringify(jsonData), fileIma);
+    //createRecipe(JSON.stringify(jsonData), fileIma);
     console.log('===============================');
     console.log('Archivos guardados:', fileIma);
+    setModalVisible(true);
     console.log('Datos guardados:', jsonData);
   };
 
@@ -192,11 +206,19 @@ const RecipeScreenEdit: React.FC<RecipeScreenProps> = ({
         handleTabIng={handleTabIng}
         handleTabProc={handleTabProc}
       />
+      <CustomModal
+        visible={modalVisible}
+        titulo="Receta Cargada"
+        descripcion="Ya puedes verla en mis recetas"
+        onAceptar={handleAceptar}
+      />
       {editable && (
         <>
           <TouchableOpacity
             style={[styles.floatingButton, styles.saveButton]}
-            onPress={handleSave}>
+            onPress={handleSave}
+            disabled={!isComplete}>
+
             <Text style={styles.buttonText}>Guardar</Text>
           </TouchableOpacity>
           <TouchableOpacity
