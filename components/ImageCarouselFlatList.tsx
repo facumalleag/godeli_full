@@ -10,8 +10,9 @@ import {
   Button,
   Text,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Feather, Ionicons } from '@expo/vector-icons';
 import ImagePickerModal from './imagePickerModal';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const { width, height } = Dimensions.get('window');
 
@@ -83,11 +84,13 @@ const ImageCarouselFlatList = ({
           style={{ width }}
         />
       ) : (
-        <View style={styles.emptyContainer}>
-          <Text style={styles.emptyText}>
-            {editable ? 'Ingresa tu foto' : 'Sin fotos'}
-          </Text>
-        </View>
+        <LinearGradient  colors={['transparent', 'rgba(0,0,0,0.1)' , 'rgba(0,0,0,0.8)']} style={styles.emptyContainer}>
+          {editable ? <TouchableOpacity
+          style={styles.addButton}
+          onPress={() => setAddModalVisible(true)}>
+          <Feather name="edit" size={60} color="#fff" />
+        </TouchableOpacity>: <Text style={styles.emptyText}>Sin fotos</Text>}
+        </LinearGradient>
       )}
       {!editable && (
         <TouchableOpacity
@@ -103,16 +106,8 @@ const ImageCarouselFlatList = ({
           />
         </TouchableOpacity>
       )}
-      {editable && (
-        <TouchableOpacity
-          style={styles.addButton}
-          onPress={() => setAddModalVisible(true)}>
-          <Ionicons name="add-circle" size={40} color="#fff" />
-        </TouchableOpacity>
-      )}
       <Modal visible={addModalVisible} transparent={true} animationType="fade">
         <ImagePickerModal
-          visible={addModalVisible}
           onClose={() => setAddModalVisible(false)}
           onImageSelect={handleSelectImage}
         />
@@ -139,13 +134,8 @@ const ImageCarouselFlatList = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    position: 'relative',
   },
   addButton: {
-    position: 'absolute',
-    bottom: 20,
-    right: 20,
-    zIndex: 1,
     width: 60,
     height: 60,
   },
@@ -201,6 +191,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.2)',
+    marginTop: 50,
+    borderRadius: 30,
+    height: '30%'
   },
   emptyText: {
     fontSize: 20,

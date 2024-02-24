@@ -60,12 +60,12 @@ export const styles = StyleSheet.create({
       borderRadius:20,
     },
     container: {
-        flex:4,
+      flex:1,
       backgroundColor: '#ecf0f1',
       padding: 10,
     },
     carrousel: {
-      marginTop: 20,
+      marginTop: 10,
       marginBottom: 5,
     },
     videoInput: {

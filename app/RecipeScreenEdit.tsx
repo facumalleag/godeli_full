@@ -125,6 +125,10 @@ const RecipeScreenEdit: React.FC<RecipeScreenProps> = ({
     }
   }, [loading, error]);
 
+  const handleBack = () => {
+    router.back()
+  }
+
 
   const handleSave = () => {
     console.log('Guardando los datos...');
@@ -154,7 +158,6 @@ const RecipeScreenEdit: React.FC<RecipeScreenProps> = ({
       //tags: [{"id_tag": 1}]
 
     };
-
     console.log('===============================');
     console.log(JSON.stringify(jsonData));
     //createRecipe(JSON.stringify(jsonData), fileIma);
@@ -164,13 +167,11 @@ const RecipeScreenEdit: React.FC<RecipeScreenProps> = ({
     console.log('Datos guardados:', jsonData);
 
   };
-console.log(handleSave())
-//usePostMisRecetaPaginated(handleSave())
 
 
   return (
     <View style={styles.container}>
-      <View style={[styles.carrousel, { height: windowHeight * 0.25 }]}>
+      <View style={[styles.carrousel, { height: windowHeight * 0.30 }]}>
         <ImageCarouselFlatList
           images={images}
           editable={editable}
@@ -179,7 +180,6 @@ console.log(handleSave())
         />
       </View>
       <RecipeTitle
-        editable={editable}
         title={recipeTitle}
         description={recipeDesc}
         updateRecipeTitle={updateRecipeTitle}
@@ -228,12 +228,11 @@ console.log(handleSave())
             style={[styles.floatingButton, styles.saveButton]}
             onPress={handleSave}
             disabled={!isComplete}>
-
             <Text style={styles.buttonText}>Guardar</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.floatingButton, styles.cancelButton]}
-            onPress={() => { }}>
+            onPress={handleBack}>
             <Text style={styles.buttonText}>Cancelar</Text>
           </TouchableOpacity>
         </>
@@ -246,29 +245,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ecf0f1',
-    padding: 8,
+    paddingVertical: 8,
+    paddingHorizontal: 30
   },
   carrousel: {},
   videoInput: {
     flexDirection: 'row',
     alignItems: 'center',
-    position: 'relative',
+    padding: 10,
+  },
+  videoIcon: {
+    marginTop: -5
   },
   videoTextInput: {
-    flex: 1,
     borderWidth: 1,
+    width: '90%',
     borderColor: '#ccc',
     borderRadius: 12,
     backgroundColor: '#D9D9D9',
     color: '#3B5059',
-    padding: 10,
+    padding: 8,
     marginBottom: 10,
-  },
-  videoIcon: {
-    position: 'absolute',
-    right: 10,
-    top: '50%',
-    transform: [{ translateY: -12 }],
+    marginRight: 5
   },
   floatingButton: {
     position: 'absolute',
@@ -284,10 +282,12 @@ const styles = StyleSheet.create({
   saveButton: {
     backgroundColor: '#129575',
     left: 20,
+    width: '45%'
   },
   cancelButton: {
     backgroundColor: '#9D9D9D',
     right: 20,
+    width: '45%'
   },
   buttonText: {
     color: '#fff',

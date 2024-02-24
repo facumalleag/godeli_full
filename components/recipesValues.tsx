@@ -8,7 +8,7 @@ import {
   Modal,
   Button,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { FontAwesome6, Ionicons } from '@expo/vector-icons';
 
 interface RecipesValuesProps {
   recipeCal?: number;
@@ -34,7 +34,7 @@ const RecipesValues: React.FC<RecipesValuesProps> = ({
   recipeTime = 0,
   recipePer = 0,
   recipeIngCount = 0,
-  modoEdicion = faltruese,
+  modoEdicion = true,
   updateRecipeValues,
 }) => {
   const [caloriasState, setCaloriasState] = useState(recipeCal);
@@ -134,9 +134,9 @@ const RecipesValues: React.FC<RecipesValuesProps> = ({
           <Text style={styles.valor}>{caloriasState}</Text>
           <Text style={styles.unidad}>Calorias</Text>
           {modoEdicion && (
-            <TouchableOpacity
+            <TouchableOpacity style={styles.iconButton}
               onPress={() => handleEditValue('calorias', caloriasState)}>
-              <Ionicons name="pencil-outline" size={20} color="#ccc" />
+              <FontAwesome6 name="edit" size={20} color="#ccc" />
             </TouchableOpacity>
           )}
         </View>
@@ -144,9 +144,9 @@ const RecipesValues: React.FC<RecipesValuesProps> = ({
           <Text style={styles.valor}>{proteinasState}</Text>
           <Text style={styles.unidad}>proteinas</Text>
           {modoEdicion && (
-            <TouchableOpacity
+            <TouchableOpacity style={styles.iconButton}
               onPress={() => handleEditValue('proteinas', proteinasState)}>
-              <Ionicons name="pencil-outline" size={20} color="#ccc" />
+              <FontAwesome6 name="edit" size={20} color="#ccc" />
             </TouchableOpacity>
           )}
         </View>
@@ -154,9 +154,9 @@ const RecipesValues: React.FC<RecipesValuesProps> = ({
           <Text style={styles.valor}>{grasasState}</Text>
           <Text style={styles.unidad}>grasas</Text>
           {modoEdicion && (
-            <TouchableOpacity
+            <TouchableOpacity style={styles.iconButton}
               onPress={() => handleEditValue('grasas', grasasState)}>
-              <Ionicons name="pencil-outline" size={20} color="#ccc" />
+              <FontAwesome6 name="edit" size={20} color="#ccc" />
             </TouchableOpacity>
           )}
         </View>
@@ -166,9 +166,9 @@ const RecipesValues: React.FC<RecipesValuesProps> = ({
           <Text style={styles.valor}>{tiempoState}</Text>
           <Text style={styles.unidad}>Min</Text>
           {modoEdicion && (
-            <TouchableOpacity
+            <TouchableOpacity style={styles.iconButton}
               onPress={() => handleEditValue('tiempo', tiempoState)}>
-              <Ionicons name="pencil-outline" size={20} color="#ccc" />
+              <FontAwesome6 name="edit" size={20} color="#ccc" />
             </TouchableOpacity>
           )}
         </View>
@@ -176,9 +176,9 @@ const RecipesValues: React.FC<RecipesValuesProps> = ({
           <Text style={styles.valor}>{porcionesState}</Text>
           <Text style={styles.unidad}>porciones</Text>
           {modoEdicion && (
-            <TouchableOpacity
+            <TouchableOpacity style={styles.iconButton}
               onPress={() => handleEditValue('porciones', porcionesState)}>
-              <Ionicons name="pencil-outline" size={20} color="#ccc" />
+              <FontAwesome6 name="edit" size={20} color="#ccc" />
             </TouchableOpacity>
           )}
         </View>
@@ -276,6 +276,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     width: '100%',
   },
+  iconButton: {
+    marginLeft: 5
+  }
 });
 
 export default RecipesValues;

@@ -1,8 +1,8 @@
 import React from 'react';
-import { Modal, View, Button, StyleSheet } from 'react-native';
+import {View, Button, StyleSheet, Pressable, Text } from 'react-native';
 import { launchImageLibraryAsync, launchCameraAsync } from 'expo-image-picker';
 
-const ImagePickerModal = ({ visible, onClose, onImageSelect }) => {
+const ImagePickerModal = ({onClose, onImageSelect }) => {
   const handleSelectFromGallery = async () => {
     const result = await launchImageLibraryAsync({
       allowsEditing: true,
@@ -26,43 +26,51 @@ const ImagePickerModal = ({ visible, onClose, onImageSelect }) => {
   };
 
   return (
-    <Modal visible={visible} animationType="slide">
+    <View>
       <View style={styles.modalContainer}>
-        <Button
-          title="Galería"
+        <Pressable
           onPress={handleSelectFromGallery}
           style={styles.button}
-          color="#129575"
-        />
-        <Button
-          title="Camara"
+        >
+          <Text style={{color: 'white'}}>Galería</Text>
+        </Pressable>
+        <Pressable
           onPress={handleTakePhoto}
           style={styles.button}
-          color="#129575"
-        />
-        <Button
-          title="Cancelar"
+        >
+          <Text style={{color: 'white'}}>Cámara</Text>
+        </Pressable>
+        <Pressable
           onPress={onClose}
           style={styles.button}
-          color="#D9D9D9"
-        />
+        >
+          <Text style={{color: 'white'}}>Cancelar</Text>
+        </Pressable>
       </View>
-    </Modal>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   modalContainer: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    position: 'absolute',
+    right: 50, 
+    top: 140,
+    width: '40%',
+    borderRadius: 10,
+    padding: 10,
+    backgroundColor: 'white'
   },
   button: {
     marginVertical: 10,
-    width: 200,
     height: 40,
     borderRadius: 10,
     padding: 10,
+    backgroundColor: '#129575',
+    width: '90%',
+    alignItems: 'center'
   },
 });
 

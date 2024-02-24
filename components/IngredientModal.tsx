@@ -10,16 +10,12 @@ import {
 } from 'react-native';
 import AutoCompleteDropdown from './autoCompleteDropdown';
 import ingredientesData from '../assets/ingredientes.json';
+import { Ingredient } from './ingredientsTab';
 
 interface IngredientModalProps {
   modalVisible: boolean;
   onClose: () => void;
-  onAddIngredient: (ingredient: {
-    id_ingrediente: number;
-    name: string;
-    count: string;
-    unit: string;
-  }) => void;
+  onAddIngredient: (ingredient: Ingredient) => void;
 }
 
 const IngredientModal: React.FC<IngredientModalProps> = ({
@@ -91,6 +87,8 @@ useEffect(() => {
   }, [unit]);
 
   const handleAddIngredient = () => {
+    setUnit('gr')
+    setCount('')
     const nuevoIngrediente = {
       id_ingrediente: selectedIngredient.id,
       name: selectedIngredient.descripcion,

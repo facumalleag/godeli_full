@@ -21,30 +21,13 @@ interface RecipeTitleProps {
 const RecipeTitle: React.FC<RecipeTitleProps> = ({
   title = 'Ingresa el titulo aqui',
   description = 'Ingresa la descripcion aqui',
-  editable = true,
   updateRecipeTitle,
 }) => {
-  const [showEditIcon, setShowEditIcon] = useState(true);
-  const [editingTitle, setEditingTitle] = useState(false);
-  const [editingDescription, setEditingDescription] = useState(false);
   const [newTitle, setNewTitle] = useState(title);
   const [newDescription, setNewDescription] = useState(description);
 
-  const handleEditTitle = () => {
-    setShowEditIcon(false);
-    setEditingTitle(true);
-    setNewTitle(newTitle);
-  };
-
-  const handleEditDescription = () => {
-    setShowEditIcon(false);
-    setEditingDescription(true);
-    setNewDescription(newDescription);
-  };
 
   const handleSaveTitle = () => {
-    setEditingTitle(false);
-    setShowEditIcon(true);
     updateRecipeTitle({
       title: newTitle,
       description: newDescription,
@@ -52,8 +35,6 @@ const RecipeTitle: React.FC<RecipeTitleProps> = ({
   };
 
   const handleSaveDescription = () => {
-    setEditingDescription(false);
-    setShowEditIcon(true);
     updateRecipeTitle({
       title: newTitle,
       description: newDescription,
@@ -63,48 +44,26 @@ const RecipeTitle: React.FC<RecipeTitleProps> = ({
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        {editingTitle ? (
           <TextInput
             style={styles.titleInput}
-            placeholder='Ingrese el Titulo de la receta'
+            placeholder='Agregá un título'
             value={newTitle}
             onChangeText={(text) => setNewTitle(text)}
-            onBlur={handleSaveTitle}
             onSubmitEditing={handleSaveTitle}
           />
-          
-        ) : (
-          <>
-            <Text style={styles.title}>{newTitle}</Text>
-            {editable && showEditIcon && (
-              <TouchableOpacity onPress={handleEditTitle}>
-                <Ionicons name="pencil-outline" size={20} color="#ccc" />
-              </TouchableOpacity>
-            )}
-          </>
-        )}
+
       </View>
       <View style={styles.descriptionContainer}>
-        {editingDescription ? (
           <TextInput
             style={styles.descriptionInput}
             value={newDescription}
             onChangeText={(text) => setNewDescription(text)}
             placeholder="Ingrese la descipcion de la Receta"
             placeholderTextColor="black"
-            onBlur={handleSaveDescription}
-            onSubmitEditing={handleSaveTitle}
+            onSubmitEditing={handleSaveDescription}
+            multiline
           />
-        ) : (
-          <>
-            <Text style={styles.description}>{newDescription}</Text>
-            {editable && showEditIcon && (
-              <TouchableOpacity onPress={handleEditDescription}>
-                <Ionicons name="pencil-outline" size={20} color="#ccc" />
-              </TouchableOpacity>
-            )}
-          </>
-        )}
+     
       </View>
     </View>
   );
@@ -127,9 +86,9 @@ const styles = StyleSheet.create({
     fontFamily: 'system-font',
     fontSize: 24,
     fontWeight: 'bold',
-    borderBottomWidth: 1,
-    borderColor: 'gray',
-    flex: 1,
+    color: 'black',
+    width: '100%',
+    marginVertical: 10
   },
   descriptionContainer: {
     flexDirection: 'row',
@@ -146,9 +105,8 @@ const styles = StyleSheet.create({
     fontFamily: 'system-font',
     fontSize: 16,
     fontWeight: '100',
-    borderBottomWidth: 1,
-    borderColor: 'gray',
-    flex: 1,
+    width: '100%',
+    marginVertical: 10
   },
 });
 

@@ -24,7 +24,12 @@ const AutocompleteDropdown: React.FC<AutocompleteDropdownProps> = ({ data, onSel
   };
 
   return (
-    <View>
+    <View style={{ 
+      backgroundColor: '#FFF',
+      marginBottom: 10,
+      borderRadius: 10,
+      width: '100%'
+      }}>
       <TextInput
         placeholder="Buscar..."
         value={query}
@@ -32,6 +37,12 @@ const AutocompleteDropdown: React.FC<AutocompleteDropdownProps> = ({ data, onSel
           setQuery(text);
           setShowResults(true);
         }}
+        style={{
+          borderWidth: 1,
+          borderColor: '#ccc',
+          borderRadius: 5,
+          padding: 10,
+          }}
       />
       {showResults && (
         <FlatList

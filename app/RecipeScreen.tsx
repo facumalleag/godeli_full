@@ -10,6 +10,9 @@ import {
   Image,
   ScrollView,
   Button,
+  SafeAreaView,
+  Share,
+  Alert,
 } from 'react-native';
 import React, { useRef, useState } from 'react';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
@@ -28,6 +31,7 @@ const RecipeScreen = () => {
   const [isIngredientes, setisIngredientes] = useState(true)
   const [isVideo, setIsVideo] = useState(false)
   const { id, nombre} = useLocalSearchParams()
+  const [isOptionsView, setIsOptionsView] = useState(false)
   const {foto} = useProfilePaginated()
   const { calorias,
     youtube,
@@ -43,10 +47,80 @@ const RecipeScreen = () => {
     if(isVideo) {
      return <YouTubePlayer videoId="mIlJdlMu0Tw" setIsVideo={setIsVideo} />
     }
-  return (
-    <View style={[styles.container, {paddingHorizontal: 30}]}>
-      <View style={[styles.carrousel]}>
 
+    const onShare = async () => {
+      try {
+        const result = await Share.share({
+          message:
+            'React Native | A framework for building native apps using React',
+            url: 'https://reactnative.dev/docs/share'
+        });
+        if (result.action === Share.sharedAction) {
+          if (result.activityType) {
+            // shared with activity type of result.activityType
+          } else {
+            // shared
+          }
+        } else if (result.action === Share.dismissedAction) {
+          // dismissed
+        }
+      } catch (error: any) {
+        Alert.alert(error.message);
+      }
+    };
+
+
+
+  return (
+    <SafeAreaView style={[styles.container, {paddingHorizontal: 30, paddingTop: 40}]}>
+      {
+        isOptionsView && <View style={{position: 
+          'absolute', 
+          width: '50%', 
+          height: '12%', 
+          top: 80, 
+          justifyContent: 'space-evenly',
+          zIndex: 10,
+          right: 20, 
+          backgroundColor: 'white',
+          borderRadius: 10,
+          }}>
+          <Pressable onPress={() => onShare()} style={{
+              flexDirection: 'row',
+              paddingHorizontal: 20,
+              alignItems: 'center',
+              padding: 5
+              }}>
+            <FontAwesome6 name='share' size={20} />
+            <Text style={{marginLeft: 20}}>Compartir</Text>
+          </Pressable>
+          <Pressable style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              paddingHorizontal: 16,
+              padding: 5
+              }}>
+            <Ionicons name='star' size={25} />
+            <Text style={{marginLeft: 20}}>Calificar</Text>
+          </Pressable>
+          {
+            false && <Pressable style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              paddingHorizontal: 20,
+              padding: 5
+              }}>
+            <FontAwesome6 name='pen-to-square' size={20} />
+            <Text style={{marginLeft: 20}}>Editar</Text>
+          </Pressable>
+          }
+       
+        </View>
+      }
+      <Pressable onPress={() => setIsOptionsView(!isOptionsView)} style={{alignItems: 'flex-end'}}>
+        <Text style={{color: 'black', fontWeight: 'bold', fontSize: 30}}>...</Text>
+      </Pressable>
+      <View style={[styles.carrousel]}>
         <FlatList
           showsHorizontalScrollIndicator={false}
           data={imagenes}
@@ -63,7 +137,6 @@ const RecipeScreen = () => {
              }}>
             <Text style={{fontSize: 40}}>VER VIDEO</Text>
           </Pressable> : null}
-          contentContainerStyle={{marginTop: 30}}
           renderItem={({ item, index }) =>
             <View key={item.id_imagen}>
               <Image style={{ width: 350, height: 200, borderRadius: 30, marginRight: index <( imagenes.length - 1) ? 25 : 0 }} source={{ uri: item.url }} />
@@ -153,7 +226,7 @@ const RecipeScreen = () => {
 
       }
 
-    </View>
+    </SafeAreaView>
   );
 };
 

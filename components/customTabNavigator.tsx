@@ -29,28 +29,28 @@ const CustomTabNavigator = ({
   };
 
   return (
-    <View>
+    <View style={{flex: 1}}>
       <View style={styles.tabContainer}>
         <TouchableOpacity
           style={[
             styles.tabButton,
             {
               backgroundColor:
-                activeTab === 'ingredients' ? '#129575' : '#71B1A1',
+                activeTab === 'ingredients' ? '#129575' : 'transparent',
             },
           ]}
           onPress={() => handleTabChange('ingredients')}>
-          <Text style={styles.tabButtonText}>Ingredientes</Text>
+          <Text style={[styles.tabButtonText, activeTab !== 'ingredients' && styles.tabButtonTextNotActive]}>Ingredientes</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[
             styles.tabButton,
             {
-              backgroundColor: activeTab === 'process' ? '#129575' : '#71B1A1',
+              backgroundColor: activeTab === 'process' ? '#129575' : 'transparent',
             },
           ]}
           onPress={() => handleTabChange('process')}>
-          <Text style={styles.tabButtonText}>Procedimiento</Text>
+          <Text style={[styles.tabButtonText, activeTab !== 'process' && styles.tabButtonTextNotActive]}>Procedimiento</Text>
         </TouchableOpacity>
       </View>
       {activeTab === 'ingredients' ? (
@@ -73,18 +73,23 @@ const CustomTabNavigator = ({
 const styles = StyleSheet.create({
   tabContainer: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     marginBottom: 10,
   },
   tabButton: {
     padding: 10,
     backgroundColor: '#129575',
     borderRadius: 10,
+    width: '45%',
+    alignItems: 'center',
     marginHorizontal: 5,
   },
   tabButtonText: {
     color: '#FFFFFF',
   },
+  tabButtonTextNotActive: {
+    color: '#129575'
+  }
 });
 
 export default CustomTabNavigator;

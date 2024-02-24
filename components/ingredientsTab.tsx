@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import IngredientModal from './IngredientModal';
 
-interface Ingredient {
+export interface Ingredient {
   id: number; 
   name: string;
   count: string;
@@ -57,10 +57,10 @@ const IngredientsTab: React.FC<IngredientsTabProps> = ({
 
   const renderItem = ({ item }: { item: Ingredient }) => {
     return (
-      <View style={styles.container}>
+      <View style={{}}>
         <View style={styles.itemContainer}>
           <Text>
-            {item.name} - {item.count} {item.unit}
+            {item.name} - <Text style={{color: 'rgba(0,0,0,0.5)'}}>{item.count} {item.unit}</Text>
           </Text>
           {editable && (
             <TouchableOpacity onPress={() => handleDeleteIngredient(item.id)}>
@@ -76,6 +76,7 @@ const IngredientsTab: React.FC<IngredientsTabProps> = ({
     const newIngredients = ingredientes.filter(
       (ingrediente) => ingrediente.id !== id
     );
+    console.log('newIngredients: ', newIngredients)
     setIngredientes(newIngredients);
     updateRecipeTabIng(newIngredients)
   };
@@ -83,8 +84,8 @@ const IngredientsTab: React.FC<IngredientsTabProps> = ({
   return (
     <View style={styles.contenedorGeneral}>
       {editable && (
-        <View>
-          <TouchableOpacity style={styles.addButton} onPress={handleOpenModal}>
+        <View style={[styles.addButton, {width: '100%'}]}>
+          <TouchableOpacity onPress={handleOpenModal}>
             <Text style={styles.addButtonLabel}>Agregar Ingrediente</Text>
           </TouchableOpacity>
         </View>
@@ -106,22 +107,20 @@ const IngredientsTab: React.FC<IngredientsTabProps> = ({
 
 const styles = StyleSheet.create({
   contenedorGeneral: {
-
     padding: 10,
     justifyContent: 'center',
     alignItems: 'center',
   },
   addButton: {
-    borderRadius: 12,
-    backgroundColor: '#A9A9A9',
-    height: 30,
-    width: 300,
+    borderRadius: 15,
+    backgroundColor: 'rgba(0,0,0,0.1)',
     marginBottom: 20,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingVertical: 10,
   },
   addButtonLabel: {
-    fontWeight: 'bold',
+    color: 'rgba(0,0,0,0.7)'
   },
   listContentContainer: {
     paddingVertical: 5,
@@ -131,11 +130,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 10,
-    backgroundColor: '#A9A9A9',
+    backgroundColor: 'rgba(0,0,0,0.1)',
     borderRadius: 12,
-    height: 30,
-    width: 300,
-    marginBottom: 5,
+    width: '100%',
+    marginBottom: 8,
+    paddingVertical: 10,
   },
 });
 
