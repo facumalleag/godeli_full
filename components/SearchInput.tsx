@@ -4,7 +4,11 @@ import { EvilIcons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { router } from 'expo-router';
 
-const SearchInput = () => {
+interface Props {
+    handleFilterRecipes: (value: string) => void
+}
+
+const SearchInput = ({handleFilterRecipes}: Props) => {
     return (
         <View style={{...styles.container,
             top: (Platform.OS ==='ios') ? 0 : 9
@@ -17,6 +21,7 @@ const SearchInput = () => {
                     placeholder='Buscá una receta'
                     autoCapitalize='none'
                     autoCorrect={false}
+                    onChangeText={handleFilterRecipes}
                 />
                 <Feather name="filter" size={35} color="#129575" style={styles.icon} onPress={()=>router.navigate('/FilterRecipeModal')}/>
             </View>

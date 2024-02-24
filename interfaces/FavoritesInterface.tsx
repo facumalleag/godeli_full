@@ -13,3 +13,9 @@ export interface Datum {
     puntaje:            null;
     imagen:             string;
 }
+
+
+export interface Tag {
+    id: number;
+    descripcion: string;
+}

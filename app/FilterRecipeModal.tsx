@@ -2,31 +2,25 @@ import { Ionicons } from '@expo/vector-icons'
 import { router } from 'expo-router'
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import Tags from './Tags'
+import useRecipesHomePaginated from '../hooks/useRecipesHomePaginated'
+import { Tag } from '../interfaces/FavoritesInterface'
+import useTags from '../hooks/useTags'
+
 
 const FilterRecipeModal = () => {
+    const {getFilterRecipes}=useRecipesHomePaginated()
 
     const [focused1, setfocused1] = useState(false)
     const [focused2, setfocused2] = useState(false)
     const [focused3, setfocused3] = useState(false)
     const [focused4, setfocused4] = useState(false)
     const [focused5, setfocused5] = useState(false)
+    const [tagsSelected, setTagsSelected] = useState<Array<string>>([])
+    const [tags, setTags] = useState<Tag[]>([])
 
-    const [color,setColor]=useState('white');
-    const [textColor,setTextColor]=useState('#129575');
-
-    const selected=false
-    const seleccionar =(selected)=>{
-        if (selected){
-            setColor("#129575");setTextColor('white')
-            selected=false
-        }else{
-            setColor("white");setTextColor('#129575')
-            selected=true
-        }
-        
-    }
-
-
+    const {getTags, allTags} = useTags()
+ 
    /*  useEffect((pressed) => {
         if (pressed){
             setColor("#129575");setTextColor('white')
@@ -34,6 +28,29 @@ const FilterRecipeModal = () => {
             setColor("white");setTextColor('#129575')
         }
     }, []) */
+
+    const handleTagsSelected = (value: string) => {
+        const index = tagsSelected.indexOf(value);
+        if (index !== -1) {
+            tagsSelected.splice(index, 1);
+          return
+        }
+        setTagsSelected([...tagsSelected, value.replace(' ', '')])
+    }
+
+    useEffect(() => {
+        getTags()
+    }, [])
+
+    useEffect(() => {
+        setTags(allTags)
+    }, [allTags])
+    
+    const handleFilterRecipes =  async () => {
+        const stars = []
+        await getFilterRecipes(tagsSelected)
+        router.navigate("tabs/HomeScreen")
+    }
     
 
     return ( /* /recipes?limit=10&puntaje=5 */
@@ -61,23 +78,11 @@ const FilterRecipeModal = () => {
             </View>
             <Text style={styles.tags}>Tags</Text>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-                <Text style={{...styles.tagValues,backgroundColor:color,color:textColor}} 
-                    onPress={()=>{
-                        seleccionar(!selected)
-                    }}
-                >Rápida preparación</Text>
-                <Text style={styles.tagValues}>Vegetariana</Text>
-                <Text style={styles.tagValues}>Vegana</Text>
-                <Text style={styles.tagValues}>Sistema inmune</Text>
-                <Text style={styles.tagValues}>Apto celíaco</Text>
-                <Text style={styles.tagValues}>Antiinflamatoria</Text>
-                <Text style={styles.tagValues}>Flora intestinal</Text>
-                <Text style={styles.tagValues}>Baja en sodio</Text>
-                <Text style={styles.tagValues}>Baja carbohidratos</Text>
+                {tags.map((item, index) => <Tags handleTagsSelected={handleTagsSelected} key={index} item={item} />)}
 
             </View>
             <TouchableOpacity style={[styles.floatingButton, styles.saveButton]}
-                onPress={() => router.navigate("tabs/HomeScreen")}
+                onPress={() => handleFilterRecipes()}
             >
                 <Text style={styles.buttonText}>Filtrar</Text>
             </TouchableOpacity>
