@@ -32,7 +32,32 @@ import * as SecureStore from 'expo-secure-store'
       mapSimpleRecipeList(resp.data.data)
       setPage(page + 15);
     }
+  }
 
+  const getFilterRecipes = async ( tags: Array<string>) => {
+    setIsLoading(true);
+    try {
+      // const joinScores = scores.join(',')
+      const joinTags = tags.join(',')
+      const filterRecipes = `http://godeli.mooo.com:3000/api/v1/recipes?limit=10&puntaje=3&tags=${joinTags.replace(' ', '')}`
+      const clave = await SecureStore.getItemAsync('access_token');
+      const resp = await recipesApi.get(filterRecipes, {
+        headers: {
+          Authorization: `Bearer ${clave}`
+        }
+      })
+      console.log('resss ', resp)
+      if(resp.data.data.length === 0){
+        console.log('No hay recetas filtradas');
+        setIsLoading(true);
+        return; 
+    }else{
+      setSimpleRecipesList(resp.data.data)
+    }
+    } catch(error) {
+      console.log('error al filtrar recetas: ', error)
+      setIsLoading(false)
+    }
   }
 
   const mapSimpleRecipeList = (recipesList: Datum[]) => {
@@ -57,7 +82,8 @@ import * as SecureStore from 'expo-secure-store'
   return{
     isLoading,
     simpleRecipesList,
-    getRecipes
+    getRecipes,
+    getFilterRecipes
   }
 }
 

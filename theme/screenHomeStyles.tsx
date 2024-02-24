@@ -14,7 +14,6 @@ export const screenHomeStyles = StyleSheet.create({
         fontSize: 30,
         fontWeight: "bold",
         alignSelf: "flex-start",
-        marginTop: -40
     },
     subtitle: {
         color: '#A9A9A9',

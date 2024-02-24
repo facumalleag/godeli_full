@@ -11,10 +11,10 @@ interface Props {
 const SearchInput = ({handleFilterRecipes}: Props) => {
     return (
         <View style={{...styles.container,
-            top: (Platform.OS ==='ios') ? 0 : 9
+            top: (Platform.OS ==='ios') ? 0 : 5
             }}>
             <View style={styles.textBackground}>
-                <EvilIcons name="search" size={40} color="#D9D9D9" style={{marginTop:-10}}/>
+                <EvilIcons name="search" size={40} color="#D9D9D9" style={{marginTop: -4}}/>
                 <TextInput
                     style={styles.textSearch
                     }

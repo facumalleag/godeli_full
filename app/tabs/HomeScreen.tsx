@@ -13,8 +13,25 @@ import usePostMisRecetaPaginated from '../../hooks/usePostMisRecetaPaginated';
 
 const HomeScreen = () => {
 
+  const [filteredRecipes, setFilteredRecipes] = useState([])
+  console.log('filteeer: ', filteredRecipes.length)
   const {simpleRecipesList,getRecipes}=useRecipesHomePaginated()
   const { nombre, foto } = useProfilePaginated()
+
+  const handleFilterRecipes = (value: string) => {
+    if (value.length < 2) {
+      setFilteredRecipes([]);
+      return;
+  }
+    value = value.toLocaleLowerCase()
+    const filterRecipes = simpleRecipesList.filter(recipe =>
+      recipe.nombre.toLowerCase().includes(value) ||
+      recipe.titulo.toLowerCase().includes(value)
+  );
+
+  filterRecipes.length > 0 ? setFilteredRecipes(filterRecipes) : setFilteredRecipes([]);
+
+  }
   
   return (
     <View style={
@@ -35,11 +52,10 @@ const HomeScreen = () => {
       </Link>
       <Text style={screenHomeStyles.title}>Hola {nombre}</Text>
       <Text style={screenHomeStyles.subtitle}>¿Que vas a cocinar hoy?</Text>
-      <SearchInput />
+      <SearchInput handleFilterRecipes={handleFilterRecipes} />
       <FlatList
         showsVerticalScrollIndicator={false}
-        data={simpleRecipesList}
-        keyExtractor={(receta)=>receta.id_receta.toString()}
+        data={filteredRecipes.length > 0 ? filteredRecipes : simpleRecipesList}
         numColumns={2}
         onEndReached={getRecipes}
         onEndReachedThreshold={0.4}
