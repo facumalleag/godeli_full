@@ -16,8 +16,7 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.xxx.facu.godeli",
+      "supportsTablet": true,"bundleIdentifier": "com.xxx.desarrollos.godeli",
       "infoPlist": {
         "CFBundleURLTypes": [
           {
@@ -33,7 +32,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.xxx.facu.godeli"
+      "package": "com.xxx.desarrollos.godeli"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -47,7 +46,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "a58fe4f2-9bb8-4abc-b098-e60edc6d2109"
+        "projectId": "35690cb1-e7af-4517-9411-364e99ffd7c1"
       }
     }
   }
