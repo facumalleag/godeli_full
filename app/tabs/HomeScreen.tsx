@@ -14,7 +14,6 @@ import usePostMisRecetaPaginated from '../../hooks/usePostMisRecetaPaginated';
 const HomeScreen = () => {
 
   const [filteredRecipes, setFilteredRecipes] = useState([])
-  console.log('filteeer: ', filteredRecipes.length)
   const {simpleRecipesList,getRecipes}=useRecipesHomePaginated()
   const { nombre, foto } = useProfilePaginated()
 

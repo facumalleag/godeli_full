@@ -5,23 +5,30 @@ import {
   Dimensions,
   TouchableOpacity,
   TextInput,
+  Pressable,
   FlatList,
   Image,
   ScrollView,
+  Button,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { router, useLocalSearchParams } from 'expo-router';
 import useRecipesPaginated from '../hooks/useRecipesPaginated';
 import * as Linking from 'expo-linking';
 import { FontAwesome6 } from '@expo/vector-icons';
 import { styles } from '../theme/RecipesScreenStyle';
+import WebView from 'react-native-webview';
+import YouTubePlayer from '../YoutubePlayer';
+import useProfilePaginated from '../hooks/useProfilePaginated';
 
 const RecipeScreen = () => {
   const windowHeight = Dimensions.get('window').height;
 
   const [isIngredientes, setisIngredientes] = useState(true)
-  const { id, nombre } = useLocalSearchParams()
+  const [isVideo, setIsVideo] = useState(false)
+  const { id, nombre} = useLocalSearchParams()
+  const {foto} = useProfilePaginated()
   const { calorias,
     youtube,
     tiempo_preparacion,
@@ -33,40 +40,46 @@ const RecipeScreen = () => {
     ingredientes,
     titulo,
     imagenes } = useRecipesPaginated(id)
-
+    if(isVideo) {
+     return <YouTubePlayer videoId="mIlJdlMu0Tw" setIsVideo={setIsVideo} />
+    }
   return (
-    <View style={styles.container}>
-      <View style={[styles.carrousel, { height: windowHeight * 0.25 }]}>
+    <View style={[styles.container, {paddingHorizontal: 30}]}>
+      <View style={[styles.carrousel]}>
 
         <FlatList
           showsHorizontalScrollIndicator={false}
           data={imagenes}
           keyExtractor={(imagen) => imagen.id_imagen.toString()}
           horizontal={true}
-          renderItem={({ item }) =>
+          ListFooterComponent={youtube ? <Pressable onPress={() => setIsVideo(true)} style={{ 
+            width: 350, 
+            height: 200, 
+            borderRadius: 30, 
+            justifyContent: 'center', 
+            alignItems: 'center',
+            backgroundColor: 'rgba(0,0,0,0.2)',
+            marginHorizontal: 10
+             }}>
+            <Text style={{fontSize: 40}}>VER VIDEO</Text>
+          </Pressable> : null}
+          contentContainerStyle={{marginTop: 30}}
+          renderItem={({ item, index }) =>
             <View key={item.id_imagen}>
-              <Image style={{ width: 350, height: 300 }} source={{ uri: item.url }} />
+              <Image style={{ width: 350, height: 200, borderRadius: 30, marginRight: index <( imagenes.length - 1) ? 25 : 0 }} source={{ uri: item.url }} />
             </View>
           }
         />
-        <Ionicons name="arrow-back-circle-outline" onPress={() => router.back()} size={30} color="white" style={{ position: 'absolute' }} />
-        <View style={styles.containertime}>
-          <Ionicons name="time-outline" size={14} color="#ffffff"> {tiempo_preparacion} min</Ionicons>
-        </View>
+        <Ionicons name="arrow-back-circle-outline" onPress={() => router.back()} size={40} color="white" style={{ position: 'absolute', left: 10, top: 35 }} />
       </View>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
         <Text style={styles.title}>{titulo}</Text>
-        <MaterialIcons
-          onPress={() => { Linking.openURL(youtube) }}
-          name="video-library"
-          size={24}
-          color="#ff0000"
-          style={styles.videoIcon}
-        />
+
       </View>
       <View style={styles.valores}>
         <Text style={{ ...styles.styleValues, marginLeft: 1 }}>{calorias} calorías</Text>
         <Text style={styles.styleValues}>{proteinas} proteínas</Text>
+        <Text style={styles.styleValues}>{ tiempo_preparacion} min</Text>
         <Text style={styles.styleValues}>{grasas} grasas</Text>
       </View>
       <View style={styles.containerName}>
@@ -74,23 +87,24 @@ const RecipeScreen = () => {
       </View>
 
       <View style={styles.containerName}>
-        <Text style={{ fontSize: 20, textDecorationLine: 'underline' }}>Autor: {nombre}</Text>
+        {foto !== '' && <Image source={{uri: foto}} style={{width: 45, height: 45, borderRadius: 100, marginRight: 10}} />}
+        <Text style={{ fontSize: 20 }}>{nombre}</Text>
       </View>
-      <View style={{ flexDirection: 'row', alignSelf: 'center', marginHorizontal: 30, marginTop: 20, marginBottom:5 }}>
-        <TouchableOpacity style={styles.options}
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20, marginBottom:5 }}>
+        <TouchableOpacity style={isIngredientes ? styles.options: {...styles.options, backgroundColor: 'transparent'}}
           onPress={() => {
             setisIngredientes(true)
           }}
         >
-          <Text style={styles.buttonText}>Ingredientes</Text>
+          <Text style={isIngredientes ? styles.buttonText: {...styles.buttonText, color: '#129575'}}>Ingredientes</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.optionsProceed]}
+        <TouchableOpacity style={!isIngredientes ? styles.options: {...styles.options, backgroundColor: 'transparent'}}
           onPress={() => {
             setisIngredientes(false)
           }}
         >
-          <Text style={styles.buttonTextProced}>Procedimiento</Text>
+          <Text style={!isIngredientes ? styles.buttonText: {...styles.buttonText, color: '#129575'}}>Procedimiento</Text>
         </TouchableOpacity>
       </View>
 
@@ -98,18 +112,18 @@ const RecipeScreen = () => {
 
       <View style={styles.valores}>
         {rendimiento == "1" ?
-          <FontAwesome6 name="plate-wheat" size={12} color="#A9A9A9" style={styles.styleValues}> {rendimiento} porción</FontAwesome6>
+          <FontAwesome6 name="plate-wheat" size={12} color="rgba(0,0,0,0.5)" style={styles.styleValues}> {rendimiento} porción</FontAwesome6>
           // <Text style={styles.txtporciones}>{rendimiento} porción</Text> 
           :
-          <FontAwesome6 name="plate-wheat" size={12} color="#A9A9A9" style={styles.styleValues}> {rendimiento} porciones</FontAwesome6>
+          <FontAwesome6 name="plate-wheat" size={12} color="rgba(0,0,0,0.5)" style={styles.styleValues}> {rendimiento} porciones</FontAwesome6>
           //<Text style={styles.txtporciones}>{rendimiento} porciones</Text>
         }
-        <Ionicons name="newspaper-outline" size={14} color="#A9A9A9" style={styles.styleValues}> {ingredientes.length} INGREDIENTES</Ionicons>
+        <Ionicons name="newspaper-outline" size={14} color="rgba(0,0,0,0.5)" style={styles.styleValues}> {ingredientes.length} INGREDIENTES</Ionicons>
 
       </View>
       {
         isIngredientes ?
-          <View style={styles.container}>
+          <View style={{flex: 1}}>
             <FlatList
               showsVerticalScrollIndicator={false}
               data={ingredientes}
@@ -129,9 +143,10 @@ const RecipeScreen = () => {
           <View style={{flex:1}}>
           <ScrollView
             keyboardDismissMode='on-drag'
+            contentContainerStyle={{paddingBottom: 40}}
             showsVerticalScrollIndicator={false}
-            style={styles.procedimiento}>
-            <Text style={styles.ingre_tit}>
+            style={{...styles.procedimiento, padding: 15,}}>
+            <Text style={{color: 'rgba(0,0,0,0.5)'}}>
               {preparacion}</Text>
           </ScrollView>
           </View>

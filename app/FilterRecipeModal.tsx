@@ -95,14 +95,15 @@ export default FilterRecipeModal
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
-        marginTop: 30,
-        backgroundColor: 'white'
+        paddingTop: 60,
+        backgroundColor: 'white',
+        paddingHorizontal: 10
     },
     title: {
         fontSize: 20,
         alignSelf: 'center',
         fontWeight: "bold",
-        marginBottom: 20
+        marginTop: 20
     },
     puntuacion: {
         fontSize: 20,

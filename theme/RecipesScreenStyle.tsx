@@ -4,20 +4,21 @@ export const styles = StyleSheet.create({
     ingre_tit:{
       fontWeight: "bold",
       color:'#121212',
-      marginHorizontal:15,
+      marginLeft:15,
     },
     ingre_unid:{
-      color:'#A9A9A9'
+      color:'rgba(0,0,0, 0.5)',
+      marginRight:15,
     },
     ingred:{
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      paddingHorizontal: 10,
+      paddingHorizontal: 5,
       backgroundColor: '#D9D9D9',
       borderRadius: 12,
       height: 40,
-      width: 345,
+      width: '100%',
       marginBottom: 5,
    },
   
@@ -30,16 +31,18 @@ export const styles = StyleSheet.create({
       marginHorizontal:20,
     },
     containerName: {
-      marginTop: 10
+      marginTop: 10,
+      flexDirection: 'row',
+      alignItems: 'center'
     },
     valores: {
       flexDirection: 'row',
-      marginBottom:5,
+      marginVertical: 6,
       alignItems:"center",
+      justifyContent: 'space-between',
     },
     styleValues: {
-      color: "#3B5059",
-      marginHorizontal: 30,
+      color: "rgba(0,0,0,0.5)",
       marginBottom:5
     },
     containertime: {
@@ -47,7 +50,7 @@ export const styles = StyleSheet.create({
       alignSelf: 'flex-end',
     },
     title: {
-      fontSize: 30,
+      fontSize: 28,
       fontWeight: "bold",
     },
     procedimiento:{
