@@ -9,6 +9,8 @@ const useProfilePaginated = () => {
   const [nombre, setNombre] = useState('')
   const [email, setEmail] = useState('')
   const [foto, setFoto] = useState('')
+  const [isError, setIsError] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false)
 
   useEffect(() => {
     loadProfile()
@@ -31,17 +33,20 @@ const useProfilePaginated = () => {
         Authorization: `Bearer ${clave}`
       }
     }).then(resp => {
-
+      setIsSuccess(true)
       setNombre(resp.data.data[0].nombre)
       setEmail(resp.data.data[0].correo_electronico)
       setFoto(resp.data.data[0].url_imagen_perfil)
     }
+    ).catch(() => {
+        setIsError(true)
+      }
     )
   }
 
 
   return {
-    nombre, email, foto
+    nombre, email, foto, isError, isSuccess, setIsError, setIsSuccess
   }
 
 

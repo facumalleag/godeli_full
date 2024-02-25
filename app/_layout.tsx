@@ -8,12 +8,10 @@ const StackLayout = () => {
       headerShown:false,
     }}
   >
-     <Stack.Screen name="tabs"  /> 
-    <Stack.Screen name="RecipeScreen" /> 
+    <Stack.Screen name="tabs"  /> 
     <Stack.Screen name="RecetaItem" />
-    <Stack.Screen name="MisRecetasCreadasScreen"/>{
-    <Stack.Screen name="RecipeScreenEdit"  />/*
-    <Stack name="ProfileScreen" />  */}
+    <Stack.Screen name="RecipeScreenEdit"  />
+    {/* <Stack.Screen name="ProfileScreen" />  */}
   </Stack>
   )
 }

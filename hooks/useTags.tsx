@@ -6,6 +6,8 @@ import {Tag} from '../interfaces/FavoritesInterface'
   const useTags = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [allTags, setAllTags] = useState<Tag[]>([])
+  const [isError, setIsError] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false)
 
   const getTags = async () => {
     setIsLoading(true);
@@ -17,6 +19,11 @@ import {Tag} from '../interfaces/FavoritesInterface'
         Authorization: `Bearer ${clave}`
       }
     })
+    if(resp.status === 200) {
+      setIsSuccess(true)
+    } else {
+      setIsError(true)
+    }
 
     if(resp.data.data.length === 0){
         setIsLoading(false);
@@ -29,7 +36,9 @@ import {Tag} from '../interfaces/FavoritesInterface'
   return{
     isLoading,
     getTags,
-    allTags
+    allTags,
+    isError,
+    isSuccess
   }
 }
 

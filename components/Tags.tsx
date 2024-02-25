@@ -5,10 +5,11 @@ import { Tag } from "../interfaces/FavoritesInterface";
 interface Props {
     item: Tag
     handleTagsSelected: (value: string) => void;
+    isSelected?: boolean
 }
 
-export default function Tags ({item, handleTagsSelected}: Props){
-    const [selected, setSelected] = useState<boolean>(false)
+export default function Tags ({item, handleTagsSelected, isSelected}: Props){
+    const [selected, setSelected] = useState<boolean>(isSelected)
     return <Pressable onPress={() => {
         setSelected(!selected); 
         handleTagsSelected(item.id.toString())}}

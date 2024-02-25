@@ -5,7 +5,6 @@ import { launchImageLibraryAsync, launchCameraAsync } from 'expo-image-picker';
 const ImagePickerModal = ({onClose, onImageSelect }) => {
   const handleSelectFromGallery = async () => {
     const result = await launchImageLibraryAsync({
-      allowsEditing: true,
       quality: 1,
     });
     if (!result.canceled) {
@@ -16,7 +15,6 @@ const ImagePickerModal = ({onClose, onImageSelect }) => {
 
   const handleTakePhoto = async () => {
     const result = await launchCameraAsync({
-      allowsEditing: true,
       quality: 1,
     });
     if (!result.canceled) {

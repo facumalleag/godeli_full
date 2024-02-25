@@ -10,6 +10,8 @@ import axios, { AxiosHeaders } from 'axios';
 const usePostMisRecetaPaginated = (data) => {
     //console.log(data)
     const [isLoading, setIsLoading] = useState(true)
+    const [isError, setIsError] = useState(false)
+    const [isSuccess, setIsSuccess] = useState(false)
     
    const formData = new FormData();
     //formData.append('file',"SAAS");

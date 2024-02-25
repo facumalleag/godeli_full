@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { ActivityIndicator, FlatList, Text, View } from 'react-native'
 import RecetaItemGuardada from '../RecetaItemGuardada'
 import { guardadoStyle } from '../../theme/RecetasGuardadasStyle';
@@ -7,15 +7,31 @@ import useProfilePaginated from '../../hooks/useProfilePaginated';
 import { FadeInImage } from '../../components/FadeImage';
 import useFavoritesPaginated from '../../hooks/useFavoritesPaginated';
 import { Dimensions, StyleSheet } from "react-native";
+import RecetaItem from '../RecetaItem';
+import CustomModal from '../../components/CustomModal';
 
 const window_width = Dimensions.get('window').width
 const window_height = Dimensions.get('window').height
 
 const FavoritosScreen = () => {
-  const { foto } = useProfilePaginated()
-const {  simpleFavoriteList,isLoading,getFavorites} = useFavoritesPaginated()
+  const [titulo, setTitulo] = useState('')
+  const [descripcion, setDescripcion] = useState('')
+  const { foto, isError: isErrorPaginated, setIsError: setIsErrorPaginated } = useProfilePaginated()
+const {  simpleFavoriteList, isLoading, getFavorites, isError, setIsError} = useFavoritesPaginated()
+const onRefreshList = async () => {
+  if(simpleFavoriteList.length > 10) {
+    return getFavorites()
+  }
+}
+const handleAccept = () => {
+  setIsError(false)
+  setIsErrorPaginated(false)
+}
+useEffect(() => {
+  setTitulo(isError && '¡Ups! Ha ocurrido un error')
+  setDescripcion(isError && 'Intentá nuevamente más tared')
+}, [isError, isErrorPaginated])
   return (
-    
     <View
     style={{
       backgroundColor:'white',
@@ -28,7 +44,7 @@ const {  simpleFavoriteList,isLoading,getFavorites} = useFavoritesPaginated()
     }
     }>
       <View style={{}}>
-      <Link href='/ProfileScreen' style={guardadoStyle.profileStyle}>
+      <Link href='/tabs/tabs/ProfileScreen' style={guardadoStyle.profileStyle}>
             <FadeInImage
               uri={foto}
               style={{
@@ -40,24 +56,25 @@ const {  simpleFavoriteList,isLoading,getFavorites} = useFavoritesPaginated()
           </Link>
         <Text style={{...guardadoStyle.title, marginTop:-30,marginBottom:20}}>Recetas Guardadas</Text>
       </View>
-      <FlatList
-          showsVerticalScrollIndicator={false}
+      {simpleFavoriteList.length > 0 && <FlatList
+        showsVerticalScrollIndicator={false}
         data={simpleFavoriteList}
-        keyExtractor={(receta)=>receta.id_receta.toString()}
         numColumns={2}
-        onEndReached={getFavorites} 
+        onEndReached={onRefreshList} 
         onEndReachedThreshold={0.4}
-        ListFooterComponent={isLoading? <ActivityIndicator style={{height:100}}
-        size={20}
-        color="grey"
-        />
-      :
-    null}
+        ListFooterComponent={isLoading ? 
+        <ActivityIndicator style={{height:100}}
+          size={20}
+          color="grey"
+          />
+            : null
+          }
         renderItem={({ item }) =>
-          <RecetaItemGuardada recetaKey={item.id_receta.toString()} recetaImagen={item.imagen} recetaNombre={item.nombre} recetaPuntaje={item.puntaje} recetaTitulo={item.titulo}/>
+          <RecetaItem recetaKey={item.id_receta.toString()} recetaImagen={item.imagen} recetaNombre={item.nombre} recetaPuntaje={item.puntaje} recetaTitulo={item.titulo}/>
         }
-      />
+      />}
     </View>
+      <CustomModal descripcion={descripcion} visible={isError || isErrorPaginated} titulo={titulo} onAceptar={handleAccept} />
     </View>
   )
 }

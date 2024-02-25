@@ -8,6 +8,8 @@ import * as SecureStore from 'expo-secure-store'
   const [isLoading, setIsLoading] = useState(true)
   const [simpleRecipesList, setSimpleRecipesList] = useState<SimpleRecipe[]>([])
   const [page, setPage] = useState(0);
+  const [isError, setIsError] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false)
   
   useEffect(() => {
     getRecipes()
@@ -23,6 +25,9 @@ import * as SecureStore from 'expo-secure-store'
         Authorization: `Bearer ${clave}`
       }
     })
+    if(resp.status !== 200) {
+      setIsError(true)
+    }
 
     if(resp.data.data.length === 0){
         console.log('No hay más recetas');
@@ -46,7 +51,11 @@ import * as SecureStore from 'expo-secure-store'
           Authorization: `Bearer ${clave}`
         }
       })
-      console.log('resss ', resp)
+      if(resp.status === 200) {
+        setIsSuccess(true) 
+      } else {
+        setIsError(true)
+      }
       if(resp.data.data.length === 0){
         console.log('No hay recetas filtradas');
         setIsLoading(true);
@@ -55,6 +64,7 @@ import * as SecureStore from 'expo-secure-store'
       setSimpleRecipesList(resp.data.data)
     }
     } catch(error) {
+      setIsError(true)
       console.log('error al filtrar recetas: ', error)
       setIsLoading(false)
     }
@@ -83,7 +93,10 @@ import * as SecureStore from 'expo-secure-store'
     isLoading,
     simpleRecipesList,
     getRecipes,
-    getFilterRecipes
+    getFilterRecipes,
+    isError,
+    isSuccess,
+    setIsError
   }
 }
 

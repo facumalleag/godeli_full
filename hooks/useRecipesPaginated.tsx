@@ -19,6 +19,11 @@ const [isLoading, setIsLoading] = useState(true)
   const [ingredientes, setIngredientes] = useState([])
   const [imagenes, setImagenes] = useState([])
   const [titulo, setTitulo] = useState('')
+  const [puntaje, setPuntaje] = useState(null)
+  const [isError, setIsError] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false)
+  
+  
 
   useEffect(() => {
     getRecipes()
@@ -36,6 +41,11 @@ const [isLoading, setIsLoading] = useState(true)
       }
       
     })
+    if(resp.status === 200) {
+      setIsSuccess(true)
+    } else {
+      setIsError(true)
+    }
     setTitulo(resp.data.data[0].titulo)
     setCalorias(resp.data.data[0].calorias)
     setYoutube(resp.data.data[0].youtube)
@@ -47,6 +57,7 @@ const [isLoading, setIsLoading] = useState(true)
     setPreparacion(resp.data.data[0].preparacion)
     setIngredientes(resp.data.data[0].ingredientes)
     setImagenes(resp.data.data[0].imagenes)
+    setPuntaje(resp.data.data[0].puntaje)
 
     setIsLoading(false);
   }
@@ -64,6 +75,9 @@ const [isLoading, setIsLoading] = useState(true)
     ingredientes,
     titulo,
     imagenes,
+    puntaje,
+    isError,
+    isSuccess
   }
 }
 
