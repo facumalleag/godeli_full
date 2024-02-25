@@ -96,7 +96,7 @@ useEffect(() => {
 }, [allTags])
 
   useEffect(() => {
-    if (newTitle && newDesc && newIngredients && caloriasState && proteinasState && grasasState && tiempoState && porcionesState) {
+    if (newTitle && newDesc && newIngredients.length > 0 && caloriasState && proteinasState && grasasState && tiempoState && porcionesState) {
       setIsComplete(true);
     } else {
       setIsComplete(false);
