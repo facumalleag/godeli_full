@@ -14,6 +14,7 @@ import { Feather, Ionicons } from '@expo/vector-icons';
 import ImagePickerModal from './imagePickerModal';
 import { LinearGradient } from 'expo-linear-gradient';
 
+
 const { width, height } = Dimensions.get('window');
 
 const ImageCarouselFlatList = ({
@@ -34,7 +35,7 @@ const ImageCarouselFlatList = ({
 
   const renderItem = ({ item }) => (
     <TouchableOpacity onPress={() => handleImagePress(item)}>
-      <View style={styles.imageContainer}>
+      <View style={styles.emptyContainer}>
         {editable && (
           <TouchableOpacity
             style={styles.deleteButton}
@@ -42,7 +43,7 @@ const ImageCarouselFlatList = ({
             <Ionicons name="trash-outline" size={20} color="#fff" />
           </TouchableOpacity>
         )}
-        <Image key={item.id} source={{ uri: item.uri }} style={styles.image} />
+          <Image key={item.id} source={{ uri: item.uri }} style={styles.image} />
       </View>
     </TouchableOpacity>
   );
@@ -63,8 +64,8 @@ const ImageCarouselFlatList = ({
     updateRecipeImages(filteredImages);
   };
 
-  const handleSelectImage = (uri) => {
-    const newImage = { id: Date.now().toString(), uri };
+  const handleSelectImage = async (uri) => {
+    const newImage = { id: Date.now().toString(), uri};
     setUpdatedImages([...updatedImages, newImage]);
     updateRecipeImages([...updatedImages, newImage]);
   };
@@ -73,23 +74,31 @@ const ImageCarouselFlatList = ({
   return (
     <View style={styles.container}>
       {updatedImages.length > 0 ? (
+        <>
         <FlatList
           data={updatedImages}
           renderItem={renderItem}
+          contentContainerStyle={{paddingTop: 40}}
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           pagingEnabled={true}
           bounces={false}
-          keyExtractor={(item) => item.id.toString()}
           style={{ width }}
         />
+        <TouchableOpacity
+          style={{position: 'absolute', right: 40, bottom: 20}}
+          onPress={() => setAddModalVisible(true)}>
+          <Feather name="edit" size={30} color="white" />
+        </TouchableOpacity>
+        </>
       ) : (
         <LinearGradient  colors={['transparent', 'rgba(0,0,0,0.1)' , 'rgba(0,0,0,0.8)']} style={styles.emptyContainer}>
           {editable ? <TouchableOpacity
           style={styles.addButton}
           onPress={() => setAddModalVisible(true)}>
           <Feather name="edit" size={60} color="#fff" />
-        </TouchableOpacity>: <Text style={styles.emptyText}>Sin fotos</Text>}
+        </TouchableOpacity>
+        : <Text style={styles.emptyText}>Sin fotos</Text>}
         </LinearGradient>
       )}
       {!editable && (
@@ -149,9 +158,10 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   image: {
-    width,
+    width: 350,
     height: '100%',
     resizeMode: 'cover',
+    borderRadius: 30
   },
   deleteButton: {
     position: 'absolute',

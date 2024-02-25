@@ -16,21 +16,20 @@ export const  styles = StyleSheet.create({
         fontSize:18,
     },
     textName:{
-        
         margin:10,
         color:'#949494',
-        backgroundColor:'lightgray',
+        backgroundColor:'rgba(0,0, 0, 0.03)',
         borderRadius:10,
         padding:10,
-        width:300,
+        width:'90%',
         height:50,
         fontSize:15,
     },
     btnGreen:{
         backgroundColor:'#129575',
         borderRadius:15,
-        width:300,
-        height:40,
+        width:'90%',
+        paddingVertical: 10,
         alignSelf:"center",
         marginTop:100,
         marginBottom:20,
@@ -46,8 +45,9 @@ export const  styles = StyleSheet.create({
     btnRed:{
         backgroundColor:'#951A12',
         borderRadius:15,
-        width:300,
-        height:40,
+        marginTop: 10,
+        width:'90%',
+        paddingVertical: 10,
         alignSelf:"center"
 
     },

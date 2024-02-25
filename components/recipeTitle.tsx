@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Text,
   StyleSheet,
@@ -26,20 +26,13 @@ const RecipeTitle: React.FC<RecipeTitleProps> = ({
   const [newTitle, setNewTitle] = useState(title);
   const [newDescription, setNewDescription] = useState(description);
 
-
-  const handleSaveTitle = () => {
+  useEffect(() => {
     updateRecipeTitle({
       title: newTitle,
       description: newDescription,
     });
-  };
+  }, [newTitle, newDescription])
 
-  const handleSaveDescription = () => {
-    updateRecipeTitle({
-      title: newTitle,
-      description: newDescription,
-    });
-  };
 
   return (
     <View style={styles.container}>
@@ -49,7 +42,6 @@ const RecipeTitle: React.FC<RecipeTitleProps> = ({
             placeholder='Agregá un título'
             value={newTitle}
             onChangeText={(text) => setNewTitle(text)}
-            onSubmitEditing={handleSaveTitle}
           />
 
       </View>
@@ -60,7 +52,6 @@ const RecipeTitle: React.FC<RecipeTitleProps> = ({
             onChangeText={(text) => setNewDescription(text)}
             placeholder="Ingrese la descipcion de la Receta"
             placeholderTextColor="black"
-            onSubmitEditing={handleSaveDescription}
             multiline
           />
      

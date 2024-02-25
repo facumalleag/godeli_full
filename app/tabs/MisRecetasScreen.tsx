@@ -1,18 +1,37 @@
 import { FontAwesome6, Ionicons } from '@expo/vector-icons'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {  Text, View } from 'react-native'
 import { screenMisRecetasStyles } from '../../theme/screenMisRecetasStyles'
 import { Link, Redirect } from 'expo-router'
 import useProfilePaginated from '../../hooks/useProfilePaginated'
 import { FadeInImage } from '../../components/FadeImage'
 import useMisRecetasPaginated from '../../hooks/useMisRecetasPaginated'
+import CustomModal from '../../components/CustomModal'
 
 const MisRecetasScreen = () => {
+  
+  const [title, setTitle] = useState('')
+  const [desc, setDesc] = useState('')
+
   const { foto } = useProfilePaginated()
-  const { simpleMisRecetasList } = useMisRecetasPaginated()
+  const { simpleMisRecetasList, getMisRecetas, isError, setIsError } = useMisRecetasPaginated()
+  useEffect(() => {
+    getMisRecetas()
+  }, [])
+
+  const handleAccept = () => {
+    setIsError(false)
+
+  }
+
+  useEffect(() => {
+    setTitle(isError && "¡Ups! Ha ocurrido un error.")
+    setDesc(isError && "Por favor, intentalo nuevamente más tarde.")
+  }, [isError])
 
   return (
-    simpleMisRecetasList.length==0?
+    <>
+    {simpleMisRecetasList.length === 0 ?
     (
     <View style={
       screenMisRecetasStyles.container
@@ -20,7 +39,7 @@ const MisRecetasScreen = () => {
     <View style={
       screenMisRecetasStyles.globalMargin
     }>
-      <Link href='/ProfileScreen' style={screenMisRecetasStyles.profileStyle}>
+      <Link href='/tabs/ProfileScreen' style={screenMisRecetasStyles.profileStyle}>
         <FadeInImage
           uri={foto}
           style={{
@@ -44,8 +63,10 @@ const MisRecetasScreen = () => {
     )
     :
     (
-      <Redirect href='/MisRecetasCreadasScreen'/>
-    )
+      <Redirect href='/tabs/MisRecetasCreadasScreen'/>
+    )}
+    <CustomModal descripcion={desc} onAceptar={handleAccept} titulo={title} visible={isError} />
+    </>
   )
 }
 

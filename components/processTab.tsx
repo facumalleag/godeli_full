@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, TextInput, ScrollView, StyleSheet, KeyboardAvoidingView } from 'react-native';
 
 interface ProcessComponentProps {
   editable?: boolean;
@@ -23,24 +23,27 @@ const ProcessComponent: React.FC<ProcessComponentProps> = ({
   }, [textoProcedimiento]);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Procedimiento</Text>
-      {editable ? (
-        <TextInput
-          style={styles.textInput}
-          multiline={true}
-          value={newText}
-          placeholder="Ingrese el procedimiento"
-          onChangeText={handleChange}
-        />
-      ) : (
-        <ScrollView style={styles.scrollView}>
-          <Text style={styles.text}>
-            {textoProcedimiento || 'Sin procedimiento'}
-          </Text>
-        </ScrollView>
-      )}
-    </View>
+      <ScrollView>
+          <View style={styles.container}>
+            <Text style={styles.title}>Procedimiento</Text>
+            {editable ? (
+              <TextInput
+                style={styles.textInput}
+                multiline={true}
+                value={newText}
+                placeholder="Ingrese el procedimiento"
+                onChangeText={handleChange}
+              />
+            ) : (
+              <ScrollView style={styles.scrollView}>
+                <Text style={styles.text}>
+                  {textoProcedimiento || 'Sin procedimiento'}
+                </Text>
+              </ScrollView>
+            )}
+          </View>
+      </ScrollView>
+
   );
 };
 
