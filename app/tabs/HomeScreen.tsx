@@ -17,7 +17,7 @@ const HomeScreen = () => {
   const [titulo, setTitulo] = useState('')
   const [descripcion, setDescripcion] = useState('')
   const [filteredRecipes, setFilteredRecipes] = useState([])
-  const {simpleRecipesList,getRecipes, isError: isErrorRecipes}=useRecipesHomePaginated()
+  const {simpleRecipesList,getRecipes, isError: isErrorRecipes, isLoading}=useRecipesHomePaginated()
   const { nombre, foto, isError, setIsError } = useProfilePaginated()
   const handleAccept = () => {
     setIsError(false)
@@ -68,7 +68,7 @@ const HomeScreen = () => {
         numColumns={2}
         onEndReached={getRecipes}
         onEndReachedThreshold={0.4}
-        ListFooterComponent={<ActivityIndicator style={{height:100}}
+        ListFooterComponent={isLoading && <ActivityIndicator style={{height:100}}
         size={20}
         color="grey"
         />}

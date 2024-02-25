@@ -203,7 +203,7 @@ const RecipesValues: React.FC<RecipesValuesProps> = ({
               onChangeText={(text) => setEditValue(text)}
               keyboardType="numeric"
               placeholder="Ingrese el nuevo valor"
-              value={editValue}
+              value={editValue !== '0' ? editValue : ''}
             />
             <View style={styles.modalButtons}>
               <Button onPress={handleSave} title="Guardar" />
