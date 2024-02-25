@@ -2,6 +2,7 @@ import React from 'react'
 import { Alert, Dimensions, ImageBackground, Text, TouchableOpacity, View } from "react-native";
 import { FadeInImage } from '../components/FadeImage';
 import { Link, router } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 const window_width = Dimensions.get('window').width
 
 interface Props {
@@ -22,6 +23,22 @@ const RecetaItem = (props: Props) => {
                 params: {  id: props.recetaKey, nombre:props.recetaNombre  }
             })}
         >
+            <View style={{
+                position: 'absolute', 
+                right: 20, 
+                top: 15, 
+                backgroundColor: '#FFE1B3',
+                padding: 8, 
+                borderRadius: 100,
+                flexDirection: 'row',
+                alignItems: 'center',
+                width: 50,
+                justifyContent: 'space-around',
+                zIndex: 9999,
+            }}>
+                <Ionicons name='star' color={'#FFAD30'} size={15} />
+                <Text style={{fontSize: 18}}>{props.recetaPuntaje ? props.recetaPuntaje : '0'}</Text>
+            </View>
             <View style={{
                 marginHorizontal: 5,
                 height: 200,
