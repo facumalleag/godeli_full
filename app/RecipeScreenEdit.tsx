@@ -69,7 +69,7 @@ const RecipeScreenEdit: React.FC<RecipeScreenProps> = ({
   const [newIngredients, setNewIngredients] = useState(ingredients);
   const [newProc, setNewProc] = useState(textoProcedimiento);
   const [isComplete, setIsComplete] = useState(false);
-  const { createRecipe, loading, error } = useRecipeCreation();
+  const { createRecipe, loading, isError, isSuccess} = useRecipeCreation();
   const [modalVisible, setModalVisible] = useState(false);
   const [isSetTags, setIsSetTags] = useState(false)
   const [tags, setTags] = useState([])
@@ -78,6 +78,7 @@ const RecipeScreenEdit: React.FC<RecipeScreenProps> = ({
 
   const handleAceptar = () => {
     setModalVisible(false);
+    router.replace('/HomeScreen')
   };
 
   useEffect(() => {
@@ -85,11 +86,17 @@ const RecipeScreenEdit: React.FC<RecipeScreenProps> = ({
 }, [])
 
 useEffect(() => {
+  if(isError || isSuccess) {
+    setModalVisible(true)
+  }
+}, [isError, isSuccess])
+
+useEffect(() => {
     setTags(allTags)
 }, [allTags])
 
   useEffect(() => {
-    if (newTitle && newDesc && newIngredients && caloriasState && proteinasState && grasasState && tiempoState && porcionesState) {
+    if (newTitle && newDesc && newIngredients.length > 0 && caloriasState && proteinasState && grasasState && tiempoState && porcionesState) {
       setIsComplete(true);
     } else {
       setIsComplete(false);
@@ -141,14 +148,14 @@ useEffect(() => {
     if (loading) {
       // Puedes mostrar una animación de carga o un mensaje de carga
       console.log('Cargando...');
-    } else if (error) {
+    } else if (isError) {
       // Puedes manejar el error mostrando un mensaje de error al usuario
-      console.error('Error:', error);
+      console.error('Error:');
     } else {
       // La receta se creó con éxito, puedes realizar acciones adicionales aquí
       console.log('Receta creada con éxito');
     }
-  }, [loading, error]);
+  }, [loading]);
 
   const handleBack = () => {
     router.back()
@@ -252,8 +259,8 @@ useEffect(() => {
           />
           <CustomModal
             visible={modalVisible}
-            titulo="Receta Cargada"
-            descripcion="Ya puedes verla en mis recetas"
+            titulo={isSuccess ? "Receta Cargada" : '¡Ups! Ocurrió un error'}
+            descripcion={isSuccess ? "Ya puedes verla en mis recetas" : "Por favor, intentá nuevamente más tarde."}
             onAceptar={handleAceptar}
           />
           {editable && (

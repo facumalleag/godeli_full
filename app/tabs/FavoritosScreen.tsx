@@ -44,7 +44,7 @@ useEffect(() => {
     }
     }>
       <View style={{}}>
-      <Link href='/tabs/tabs/ProfileScreen' style={guardadoStyle.profileStyle}>
+      <Link href='/tabs/ProfileScreen' style={guardadoStyle.profileStyle}>
             <FadeInImage
               uri={foto}
               style={{
