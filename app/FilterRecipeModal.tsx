@@ -1,9 +1,12 @@
 import { Ionicons } from '@expo/vector-icons'
 import { router } from 'expo-router'
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import useRecipesHomePaginated from '../hooks/useRecipesHomePaginated'
+import RecetaItem from './RecetaItem'
 
 const FilterRecipeModal = () => {
+    const {getRecipes,simpleRecipesList}=useRecipesHomePaginated()
 
     const [focused1, setfocused1] = useState(false)
     const [focused2, setfocused2] = useState(false)
@@ -34,16 +37,85 @@ const FilterRecipeModal = () => {
             setColor("white");setTextColor('#129575')
         }
     }, []) */
-    
+    const [rankingSeleccionado, setrankingSeleccionado] = useState({
+        1:false,
+        2:false,
+        3:false,
+        4:false,
+        5:false
+    })
+
+    const listTab = [
+        {
+            puntuacion: '1'
+        },
+        {
+            puntuacion:'2'
+        },
+        {
+            puntuacion:'3'
+        },
+        {
+            puntuacion:'4'
+        },
+        {
+            puntuacion:'5'
+        }
+    ]
+
+    const [puntuacion, setPuntiacion] = useState('')
+    const setPuntuacionFilter = puntuacion => {
+        setPuntiacion(puntuacion)
+    } 
+
+  /*    const [datafiltered, setdatafiltered] = useState([])
+
+   const  setPuntuacionFilter=(e) =>{
+    console.log("entreee")
+    const data=simpleRecipesList
+    setrankingSeleccionado({
+        ...rankingSeleccionado,
+        [e.puntuacion]:true
+   } );
+   console.log(e.puntuacion)
+   if(e.puntuacion){
+        const resultadoRanking=data.filter((item)=>{
+            item.puntaje===e.id
+            setdatafiltered([
+                ...datafiltered,resultadoRanking
+            ])
+            console.log(datafiltered)
+        })
+   }
+   }  */
+
+
+    ////recipes?limit=10&puntaje=5&tags=1,2,3&title=pollo
 
     return ( /* /recipes?limit=10&puntaje=5 */
         <View style={styles.container}>
             <Text style={styles.title}>Filtros de búsqueda</Text>
             <Text style={styles.puntuacion}>Puntuación</Text>
             <View style={{ flexDirection: 'row' }}>
-                <Ionicons name={focused1 ? "star" : "star-outline"} size={20} color="#129575" style={styles.star} onPress={() => {
+                {
+                    listTab.map(e=>(
+                        <Ionicons name={focused1 ? "star" : "star-outline"} size={20} color="#129575" style={[styles.star]}
+                        onPress={()=>setPuntuacionFilter(e.puntuacion)}
+                        > {e.puntuacion}</Ionicons>
+                    ))
+                }
+
+              {/* 
+                <Ionicons name={focused1 ? "star" : "star-outline"} size={20} color="#129575" style={styles.star}
+                onPress={() => {
                     setfocused1(!focused1),
-                    router.navigate("tabs/HomeScreen")
+                    <input onChange={handleCheck}
+                    type='checkbox'
+                    name='puntaje'
+                    value='1'
+                    id='1'
+                    
+                    />
                 }}> 1</Ionicons>
                 <Ionicons name={focused2 ? "star" : "star-outline"} size={20} color="#129575" style={styles.star} onPress={() => {
                     setfocused2(!focused2)
@@ -57,8 +129,21 @@ const FilterRecipeModal = () => {
                 }}> 4</Ionicons>
                 <Ionicons name={focused5 ? "star" : "star-outline"} size={20} color="#129575" style={styles.star} onPress={() => {
                     setfocused5(!focused5)
-                }}> 5</Ionicons>
+                }}> 5</Ionicons> */}
             </View>
+
+            <FlatList
+        showsVerticalScrollIndicator={false}
+        data={simpleRecipesList}
+        keyExtractor={(receta)=>receta.id_receta.toString()}
+        numColumns={2}
+        onEndReached={getRecipes}
+        onEndReachedThreshold={0.4}
+        renderItem={({ item }) =>
+          <RecetaItem recetaKey={item.id_receta.toString()} recetaImagen={item.imagen} recetaNombre={item.nombre} recetaPuntaje={item.puntaje} recetaTitulo={item.titulo}/>
+        }
+      />
+
             <Text style={styles.tags}>Tags</Text>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
                 <Text style={{...styles.tagValues,backgroundColor:color,color:textColor}} 
