@@ -39,8 +39,11 @@ const RecipeScreen = () => {
   const [isOptionsView, setIsOptionsView] = useState(false)
   const [title, setTitle] = useState('')
   const [desc, setDesc] = useState('')
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+  console.log('urii ', selectedImage)
 
-  const {foto, isError: isErrorProfilePaginated, setIsError: setIsErrorProfilePaginated} = useProfilePaginated()
+  const {isError: isErrorProfilePaginated, setIsError: setIsErrorProfilePaginated} = useProfilePaginated()
   const {addRating, isError: isErrorRating, isSuccess: isSuccessRating, setIsError: setIsErrorRating, setIsSuccess: setIsSuccesRating} = useRating()
   const { calorias,
     youtube,
@@ -64,6 +67,17 @@ const RecipeScreen = () => {
       setIsErrorRating(false)
       setIsSuccesRating(false)
     }
+
+    const handleImagePress = (image) => {
+      setSelectedImage(image);
+      setModalVisible(true);
+    };
+  
+    const onClose = () => {
+      setModalVisible(false);
+      setSelectedImage(null);
+    };
+  
 
     useEffect(() => {
       setTitle(isError || isErrorProfilePaginated || isErrorRating ? "¡Ups! Ha ocurrido un error." : isSuccess || isSuccessRating ? "¡Felicidades!" : "")
@@ -173,9 +187,9 @@ const RecipeScreen = () => {
             <Text style={{fontSize: 30}}>VER VIDEO</Text>
           </Pressable> : null}
           renderItem={({ item, index }) =>
-            <View key={item.id_imagen}>
+            <TouchableOpacity onPress={() => handleImagePress(item)} key={item.id_imagen}>
               <Image style={{ width: 350, height: 200, borderRadius: 30, marginRight: index <( imagenes.length - 1) ? 25 : 0 }} source={{ uri: item.url }} />
-            </View>
+            </TouchableOpacity>
           }
         />
         <Ionicons name="arrow-back-circle-outline" onPress={() => router.replace('/tabs/HomeScreen')} size={40} color="white" style={{ position: 'absolute', left: 10, top: 35 }} />
@@ -222,7 +236,9 @@ const RecipeScreen = () => {
       </View>
 
       <View style={styles.containerName}>
-        {foto !== '' && <Image source={{uri: foto}} style={{width: 45, height: 45, borderRadius: 100, marginRight: 10}} />}
+        <View style={{backgroundColor: '#129575', width: 50, height: 50, borderRadius: 100, justifyContent: 'center', alignItems: 'center' ,marginRight: 10}}>
+          <Text style={{color: 'white', fontSize: 20}}>{nombre.toString().charAt(0)}</Text>
+        </View>
         <Text style={{ fontSize: 20 }}>{nombre}</Text>
       </View>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20, marginBottom:5 }}>
@@ -311,6 +327,37 @@ const RecipeScreen = () => {
         </View>
       </Modal>
       <CustomModal descripcion={desc} onAceptar={handleAccept} visible={isError || isSuccess || isSuccessRating || isErrorProfilePaginated || isErrorRating} titulo={title} />
+
+      
+      <Modal visible={modalVisible} transparent={true} animationType="fade">
+        <View style={{    
+          flex: 1,
+          backgroundColor: 'rgba(0, 0, 0, 0.7)',
+          justifyContent: 'center',
+          alignItems: 'center'
+          }}>
+          <TouchableOpacity style={{
+            position: 'absolute',
+            top: 10,
+            right: 10,
+            zIndex: 1,
+            }} onPress={onClose}>
+            <Ionicons name="close-circle" size={40} color="#fff" />
+          </TouchableOpacity>
+          <View style={{position: 'relative',}}>
+            <Image
+              source={{ uri: selectedImage ? selectedImage.url : null }}
+              style={{
+                width: 350,
+                height: '100%',
+                resizeMode: 'cover',
+                borderRadius: 30
+              }}
+              resizeMode="contain"
+            />
+          </View>
+        </View>
+      </Modal>
 
     </SafeAreaView>}
     </>
