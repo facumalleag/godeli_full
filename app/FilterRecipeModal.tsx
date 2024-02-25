@@ -1,4 +1,3 @@
-import { Ionicons } from '@expo/vector-icons'
 import { router } from 'expo-router'
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
@@ -6,17 +5,13 @@ import Tags from '../components/Tags'
 import useRecipesHomePaginated from '../hooks/useRecipesHomePaginated'
 import { Tag } from '../interfaces/FavoritesInterface'
 import useTags from '../hooks/useTags'
-
+import Stars from '../components/Stars'
 
 const FilterRecipeModal = () => {
-    const {getFilterRecipes}=useRecipesHomePaginated()
 
-    const [focused1, setfocused1] = useState(false)
-    const [focused2, setfocused2] = useState(false)
-    const [focused3, setfocused3] = useState(false)
-    const [focused4, setfocused4] = useState(false)
-    const [focused5, setfocused5] = useState(false)
+    const {getFilterRecipes}=useRecipesHomePaginated()
     const [tagsSelected, setTagsSelected] = useState<Array<string>>([])
+    const [starsSelected, setStarsSelected] = useState<Array<string>>([])
     const [tags, setTags] = useState<Tag[]>([])
 
     const {getTags, allTags} = useTags()
@@ -37,6 +32,14 @@ const FilterRecipeModal = () => {
         }
         setTagsSelected([...tagsSelected, value.replace(' ', '')])
     }
+    const handleStarsSelected = (value: string) => {
+        const index = starsSelected.indexOf(value);
+        if (index !== -1) {
+            setStarsSelected(starsSelected.splice(index, 1));
+          return
+        }
+        setStarsSelected([...starsSelected, value.replace(' ', '')])
+    }
 
     useEffect(() => {
         getTags()
@@ -47,20 +50,73 @@ const FilterRecipeModal = () => {
     }, [allTags])
     
     const handleFilterRecipes =  async () => {
-        const stars = []
-        await getFilterRecipes(tagsSelected)
-        router.navigate("tabs/HomeScreen")
+        await getFilterRecipes(starsSelected, tagsSelected)
+        router.navigate("/tabs/HomeScreen")
     }
-    
+    const listTab = [
+        {
+            puntuacion: '1'
+        },
+        {
+            puntuacion:'2'
+        },
+        {
+            puntuacion:'3'
+        },
+        {
+            puntuacion:'4'
+        },
+        {
+            puntuacion:'5'
+        }
+    ]
+
+  /*    const [datafiltered, setdatafiltered] = useState([])
+
+   const  setPuntuacionFilter=(e) =>{
+    console.log("entreee")
+    const data=simpleRecipesList
+    setrankingSeleccionado({
+        ...rankingSeleccionado,
+        [e.puntuacion]:true
+   } );
+   console.log(e.puntuacion)
+   if(e.puntuacion){
+        const resultadoRanking=data.filter((item)=>{
+            item.puntaje===e.id
+            setdatafiltered([
+                ...datafiltered,resultadoRanking
+            ])
+            console.log(datafiltered)
+        })
+   }
+   }  */
+
+
+    ////recipes?limit=10&puntaje=5&tags=1,2,3&title=pollo
 
     return ( /* /recipes?limit=10&puntaje=5 */
         <View style={styles.container}>
             <Text style={styles.title}>Filtros de búsqueda</Text>
             <Text style={styles.puntuacion}>Puntuación</Text>
             <View style={{ flexDirection: 'row' }}>
-                <Ionicons name={focused1 ? "star" : "star-outline"} size={20} color="#129575" style={styles.star} onPress={() => {
+                {
+                    listTab.map(e=>(
+                       <Stars handleStarsSelected={handleStarsSelected} puntuacion={e.puntuacion} />
+                    ))
+                }
+
+              {/* 
+                <Ionicons name={focused1 ? "star" : "star-outline"} size={20} color="#129575" style={styles.star}
+                onPress={() => {
                     setfocused1(!focused1),
-                    router.navigate("tabs/HomeScreen")
+                    <input onChange={handleCheck}
+                    type='checkbox'
+                    name='puntaje'
+                    value='1'
+                    id='1'
+                    
+                    />
                 }}> 1</Ionicons>
                 <Ionicons name={focused2 ? "star" : "star-outline"} size={20} color="#129575" style={styles.star} onPress={() => {
                     setfocused2(!focused2)
@@ -74,11 +130,11 @@ const FilterRecipeModal = () => {
                 }}> 4</Ionicons>
                 <Ionicons name={focused5 ? "star" : "star-outline"} size={20} color="#129575" style={styles.star} onPress={() => {
                     setfocused5(!focused5)
-                }}> 5</Ionicons>
+                }}> 5</Ionicons> */}
             </View>
             <Text style={styles.tags}>Tags</Text>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-                {tags.map((item, index) => <Tags handleTagsSelected={handleTagsSelected} key={index} item={item} />)}
+                {tags.map((item, index) => <Tags isSelected={tagsSelected.includes(item.id.toString())} handleTagsSelected={handleTagsSelected} key={index} item={item} />)}
 
             </View>
             <TouchableOpacity style={[styles.floatingButton, styles.saveButton]}
