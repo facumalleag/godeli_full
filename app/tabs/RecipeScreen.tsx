@@ -56,9 +56,6 @@ const RecipeScreen = () => {
     imagenes
   } = useRecipesPaginated(id)
     const {addFavorite, isError, isSuccess, setIsSuccess, setIsError} = useFavoritesPaginated()
-    if(isVideo) {
-     return <YouTubePlayer videoId="mIlJdlMu0Tw" setIsVideo={setIsVideo} />
-    }
 
     const handleAccept = () => {
       setIsError(false)
@@ -105,6 +102,9 @@ const RecipeScreen = () => {
     }
 
   return (
+  <>
+  { isVideo ? 
+  <YouTubePlayer videoId={youtube.split('?v=')[1]} setIsVideo={setIsVideo} /> :
     <SafeAreaView style={[styles.container, {paddingHorizontal: 30, paddingTop: 40}]}>
       {
         isOptionsView && <View style={{position: 
@@ -312,7 +312,8 @@ const RecipeScreen = () => {
       </Modal>
       <CustomModal descripcion={desc} onAceptar={handleAccept} visible={isError || isSuccess || isSuccessRating || isErrorProfilePaginated || isErrorRating} titulo={title} />
 
-    </SafeAreaView>
+    </SafeAreaView>}
+    </>
   );
 };
 
