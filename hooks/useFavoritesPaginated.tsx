@@ -7,6 +7,8 @@ import { Datum } from '../interfaces/FavoritesInterface'
   const useFavoritesPaginated = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [simpleFavoriteList, setSimpleFavoriteList] = useState<Datum[]>([])
+  const [isError, setIsError] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false)
   
   useEffect(() => {
     getFavorites()
@@ -15,7 +17,6 @@ import { Datum } from '../interfaces/FavoritesInterface'
   const getFavorites = async () => {
     setIsLoading(true);
     let favoritos = "http://godeli.mooo.com:3000/api/v1/favorites"
-    
     const clave = await SecureStore.getItemAsync('access_token');
     const resp = await favoritosApi.get(favoritos, {
       headers: {
@@ -23,14 +24,42 @@ import { Datum } from '../interfaces/FavoritesInterface'
       }
     })
 
+    if(resp.status !== 200) {
+      setIsError(true)
+    }
     if(resp.data.data.length === 0){
-        setIsLoading(true);
+        setIsLoading(false);
         return; 
     }else{
       mapSimplefavoriteList(resp.data.data)
       //setPage(page + 15);
     }
 //    console.log(resp)
+  }
+
+  const addFavorite = async (id) => {
+    try {
+      setIsLoading(true);
+      let addFavorito = "http://godeli.mooo.com:3000/api/v1/favorites/" + id
+      const clave = await SecureStore.getItemAsync('access_token');
+      const resp = await favoritosApi.post(addFavorito, {}, {
+        headers: {
+          Authorization: `Bearer ${clave}`
+        }
+      })
+      console.log(resp.status)
+      if(resp.status === 200){
+          setIsLoading(false);
+          setIsSuccess(true)
+          return; 
+      }else{
+        setIsError(true)
+        console.log('error al agregar un favorito')
+      }
+    } catch(error) {
+      setIsError(true)
+      console.log('error al intentar agregar un favorito: ', error)
+    }
   }
 
   const mapSimplefavoriteList = (favoriteList: Datum[]) => {
@@ -46,7 +75,12 @@ import { Datum } from '../interfaces/FavoritesInterface'
   return{
     isLoading,
     simpleFavoriteList,
-    getFavorites
+    getFavorites,
+    addFavorite,
+    isError,
+    isSuccess,
+    setIsError,
+    setIsSuccess
   }
 }
 

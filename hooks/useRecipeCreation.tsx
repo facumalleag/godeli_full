@@ -4,15 +4,12 @@ import * as SecureStore from 'expo-secure-store'
 
 const useRecipeCreation = () => {
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const [isError, setIsError] = useState(false)
+    const [isSuccess, setIsSuccess] = useState(false)
 
     const createRecipe = async (datos, imagen) => {
         setLoading(true);
-        setError(null);
-
-
         const clave = await SecureStore.getItemAsync('access_token');
-
 
         console.log('useRecipe');
         try {
@@ -42,11 +39,11 @@ const useRecipeCreation = () => {
             return axios.request(config)
                 .then((response) => {
                     console.log(JSON.stringify(response.data));
-                    alert('Receta agregada correctamente');
+                    setIsSuccess(true)
                     return true;
                 })
                 .catch((error) => {
-                    alert("Error al subir la receta");
+                    setIsError(true)
                     console.log(error);
                     return false;
                 });
@@ -55,7 +52,7 @@ const useRecipeCreation = () => {
         }
     };
 
-    return { createRecipe, loading, error };
+    return { createRecipe, loading, isError, isSuccess };
 };
 
 export default useRecipeCreation;

@@ -48,7 +48,8 @@ const TabsNav = () => {
                             marginBottom: 25,
                         }}
                     />
-                }
+                },
+                unmountOnBlur: true
             }}
 
             />
@@ -60,6 +61,26 @@ const TabsNav = () => {
                 }
             }}
             />
+            <Tabs.Screen name='ProfileScreen' options={{
+                tabBarIcon: () => null,
+                tabBarItemStyle: {
+                    position: 'absolute'
+                }
+                }} />
+            <Tabs.Screen name='RecipeScreen' options={{
+                tabBarIcon: () => null,
+                tabBarItemStyle: {
+                    position: 'absolute'
+                },
+                unmountOnBlur: true,
+                }} />
+            <Tabs.Screen name='MisRecetasCreadasScreen' options={{
+                tabBarIcon: () => null,
+                tabBarItemStyle: {
+                    position: 'absolute'
+                },
+                unmountOnBlur: true,
+                }} />
         </Tabs>
     );
 }

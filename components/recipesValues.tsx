@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Text,
   StyleSheet,
@@ -53,6 +53,10 @@ const RecipesValues: React.FC<RecipesValuesProps> = ({
     setEditValue(valorActual.toString());
     setModalVisible(true);
   };
+
+  useEffect(() => {
+    setCantidadIngredientesState(recipeIngCount)
+  }, [recipeIngCount])
 
   const handleSave = () => {
     switch (valorEditado) {

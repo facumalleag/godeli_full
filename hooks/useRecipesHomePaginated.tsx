@@ -8,6 +8,8 @@ import * as SecureStore from 'expo-secure-store'
   const [isLoading, setIsLoading] = useState(true)
   const [simpleRecipesList, setSimpleRecipesList] = useState<SimpleRecipe[]>([])
   const [page, setPage] = useState(0);
+  const [isError, setIsError] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false)
   
   useEffect(() => {
     getRecipes()
@@ -23,6 +25,9 @@ import * as SecureStore from 'expo-secure-store'
         Authorization: `Bearer ${clave}`
       }
     })
+    if(resp.status !== 200) {
+      setIsError(true)
+    }
 
     if(resp.data.data.length === 0){
         console.log('No hay más recetas');
@@ -34,19 +39,23 @@ import * as SecureStore from 'expo-secure-store'
     }
   }
 
-  const getFilterRecipes = async ( tags: Array<string>) => {
+  const getFilterRecipes = async (scores:Array<string>, tags: Array<string>) => {
     setIsLoading(true);
     try {
-      // const joinScores = scores.join(',')
+      const joinScores = scores.join(',')
       const joinTags = tags.join(',')
-      const filterRecipes = `http://godeli.mooo.com:3000/api/v1/recipes?limit=10&puntaje=3&tags=${joinTags.replace(' ', '')}`
+      const filterRecipes = `http://godeli.mooo.com:3000/api/v1/recipes?limit=10&puntaje=${joinScores.replace(' ', '')}&tags=${joinTags.replace(' ', '')}`
       const clave = await SecureStore.getItemAsync('access_token');
       const resp = await recipesApi.get(filterRecipes, {
         headers: {
           Authorization: `Bearer ${clave}`
         }
       })
-      console.log('resss ', resp)
+      if(resp.status === 200) {
+        setIsSuccess(true) 
+      } else {
+        setIsError(true)
+      }
       if(resp.data.data.length === 0){
         console.log('No hay recetas filtradas');
         setIsLoading(true);
@@ -55,6 +64,7 @@ import * as SecureStore from 'expo-secure-store'
       setSimpleRecipesList(resp.data.data)
     }
     } catch(error) {
+      setIsError(true)
       console.log('error al filtrar recetas: ', error)
       setIsLoading(false)
     }
@@ -83,7 +93,10 @@ import * as SecureStore from 'expo-secure-store'
     isLoading,
     simpleRecipesList,
     getRecipes,
-    getFilterRecipes
+    getFilterRecipes,
+    isError,
+    isSuccess,
+    setIsError
   }
 }
 

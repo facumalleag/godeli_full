@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ActivityIndicator, FlatList, Text, View } from 'react-native';
 import { screenHomeStyles } from '../../theme/screenHomeStyles';
 import RecetaItem from '../RecetaItem';
@@ -8,14 +8,24 @@ import { Link } from 'expo-router';
 import useRecipesHomePaginated from '../../hooks/useRecipesHomePaginated';
 import { FadeInImage } from '../../components/FadeImage';
 import usePostMisRecetaPaginated from '../../hooks/usePostMisRecetaPaginated';
+import CustomModal from '../../components/CustomModal';
 
 
 
 const HomeScreen = () => {
 
+  const [titulo, setTitulo] = useState('')
+  const [descripcion, setDescripcion] = useState('')
   const [filteredRecipes, setFilteredRecipes] = useState([])
-  const {simpleRecipesList,getRecipes}=useRecipesHomePaginated()
-  const { nombre, foto } = useProfilePaginated()
+  const {simpleRecipesList,getRecipes, isError: isErrorRecipes}=useRecipesHomePaginated()
+  const { nombre, foto, isError, setIsError } = useProfilePaginated()
+  const handleAccept = () => {
+    setIsError(false)
+  }
+  useEffect(() => {
+    setTitulo(isError && '¡Ups! Ha ocurrido un error')
+    setDescripcion(isError && 'Intentá nuevamente más tared')
+  }, [isError])
 
   const handleFilterRecipes = (value: string) => {
     if (value.length < 2) {
@@ -39,7 +49,7 @@ const HomeScreen = () => {
     <View style={
       screenHomeStyles.globalMargin
     }>
-       <Link href='/ProfileScreen' style={screenHomeStyles.profileStyle}>
+       <Link href='/tabs/ProfileScreen' style={screenHomeStyles.profileStyle}>
        <FadeInImage
           uri={foto}
           style={{
@@ -67,6 +77,7 @@ const HomeScreen = () => {
         }
       />
     </View>
+    <CustomModal descripcion={descripcion} visible={isError} titulo={titulo} onAceptar={handleAccept} />
     </View>
 
   )

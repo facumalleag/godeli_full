@@ -5,6 +5,9 @@ import {
   Dimensions,
   TouchableOpacity,
   TextInput,
+  Modal,
+  KeyboardAvoidingView,
+  ScrollView,
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import ImageCarouselFlatList from '../components/ImageCarouselFlatList';
@@ -13,9 +16,10 @@ import RecipesValues from '../components/recipesValues';
 import { MaterialIcons } from '@expo/vector-icons';
 import CustomTabNavigator from '../components/customTabNavigator';
 import { router } from 'expo-router';
-import axios from "axios";
 import useRecipeCreation from '../hooks/useRecipeCreation';
 import CustomModal from '../components/CustomModal';
+import Tags from '../components/Tags'
+import useTags from '../hooks/useTags'
 
 
 interface RecipeScreenProps {
@@ -67,10 +71,22 @@ const RecipeScreenEdit: React.FC<RecipeScreenProps> = ({
   const [isComplete, setIsComplete] = useState(false);
   const { createRecipe, loading, error } = useRecipeCreation();
   const [modalVisible, setModalVisible] = useState(false);
+  const [isSetTags, setIsSetTags] = useState(false)
+  const [tags, setTags] = useState([])
+  const [selectedTags, setSelectedTags] = useState([])
+  const {getTags, allTags} = useTags()
 
   const handleAceptar = () => {
     setModalVisible(false);
   };
+
+  useEffect(() => {
+    getTags()
+}, [])
+
+useEffect(() => {
+    setTags(allTags)
+}, [allTags])
 
   useEffect(() => {
     if (newTitle && newDesc && newIngredients && caloriasState && proteinasState && grasasState && tiempoState && porcionesState) {
@@ -93,8 +109,17 @@ const RecipeScreenEdit: React.FC<RecipeScreenProps> = ({
     setVideoLink(text);
   };
 
+  const handleTagsSelected = (value: string) => {
+    setIsSetTags(false)
+    const index = selectedTags.indexOf(value);
+    if (index !== -1) {
+        selectedTags.splice(index, 1);
+      return
+    }
+    setSelectedTags([...selectedTags, value.replace(' ', '')])
+}
+
   const updateRecipeTitle = (newRecipeTitle) => {
-    console.log('Nuevos titulos' + JSON.stringify(newRecipeTitle));
     setNewTitle(newRecipeTitle.title);
     setNewDesc(newRecipeTitle.description);
   };
@@ -133,7 +158,6 @@ const RecipeScreenEdit: React.FC<RecipeScreenProps> = ({
   const handleSave = () => {
     console.log('Guardando los datos...');
     const fileIma = { newImages };
-    console.log('imagen', newImages);
     const formattedIngredients = newIngredients.map((ingredient) => {
 
       const cant = parseInt(ingredient.count, 10);
@@ -148,96 +172,113 @@ const RecipeScreenEdit: React.FC<RecipeScreenProps> = ({
       descripcion: newDesc,
       preparacion: newProc,
       youtube: videoLink,
-
       tiempo_preparacion: tiempoState,
       rendimiento: porcionesState,
       calorias: caloriasState,
       proteinas: proteinasState,
       grasas: grasasState,
       ingredientes: formattedIngredients,
-      //tags: [{"id_tag": 1}]
+      tags: selectedTags.map(t =>  {
+        return {id_tag: t}
+      })
 
     };
-    console.log('===============================');
-    console.log(JSON.stringify(jsonData));
-    //createRecipe(JSON.stringify(jsonData), fileIma);
-    console.log('===============================');
-    console.log('Archivos guardados:', fileIma);
-    setModalVisible(true);
-    console.log('Datos guardados:', jsonData);
-
+    createRecipe(JSON.stringify(jsonData), fileIma);
   };
 
 
   return (
-    <View style={styles.container}>
-      <View style={[styles.carrousel, { height: windowHeight * 0.30 }]}>
-        <ImageCarouselFlatList
-          images={images}
-          editable={editable}
-          uriVideo={linkVideo}
-          updateRecipeImages={updateRecipeImages}
-        />
-      </View>
-      <RecipeTitle
-        title={recipeTitle}
-        description={recipeDesc}
-        updateRecipeTitle={updateRecipeTitle}
-      />
-      {editable && (
-        <View style={styles.videoInput}>
-          <TextInput
-            style={styles.videoTextInput}
-            placeholder="Link de tu video"
-            placeholderTextColor="#3B5059"
-            value={videoLink}
-            onChangeText={handleVideoLinkChange}
+      <KeyboardAvoidingView behavior='padding' style={{flex: 1}}>
+        <ScrollView>
+        <View style={styles.container}>
+          <View style={[styles.carrousel, { height: windowHeight * 0.30 }]}>
+            <ImageCarouselFlatList
+              images={images}
+              editable={editable}
+              uriVideo={linkVideo}
+              updateRecipeImages={updateRecipeImages}
+            />
+          </View>
+          <RecipeTitle
+            title={recipeTitle}
+            description={recipeDesc}
+            updateRecipeTitle={updateRecipeTitle}
           />
-          <MaterialIcons
-            name="video-library"
-            size={24}
-            color="#3B5059"
-            style={styles.videoIcon}
+          <TouchableOpacity 
+            onPress={() => setIsSetTags(true)}
+            style={{    
+              padding: 10,
+              backgroundColor: '#129575',
+              borderRadius: 10,
+              width: '45%',
+              alignItems: 'center',
+              marginHorizontal: 5,
+              }}
+              >
+            <Text style={styles.buttonText}>Categoría</Text>
+          </TouchableOpacity>
+          {editable && (
+            <View style={styles.videoInput}>
+              <TextInput
+                style={styles.videoTextInput}
+                placeholder="Link de tu video"
+                placeholderTextColor="#3B5059"
+                value={videoLink}
+                onChangeText={handleVideoLinkChange}
+              />
+              <MaterialIcons
+                name="video-library"
+                size={24}
+                color="#3B5059"
+                style={styles.videoIcon}
+              />
+            </View>
+          )}
+          <RecipesValues
+            modoEdicion={editable}
+            recipeCal={recipeCal}
+            recipePro={recipePro}
+            recipeGra={recipeGra}
+            recipeTime={recipeTime}
+            recipeIngCount={newIngredients.length}
+            updateRecipeValues={updateRecipeValues}
           />
+          <CustomTabNavigator
+            editable={editable}
+            ingredients={ingredients}
+            textoProcedimiento={textoProcedimiento}
+            handleTabIng={handleTabIng}
+            handleTabProc={handleTabProc}
+          />
+          <CustomModal
+            visible={modalVisible}
+            titulo="Receta Cargada"
+            descripcion="Ya puedes verla en mis recetas"
+            onAceptar={handleAceptar}
+          />
+          {editable && (
+            <View style={styles.buttonsContainer}>
+              <TouchableOpacity
+                style={[styles.floatingButton, styles.saveButton, !isComplete && {backgroundColor: '#9D9D9D'}]}
+                onPress={handleSave}
+                disabled={!isComplete}>
+                <Text style={styles.buttonText}>Guardar</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.floatingButton, styles.cancelButton]}
+                onPress={handleBack}>
+                <Text style={styles.buttonText}>Cancelar</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+          <Modal visible={isSetTags}>
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: '10%' }}>
+                {tags.map((item, index) => <Tags isSelected={selectedTags.indexOf(item.id.toString()) !== -1} handleTagsSelected={handleTagsSelected} key={index} item={item} />)}
+            </View>
+          </Modal>
         </View>
-      )}
-      <RecipesValues
-        modoEdicion={editable}
-        recipeCal={recipeCal}
-        recipePro={recipePro}
-        recipeGra={recipeGra}
-        recipeTime={recipeTime}
-        updateRecipeValues={updateRecipeValues}
-      />
-      <CustomTabNavigator
-        editable={editable}
-        ingredients={ingredients}
-        textoProcedimiento={textoProcedimiento}
-        handleTabIng={handleTabIng}
-        handleTabProc={handleTabProc}
-      />
-      <CustomModal
-        visible={modalVisible}
-        titulo="Receta Cargada"
-        descripcion="Ya puedes verla en mis recetas"
-        onAceptar={handleAceptar}
-      />
-      {editable && (
-        <>
-          <TouchableOpacity
-            style={[styles.floatingButton, styles.saveButton]}
-            onPress={handleSave}
-            disabled={!isComplete}>
-            <Text style={styles.buttonText}>Guardar</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.floatingButton, styles.cancelButton]}
-            onPress={handleBack}>
-            <Text style={styles.buttonText}>Cancelar</Text>
-          </TouchableOpacity>
-        </>
-      )}
-    </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
   );
 };
 
@@ -268,25 +309,25 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginRight: 5
   },
+  buttonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
   floatingButton: {
-    position: 'absolute',
-    bottom: 20,
     borderRadius: 10,
     paddingVertical: 10,
     paddingHorizontal: 20,
-    marginHorizontal: 10,
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 3,
   },
   saveButton: {
     backgroundColor: '#129575',
-    left: 20,
     width: '45%'
   },
   cancelButton: {
-    backgroundColor: '#9D9D9D',
-    right: 20,
+    backgroundColor: '#129575',
     width: '45%'
   },
   buttonText: {

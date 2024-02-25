@@ -7,7 +7,8 @@ export const  guardadoStyle = StyleSheet.create({
     container:{
         backgroundColor:'white',
         width:window_width,
-        height:window_height*0.9
+        height:window_height*0.9,
+        flex: 1
         },
     globalMargin:{
         marginHorizontal:20,

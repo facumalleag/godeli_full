@@ -7,6 +7,8 @@ import { Datum } from '../interfaces/MisRecetasInterface'
   const useMisRecetasPaginated = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [simpleMisRecetasList, setSimpleMisRecetasList] = useState<Datum[]>([])
+  const [isError, setIsError] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false)
   
   useEffect(() => {
     getMisRecetas()
@@ -22,6 +24,11 @@ import { Datum } from '../interfaces/MisRecetasInterface'
         Authorization: `Bearer ${clave}`
       }
     })
+    if(resp.status !== 200) {
+      setIsError(true)
+    } else {
+      setIsSuccess(true)
+    }
 
     if(resp.data.data.length === 0){
         setIsLoading(true);
@@ -46,7 +53,11 @@ import { Datum } from '../interfaces/MisRecetasInterface'
   return{
     isLoading,
     simpleMisRecetasList,
-    getMisRecetas
+    getMisRecetas,
+    isError,
+    isSuccess,
+    setIsError,
+    setIsSuccess
   }
 }
 

@@ -20,7 +20,7 @@ const RecetaItemGuardada = (props: Props) => {
         <TouchableOpacity
             activeOpacity={0.9}
             onPress={()=>router.push({
-               pathname: "/RecipeScreen",
+               pathname: "/tabs/RecipeScreen",
                 params: {  id: props.recetaKey, nombre:props.recetaNombre  }
             })}
         >

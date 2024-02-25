@@ -13,26 +13,35 @@ import {
   SafeAreaView,
   Share,
   Alert,
+  Modal,
 } from 'react-native';
-import React, { useRef, useState } from 'react';
-import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import React, { useEffect, useState } from 'react';
+import { Ionicons } from '@expo/vector-icons';
 import { router, useLocalSearchParams } from 'expo-router';
-import useRecipesPaginated from '../hooks/useRecipesPaginated';
-import * as Linking from 'expo-linking';
+import useRecipesPaginated from '../../hooks/useRecipesPaginated';
 import { FontAwesome6 } from '@expo/vector-icons';
-import { styles } from '../theme/RecipesScreenStyle';
-import WebView from 'react-native-webview';
-import YouTubePlayer from '../YoutubePlayer';
-import useProfilePaginated from '../hooks/useProfilePaginated';
+import { styles } from '../../theme/RecipesScreenStyle';
+import YouTubePlayer from '../../YoutubePlayer';
+import useProfilePaginated from '../../hooks/useProfilePaginated';
+import useFavoritesPaginated from '../../hooks/useFavoritesPaginated';
+import StarRating from 'react-native-star-rating-widget';
+import useRating from '../../hooks/useRating';
+import CustomModal from '../../components/CustomModal';
 
 const RecipeScreen = () => {
   const windowHeight = Dimensions.get('window').height;
 
+  const [rating, setRating] = useState(0);
+  const [isRating, setIsRating] = useState(false)
   const [isIngredientes, setisIngredientes] = useState(true)
   const [isVideo, setIsVideo] = useState(false)
   const { id, nombre} = useLocalSearchParams()
   const [isOptionsView, setIsOptionsView] = useState(false)
-  const {foto} = useProfilePaginated()
+  const [title, setTitle] = useState('')
+  const [desc, setDesc] = useState('')
+
+  const {foto, isError: isErrorProfilePaginated, setIsError: setIsErrorProfilePaginated} = useProfilePaginated()
+  const {addRating, isError: isErrorRating, isSuccess: isSuccessRating, setIsError: setIsErrorRating, setIsSuccess: setIsSuccesRating} = useRating()
   const { calorias,
     youtube,
     tiempo_preparacion,
@@ -43,17 +52,33 @@ const RecipeScreen = () => {
     preparacion,
     ingredientes,
     titulo,
-    imagenes } = useRecipesPaginated(id)
+    puntaje,
+    imagenes
+  } = useRecipesPaginated(id)
+    const {addFavorite, isError, isSuccess, setIsSuccess, setIsError} = useFavoritesPaginated()
     if(isVideo) {
      return <YouTubePlayer videoId="mIlJdlMu0Tw" setIsVideo={setIsVideo} />
     }
 
+    const handleAccept = () => {
+      setIsError(false)
+      setIsSuccess(false)
+      setIsErrorProfilePaginated(false)
+      setIsErrorRating(false)
+      setIsSuccesRating(false)
+    }
+
+    useEffect(() => {
+      setTitle(isError || isErrorProfilePaginated || isErrorRating ? "¡Ups! Ha ocurrido un error." : isSuccess || isSuccessRating ? "¡Felicidades!" : "")
+      setDesc(isError || isErrorProfilePaginated || isErrorRating ? "Por favor, intentalo nuevamente más tarde." : isSuccess ? "Agregaste esta receta a tus favoritas" : isSuccessRating && "Calificación agregaga con éxito")
+    },[isError, isSuccess, isSuccessRating, isErrorRating, isErrorProfilePaginated])
+
     const onShare = async () => {
       try {
         const result = await Share.share({
-          message:
-            'React Native | A framework for building native apps using React',
-            url: 'https://reactnative.dev/docs/share'
+          title: '¡Hey! Mirá esta receta.',
+          message: titulo + '\n' + descripcion,
+          url: 'https://reactnative.dev/docs/share'
         });
         if (result.action === Share.sharedAction) {
           if (result.activityType) {
@@ -69,7 +94,15 @@ const RecipeScreen = () => {
       }
     };
 
+    const handleAddFavorite = async () => {
+        await addFavorite(id)
+    }
 
+    const handleAddRating = async () => {
+        setRating(0)
+        setIsRating(false)
+        await addRating(id, rating)
+    }
 
   return (
     <SafeAreaView style={[styles.container, {paddingHorizontal: 30, paddingTop: 40}]}>
@@ -85,7 +118,7 @@ const RecipeScreen = () => {
           backgroundColor: 'white',
           borderRadius: 10,
           }}>
-          <Pressable onPress={() => onShare()} style={{
+          <Pressable onPress={() => {onShare(); setIsOptionsView(false)}} style={{
               flexDirection: 'row',
               paddingHorizontal: 20,
               alignItems: 'center',
@@ -94,12 +127,14 @@ const RecipeScreen = () => {
             <FontAwesome6 name='share' size={20} />
             <Text style={{marginLeft: 20}}>Compartir</Text>
           </Pressable>
-          <Pressable style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              paddingHorizontal: 16,
-              padding: 5
-              }}>
+          <Pressable
+            onPress={() => {setIsRating(true); setIsOptionsView(false)}}
+            style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                paddingHorizontal: 16,
+                padding: 5
+                }}>
             <Ionicons name='star' size={25} />
             <Text style={{marginLeft: 20}}>Calificar</Text>
           </Pressable>
@@ -135,7 +170,7 @@ const RecipeScreen = () => {
             backgroundColor: 'rgba(0,0,0,0.2)',
             marginHorizontal: 10
              }}>
-            <Text style={{fontSize: 40}}>VER VIDEO</Text>
+            <Text style={{fontSize: 30}}>VER VIDEO</Text>
           </Pressable> : null}
           renderItem={({ item, index }) =>
             <View key={item.id_imagen}>
@@ -143,11 +178,38 @@ const RecipeScreen = () => {
             </View>
           }
         />
-        <Ionicons name="arrow-back-circle-outline" onPress={() => router.back()} size={40} color="white" style={{ position: 'absolute', left: 10, top: 35 }} />
+        <Ionicons name="arrow-back-circle-outline" onPress={() => router.replace('/tabs/HomeScreen')} size={40} color="white" style={{ position: 'absolute', left: 10, top: 35 }} />
+        <TouchableOpacity
+            onPress={() => handleAddFavorite()} 
+            style={{
+                position: 'absolute', 
+                right: 40, 
+                bottom: 15, 
+                backgroundColor: 'white',
+                padding: 10, 
+                borderRadius: 100
+              }}
+              >
+          <FontAwesome6 name='bookmark' color={'#129575'} size={25} />
+        </TouchableOpacity>
+        <View style={{
+            position: 'absolute', 
+            right: 40, 
+            top: 15, 
+            backgroundColor: '#FFE1B3',
+            padding: 8, 
+            borderRadius: 100,
+            flexDirection: 'row',
+            alignItems: 'center',
+            width: '18%',
+            justifyContent: 'space-around'
+          }}>
+          <Ionicons name='star' color={'#FFAD30'} size={15} />
+          <Text style={{fontSize: 18}}>{puntaje ? puntaje : '0'}</Text>
+        </View>
       </View>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
         <Text style={styles.title}>{titulo}</Text>
-
       </View>
       <View style={styles.valores}>
         <Text style={{ ...styles.styleValues, marginLeft: 1 }}>{calorias} calorías</Text>
@@ -225,6 +287,30 @@ const RecipeScreen = () => {
           </View>
 
       }
+      <Modal visible={isRating} transparent>
+        <View style={{justifyContent: 'center', alignItems: 'center', flex: 1, backgroundColor: 'rgba(0,0,0,0.2)'}}>
+          <View style={{backgroundColor: 'white', width: '55%', height: '18%', borderRadius: 10, justifyContent: 'space-around', alignItems: 'center'}}>
+            <Text style={{fontSize: 16}}>Calificar</Text>
+            <StarRating
+              rating={rating}
+              onChange={setRating}
+            />
+            <Pressable 
+              disabled={rating === 0}
+              onPress={() => handleAddRating()}
+              style={{
+                backgroundColor: rating > 0 ? '#129575' : 'rgba(0,0,0,0.2)', 
+                padding: 10, 
+                width: '50%', 
+                justifyContent: 'center', 
+                borderRadius: 10
+              }}>
+              <Text style={{color: 'white', textAlign: 'center'}}>Enviar</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+      <CustomModal descripcion={desc} onAceptar={handleAccept} visible={isError || isSuccess || isSuccessRating || isErrorProfilePaginated || isErrorRating} titulo={title} />
 
     </SafeAreaView>
   );
