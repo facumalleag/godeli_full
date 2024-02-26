@@ -52,7 +52,6 @@ const useRecipeCreation = () => {
         }
     };
     const editRecipe = async (datos, imagen, id) => {
-        console.log('imageeen: ', imagen)
         const newDatos = JSON.stringify({...datos, ingredients: datos.ingredientes})
         setLoading(true);
         const clave = await SecureStore.getItemAsync('access_token');

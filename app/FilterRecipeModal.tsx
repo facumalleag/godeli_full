@@ -1,58 +1,9 @@
-import { router } from 'expo-router'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Tags from '../components/Tags'
-import useRecipesHomePaginated from '../hooks/useRecipesHomePaginated'
-import { Tag } from '../interfaces/FavoritesInterface'
-import useTags from '../hooks/useTags'
-import Stars from '../components/Stars'
 
-const FilterRecipeModal = () => {
+const FilterRecipeModal = ({handlePress, tags, tagsSelected, handleTagsSelected, setTagsSelected}) => {
 
-    const {getFilterRecipes}=useRecipesHomePaginated()
-    const [tagsSelected, setTagsSelected] = useState<Array<string>>([])
-    const [starsSelected, setStarsSelected] = useState<Array<string>>([])
-    const [tags, setTags] = useState<Tag[]>([])
-
-    const {getTags, allTags} = useTags()
- 
-   /*  useEffect((pressed) => {
-        if (pressed){
-            setColor("#129575");setTextColor('white')
-        }else{
-            setColor("white");setTextColor('#129575')
-        }
-    }, []) */
-
-    const handleTagsSelected = (value: string) => {
-        const index = tagsSelected.indexOf(value);
-        if (index !== -1) {
-            tagsSelected.splice(index, 1);
-          return
-        }
-        setTagsSelected([...tagsSelected, value.replace(' ', '')])
-    }
-    const handleStarsSelected = (value: string) => {
-        const index = starsSelected.indexOf(value);
-        if (index !== -1) {
-            setStarsSelected(starsSelected.splice(index, 1));
-          return
-        }
-        setStarsSelected([...starsSelected, value.replace(' ', '')])
-    }
-
-    useEffect(() => {
-        getTags()
-    }, [])
-
-    useEffect(() => {
-        setTags(allTags)
-    }, [allTags])
-    
-    const handleFilterRecipes =  async () => {
-        await getFilterRecipes(starsSelected, tagsSelected)
-        router.navigate("/tabs/HomeScreen")
-    }
     const listTab = [
         {
             puntuacion: '1'
@@ -100,11 +51,11 @@ const FilterRecipeModal = () => {
             <Text style={styles.title}>Filtros de búsqueda</Text>
             <Text style={styles.puntuacion}>Puntuación</Text>
             <View style={{ flexDirection: 'row' }}>
-                {
+                {/* {
                     listTab.map(e=>(
                        <Stars handleStarsSelected={handleStarsSelected} puntuacion={e.puntuacion} />
                     ))
-                }
+                } */}
 
               {/* 
                 <Ionicons name={focused1 ? "star" : "star-outline"} size={20} color="#129575" style={styles.star}
@@ -138,9 +89,14 @@ const FilterRecipeModal = () => {
 
             </View>
             <TouchableOpacity style={[styles.floatingButton, styles.saveButton]}
-                onPress={() => handleFilterRecipes()}
+                onPress={() => handlePress()}
             >
                 <Text style={styles.buttonText}>Filtrar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.floatingButton, styles.saveButton]}
+                onPress={() => setTagsSelected([])}
+            >
+                <Text style={styles.buttonText}>Limpiar Filtros</Text>
             </TouchableOpacity>
         </View>
     )

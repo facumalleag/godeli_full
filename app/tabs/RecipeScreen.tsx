@@ -14,6 +14,7 @@ import {
   Share,
   Alert,
   Modal,
+  BackHandler,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
@@ -57,7 +58,8 @@ const RecipeScreen = () => {
     puntaje,
     imagenes
   } = useRecipesPaginated(id)
-    const {addFavorite, isError, isSuccess, setIsSuccess, setIsError} = useFavoritesPaginated()
+    const {addFavorite, isError, isSuccess, setIsSuccess, setIsError, getFavorites} = useFavoritesPaginated()
+
 
     const handleAccept = () => {
       setIsError(false)
@@ -91,6 +93,13 @@ const RecipeScreen = () => {
       setDesc(isError || isErrorProfilePaginated || isErrorRating ? "Por favor, intentalo nuevamente más tarde." : isSuccess ? "Agregaste esta receta a tus favoritas" : isSuccessRating && "Calificación agregaga con éxito")
     },[isError, isSuccess, isSuccessRating, isErrorRating, isErrorProfilePaginated])
 
+    useEffect(() => {
+      BackHandler.addEventListener('hardwareBackPress', () => {
+        router.replace('/tabs/MisRecetasCreadasScreen')
+        return true
+      })
+    }, [])
+
     const onShare = async () => {
       try {
         const result = await Share.share({
@@ -113,6 +122,7 @@ const RecipeScreen = () => {
 
     const handleAddFavorite = async () => {
         await addFavorite(id)
+        await getFavorites()
     }
 
     const handleAddRating = async () => {
@@ -198,7 +208,7 @@ const RecipeScreen = () => {
             </TouchableOpacity>
           }
         />
-        <Ionicons name="arrow-back-circle-outline" onPress={() => router.replace('/tabs/HomeScreen')} size={40} color="white" style={{ position: 'absolute', left: 10, top: 35 }} />
+        <Ionicons name="arrow-back-circle-outline" onPress={() => router.replace('/tabs/MisRecetasCreadasScreen')} size={40} color="white" style={{ position: 'absolute', left: 10, top: 35 }} />
         <TouchableOpacity
             onPress={() => handleAddFavorite()} 
             style={{
