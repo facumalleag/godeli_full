@@ -35,13 +35,12 @@ const RecipeScreen = () => {
   const [isRating, setIsRating] = useState(false)
   const [isIngredientes, setisIngredientes] = useState(true)
   const [isVideo, setIsVideo] = useState(false)
-  const { id, nombre} = useLocalSearchParams()
+  const { id, nombre, editable} = useLocalSearchParams()
   const [isOptionsView, setIsOptionsView] = useState(false)
   const [title, setTitle] = useState('')
   const [desc, setDesc] = useState('')
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
-  console.log('urii ', selectedImage)
 
   const {isError: isErrorProfilePaginated, setIsError: setIsErrorProfilePaginated} = useProfilePaginated()
   const {addRating, isError: isErrorRating, isSuccess: isSuccessRating, setIsError: setIsErrorRating, setIsSuccess: setIsSuccesRating} = useRating()
@@ -77,6 +76,14 @@ const RecipeScreen = () => {
       setModalVisible(false);
       setSelectedImage(null);
     };
+
+    const goToEditScreen = () => {
+      setIsOptionsView(false)
+      router.navigate({
+        pathname: '/RecipeScreenEdit', 
+        params: {id}
+      })
+    }
   
 
     useEffect(() => {
@@ -89,7 +96,6 @@ const RecipeScreen = () => {
         const result = await Share.share({
           title: '¡Hey! Mirá esta receta.',
           message: titulo + '\n' + descripcion,
-          url: 'https://reactnative.dev/docs/share'
         });
         if (result.action === Share.sharedAction) {
           if (result.activityType) {
@@ -124,7 +130,7 @@ const RecipeScreen = () => {
         isOptionsView && <View style={{position: 
           'absolute', 
           width: '50%', 
-          height: '12%', 
+          height: '15%', 
           top: 80, 
           justifyContent: 'space-evenly',
           zIndex: 10,
@@ -153,7 +159,7 @@ const RecipeScreen = () => {
             <Text style={{marginLeft: 20}}>Calificar</Text>
           </Pressable>
           {
-            false && <Pressable style={{
+            editable && <Pressable onPress={() => goToEditScreen()} style={{
               flexDirection: 'row',
               alignItems: 'center',
               paddingHorizontal: 20,
@@ -349,8 +355,8 @@ const RecipeScreen = () => {
               source={{ uri: selectedImage ? selectedImage.url : null }}
               style={{
                 width: 350,
-                height: '100%',
-                resizeMode: 'cover',
+                height: 600,
+                resizeMode: 'contain',
                 borderRadius: 30
               }}
               resizeMode="contain"

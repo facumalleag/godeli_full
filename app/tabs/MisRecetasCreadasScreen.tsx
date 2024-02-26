@@ -55,7 +55,7 @@ const MisRecetasCreadasScreen = () => {
           onEndReached={getMisRecetas}
           onEndReachedThreshold={0.4}
           renderItem={({ item }) =>
-            <RecetaItem recetaKey={item.id_receta.toString()} recetaImagen={item.imagen} recetaNombre={item.nombre} recetaPuntaje={item.puntaje} recetaTitulo={item.titulo} />
+            <RecetaItem editable recetaKey={item.id_receta.toString()} recetaImagen={item.imagen} recetaNombre={item.nombre} recetaPuntaje={item.puntaje} recetaTitulo={item.titulo} />
           }
         />
         <View style={{ flexDirection: 'column' }}>

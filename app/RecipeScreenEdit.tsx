@@ -15,44 +15,28 @@ import RecipeTitle from '../components/recipeTitle';
 import RecipesValues from '../components/recipesValues';
 import { MaterialIcons } from '@expo/vector-icons';
 import CustomTabNavigator from '../components/customTabNavigator';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import useRecipeCreation from '../hooks/useRecipeCreation';
 import CustomModal from '../components/CustomModal';
 import Tags from '../components/Tags'
 import useTags from '../hooks/useTags'
+import useRecipesPaginated from '../hooks/useRecipesPaginated';
 
 
-interface RecipeScreenProps {
-  images?: { id: number; uri: string }[];
-  linkVideo?: string;
-  recipeTitle?: string;
-  recipeDesc?: string;
-  recipeCal?: number;
-  recipePro?: number;
-  recipeGra?: number;
-  recipeTime?: number;
-  recipePorc?: number;
-  ingredients?: { name: string; count: string; unit: string }[];
-  arrayIngredientes?: string[];
-  textoProcedimiento?: string;
-  editable?: boolean;
-}
-
-const RecipeScreenEdit: React.FC<RecipeScreenProps> = ({
-  images = [],
-  linkVideo = '',
-  recipeTitle = '',
-  recipeDesc = '',
-  recipeCal = 0,
-  recipePro = 0,
-  recipeGra = 0,
-  recipeTime = 0,
-  recipePorc = 0,
-  ingredients = [],
-  arrayIngredientes = [],
-  textoProcedimiento = '',
-  editable = true,
-}) => {
+const RecipeScreenEdit: React.FC = () => {
+  const { id, editable = true,} = useLocalSearchParams()
+  const { calorias: recipeCal,
+    youtube: linkVideo,
+    tiempo_preparacion: recipeTime,
+    descripcion: recipeDesc,
+    rendimiento: recipePorc,
+    grasas: recipeGra,
+    proteinas: recipePro,
+    preparacion: textoProcedimiento,
+    ingredientes: ingredients,
+    titulo: recipeTitle,
+    imagenes: images
+  } = useRecipesPaginated(id)
 
    
   const windowHeight = Dimensions.get('window').height;
@@ -69,7 +53,7 @@ const RecipeScreenEdit: React.FC<RecipeScreenProps> = ({
   const [newIngredients, setNewIngredients] = useState(ingredients);
   const [newProc, setNewProc] = useState(textoProcedimiento);
   const [isComplete, setIsComplete] = useState(false);
-  const { createRecipe, loading, isError, isSuccess} = useRecipeCreation();
+  const { createRecipe, loading, isError, isSuccess,editRecipe} = useRecipeCreation();
   const [modalVisible, setModalVisible] = useState(false);
   const [isSetTags, setIsSetTags] = useState(false)
   const [tags, setTags] = useState([])
@@ -78,12 +62,25 @@ const RecipeScreenEdit: React.FC<RecipeScreenProps> = ({
 
   const handleAceptar = () => {
     setModalVisible(false);
-    router.replace('/HomeScreen')
+    router.replace('/tabs/HomeScreen')
   };
 
   useEffect(() => {
     getTags()
-}, [])
+  }, [])
+
+  useEffect(() => {
+    setVideoLink(linkVideo)
+    setCaloriasState(recipeCal)
+    setProteinasState(recipePro)
+    setNewProc(textoProcedimiento)
+    setNewIngredients(ingredients)
+    setNewImages(images)
+    setNewTitle(recipeTitle)
+    setNewDesc(recipeDesc)
+    setPorcionesState(recipePorc)
+    setGrasasState(recipeGra)
+  },[linkVideo, images, ingredients])
 
 useEffect(() => {
   if(isError || isSuccess) {
@@ -96,15 +93,14 @@ useEffect(() => {
 }, [allTags])
 
   useEffect(() => {
-    if (newTitle && newDesc && newIngredients.length > 0 && caloriasState && proteinasState && grasasState && tiempoState && porcionesState) {
+    if (newTitle && newDesc && (newIngredients && newIngredients.length > 0) && caloriasState && proteinasState && grasasState && tiempoState && porcionesState) {
       setIsComplete(true);
     } else {
       setIsComplete(false);
     }
-  }, [newTitle, newDesc, newIngredients, caloriasState, proteinasState, grasasState, tiempoState, porcionesState]);
+  }, [newTitle, newDesc, newIngredients, caloriasState, proteinasState, grasasState, tiempoState, porcionesState, linkVideo]);
 
   const updateRecipeValues = (newRecipeValues) => {
-    console.log(newRecipeValues)
     setCaloriasState(newRecipeValues.recipeCal);
     setProteinasState(newRecipeValues.recipePro);
     setGrasasState(newRecipeValues.recipeGra);
@@ -166,12 +162,11 @@ useEffect(() => {
     console.log('Guardando los datos...');
     const fileIma = { newImages };
     const formattedIngredients = newIngredients.map((ingredient) => {
-
-      const cant = parseInt(ingredient.count, 10);
+      const cant = parseInt(ingredient.count ? ingredient.count : ingredient.cantidad, 10);
       return {
         id_ingrediente: ingredient.id_ingrediente,
         cantidad: cant,
-        id_unidad: ingredient.typeUnit,
+        id_unidad: ingredient.typeUnit ? ingredient.typeUnit : ingredient.id_unidad,
       };
     });
     const jsonData = {
@@ -190,6 +185,12 @@ useEffect(() => {
       })
 
     };
+    
+    if(id) {
+      const addNewImages = fileIma.newImages.filter(img => !images.includes(img.id_imagen))
+      editRecipe(jsonData, {newImages: addNewImages}, id)
+      return
+    }
     createRecipe(JSON.stringify(jsonData), fileIma);
   };
 
@@ -200,14 +201,15 @@ useEffect(() => {
         <View style={styles.container}>
           <View style={[styles.carrousel, { height: windowHeight * 0.30 }]}>
             <ImageCarouselFlatList
-              images={images}
+              id={id}
+              images={newImages}
               editable={editable}
               uriVideo={linkVideo}
               updateRecipeImages={updateRecipeImages}
             />
           </View>
           <RecipeTitle
-            title={recipeTitle}
+            title={newTitle}
             description={recipeDesc}
             updateRecipeTitle={updateRecipeTitle}
           />
@@ -243,17 +245,18 @@ useEffect(() => {
           )}
           <RecipesValues
             modoEdicion={editable}
-            recipeCal={recipeCal}
-            recipePro={recipePro}
+            recipeCal={caloriasState}
+            recipePro={proteinasState}
             recipeGra={recipeGra}
             recipeTime={recipeTime}
-            recipeIngCount={newIngredients.length}
+            recipePer={porcionesState}
+            recipeIngCount={newIngredients && newIngredients.length}
             updateRecipeValues={updateRecipeValues}
           />
           <CustomTabNavigator
             editable={editable}
-            ingredients={ingredients}
-            textoProcedimiento={textoProcedimiento}
+            ingredients={newIngredients}
+            textoProcedimiento={newProc}
             handleTabIng={handleTabIng}
             handleTabProc={handleTabProc}
           />

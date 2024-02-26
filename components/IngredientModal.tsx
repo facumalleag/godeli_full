@@ -9,8 +9,8 @@ import {
   StyleSheet,
 } from 'react-native';
 import AutoCompleteDropdown from './autoCompleteDropdown';
-import ingredientesData from '../assets/ingredientes.json';
 import { Ingredient } from './ingredientsTab';
+import useIngredients from '../hooks/useIngredients';
 
 interface IngredientModalProps {
   modalVisible: boolean;
@@ -29,6 +29,9 @@ const IngredientModal: React.FC<IngredientModalProps> = ({
   const [isComplete, setIsComplete] = useState(false);
   const [selectedUnit, setSelectedUnit] = useState<{ id: number, descripcion: string }>({ id: 0, descripcion: '' });
 
+  
+
+
   useEffect(() => {
     if (selectedIngredient.id && count && unit && selectedUnit.id) {
       setIsComplete(true);
@@ -36,6 +39,9 @@ const IngredientModal: React.FC<IngredientModalProps> = ({
       setIsComplete(false);
     }
   }, [selectedIngredient, count, unit, selectedUnit]);
+
+
+
 
   const dataUnit = [
     {
@@ -92,7 +98,7 @@ useEffect(() => {
     const nuevoIngrediente = {
       id_ingrediente: selectedIngredient.id,
       name: selectedIngredient.descripcion,
-      count,
+      cantidad: count,
       typeUnit: selectedUnit.id,
       unit: selectedUnit.abreviatura,
     };
@@ -105,7 +111,6 @@ useEffect(() => {
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
           <AutoCompleteDropdown
-            data={ingredientesData.ingredientes}
             onSelect={(item) => setSelectedIngredient(item)}
           />
           <TextInput

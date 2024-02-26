@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import IngredientsTab from './ingredientsTab';
 import ProcessComponent from './processTab';
@@ -13,6 +13,11 @@ const CustomTabNavigator = ({
   const [activeTab, setActiveTab] = useState('ingredients');
   const [newIngredients, setNewIngredients] = useState(ingredients);
   const [newProc, setNewProc] = useState(textoProcedimiento);
+
+  useEffect(() => {
+    setNewIngredients(ingredients)
+    setNewProc(textoProcedimiento)
+  }, [ingredients])
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);

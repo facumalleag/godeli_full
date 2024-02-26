@@ -13,6 +13,7 @@ import {
 import { Feather, Ionicons } from '@expo/vector-icons';
 import ImagePickerModal from './imagePickerModal';
 import { LinearGradient } from 'expo-linear-gradient';
+import useRecipeCreation from '../hooks/useRecipeCreation';
 
 
 const { width, height } = Dimensions.get('window');
@@ -22,16 +23,25 @@ const ImageCarouselFlatList = ({
   editable = true,
   uriVideo = '',
   updateRecipeImages,
+  id,
 }) => {
   useEffect(() => {
     console.log('Editable en efecto:', editable);
   }, [editable]);
+  
+  useEffect(() => {
+    if(images.length > updatedImages.length ){
+      setUpdatedImages(images.map(image => {return {...image, uri: image.url, id: image.id_image}}))
+    }
+  },[images])
 
   const [modalVisible, setModalVisible] = useState(false); // Estado para el modal de imagen fullscreen
   const [selectedImage, setSelectedImage] = useState(null);
-  const [updatedImages, setUpdatedImages] = useState(images);
+  const [updatedImages, setUpdatedImages] = useState([]);
 
   const [addModalVisible, setAddModalVisible] = useState(false); // Estado para el modal de agregar imágenes
+
+  const {deleteRecipeImage} = useRecipeCreation()
 
   const renderItem = ({ item }) => (
     <TouchableOpacity onPress={() => handleImagePress(item)}>
@@ -59,9 +69,11 @@ const ImageCarouselFlatList = ({
   };
 
   const handleDeleteImage = (image) => {
+    deleteRecipeImage(id, image.id_imagen)
     const filteredImages = updatedImages.filter((img) => img.id !== image.id);
     setUpdatedImages(filteredImages);
     updateRecipeImages(filteredImages);
+    
   };
 
   const handleSelectImage = async (uri) => {

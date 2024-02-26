@@ -11,6 +11,7 @@ interface Props {
     recetaPuntaje:string,
     recetaNombre:string,
     recetaImagen:string,
+    editable?: boolean
 }
 
 const RecetaItem = (props: Props) => {
@@ -20,7 +21,7 @@ const RecetaItem = (props: Props) => {
             activeOpacity={0.9}
             onPress={()=>router.push({
                pathname: "/tabs/RecipeScreen",
-                params: {  id: props.recetaKey, nombre:props.recetaNombre  }
+                params: {  id: props.recetaKey, nombre:props.recetaNombre, editable: props.editable  }
             })}
         >
             <View style={{
