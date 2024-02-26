@@ -20,11 +20,11 @@ import * as SecureStore from 'expo-secure-store'
     setIsLoading(true);
     let recetas = "http://godeli.mooo.com:3000/api/v1/recipes?limit=15";
     
-    const clave = await SecureStore.getItemAsync('access_token');
+    //const clave = await SecureStore.getItemAsync('access_token');
     const resp = await recipesApi.get(recetas, {
-      headers: {
-        Authorization: `Bearer ${clave}`
-      }
+      // headers: {
+      //   Authorization: `Bearer ${clave}`
+      // }
     })
     if(resp.status !== 200) {
       setIsError(true)
@@ -50,11 +50,11 @@ import * as SecureStore from 'expo-secure-store'
     setIsLoading(true);
     let recetas = "http://godeli.mooo.com:3000/api/v1/recipes?limit=15&offset="+page;
     
-    const clave = await SecureStore.getItemAsync('access_token');
+   // const clave = await SecureStore.getItemAsync('access_token');
     const resp = await recipesApi.get(recetas, {
-      headers: {
-        Authorization: `Bearer ${clave}`
-      }
+      // headers: {
+      //   Authorization: `Bearer ${clave}`
+      // }
     })
     if(resp.status !== 200) {
       setIsError(true)
@@ -81,11 +81,11 @@ import * as SecureStore from 'expo-secure-store'
   const filterRecipesByParams = async (title, description, ingredient) => {
     setIsLoading(true);
     let misRecetas = `http://godeli.mooo.com:3000/api/v1/recipes?title=${title}&ingrediente=${ingredient}&descripcion=${description}`
-    const clave = await SecureStore.getItemAsync('access_token');
+    // const clave = await SecureStore.getItemAsync('access_token');
     const resp = await recipesApi.get(misRecetas, {
-      headers: {
-        Authorization: `Bearer ${clave}`
-      }
+      // headers: {
+      //   Authorization: `Bearer ${clave}`
+      // }
     })
     if(resp.status !== 200) {
       setIsError(true)
@@ -115,9 +115,9 @@ import * as SecureStore from 'expo-secure-store'
       const filterRecipes = `http://godeli.mooo.com:3000/api/v1/recipes?limit=10&tags=${joinTags.replace(' ', '')}`;
       const clave = await SecureStore.getItemAsync('access_token');
       const resp = await recipesApi.get(filterRecipes, {
-        headers: {
-          Authorization: `Bearer ${clave}`
-        }
+        // headers: {
+        //   Authorization: `Bearer ${clave}`
+        // }
       });
       if (resp.status === 200) {
         setIsSuccess(true);
