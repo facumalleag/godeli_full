@@ -33,6 +33,11 @@ const RecipeTitle: React.FC<RecipeTitleProps> = ({
     });
   }, [newTitle, newDescription])
 
+  useEffect(() => {
+    setNewTitle(title)
+    setNewDescription(description)
+  }, [title, description])
+
 
   return (
     <View style={styles.container}>

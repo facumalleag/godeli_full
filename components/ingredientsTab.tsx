@@ -30,18 +30,13 @@ const IngredientsTab: React.FC<IngredientsTabProps> = ({
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [ingredientes, setIngredientes] = useState<Ingredient[]>(ingredients);
-  const [cantidadIngredientesState, setCantidadIngredientesState] = useState(
-    ingredients.length
-  );
-
-  
 
   useEffect(() => {
-    setIngredientes(ingredients);
-    setCantidadIngredientesState(ingredients.length);
+    if(ingredients.length > ingredientes.length) {
+      setIngredientes(ingredients.map(ingredient => {return {...ingredient, name: ingredient.descripcion}}));
+    }
   }, [ingredients]);
 
-  console.log(ingredientes);
   const handleOpenModal = () => {
     setModalVisible(true);
   };
@@ -60,7 +55,7 @@ const IngredientsTab: React.FC<IngredientsTabProps> = ({
       <View style={{}}>
         <View style={styles.itemContainer}>
           <Text>
-            {item.name} - <Text style={{color: 'rgba(0,0,0,0.5)'}}>{item.count} {item.unit}</Text>
+            {item.name} - <Text style={{color: 'rgba(0,0,0,0.5)'}}>{item.cantidad} {item.unit}</Text>
           </Text>
           {editable && (
             <TouchableOpacity onPress={() => handleDeleteIngredient(item.id)}>
@@ -76,7 +71,6 @@ const IngredientsTab: React.FC<IngredientsTabProps> = ({
     const newIngredients = ingredientes.filter(
       (ingrediente) => ingrediente.id !== id
     );
-    console.log('newIngredients: ', newIngredients)
     setIngredientes(newIngredients);
     updateRecipeTabIng(newIngredients)
   };
