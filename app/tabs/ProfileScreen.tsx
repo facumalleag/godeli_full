@@ -3,11 +3,11 @@ import { Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { styles } from '../../theme/ProfileStyle';
 import useProfilePaginated from '../../hooks/useProfilePaginated';
 import { FadeInImage } from '../../components/FadeImage';
-// import {
-//     GoogleSignin,
-//     GoogleSigninButton,
-//     statusCodes,
-// } from "@react-native-google-signin/google-signin";
+import {
+    GoogleSignin,
+    GoogleSigninButton,
+    statusCodes,
+} from "@react-native-google-signin/google-signin";
 import { Link, router } from 'expo-router';
 import * as SecureStore from 'expo-secure-store'
 import LogOutModal from '../../components/LogOutModal';
@@ -19,11 +19,11 @@ const ProfileScreen = () => {
 
     //Necesito esto en LogOutModal
     const logout = async () => {
-        // console.log("Pressed logout");
-        // GoogleSignin.revokeAccess();
-        // GoogleSignin.signOut();
-        await SecureStore.deleteItemAsync('access_token');
-        await SecureStore.deleteItemAsync('refresh_token');
+        console.log("Pressed logout");
+        GoogleSignin.revokeAccess();
+        GoogleSignin.signOut();
+        // await SecureStore.deleteItemAsync('access_token');
+        // await SecureStore.deleteItemAsync('refresh_token');
         router.replace('/Login');
 
     };

@@ -11,6 +11,7 @@ import {
 } from "@react-native-google-signin/google-signin";
 import axios from "axios";
 import * as SecureStore from 'expo-secure-store';
+import { setClientToken } from '../api/recipesApi';
 
 const configureGoogleSignIn = () => {
 
@@ -63,6 +64,7 @@ export default function Login() {
         console.log('Login successful');
 
         try {
+          setClientToken(response.data.access_token)
           await SecureStore.setItemAsync('access_token', response.data.access_token);
           await SecureStore.setItemAsync('refresh_token', response.data.refresh_token);
           console.log('Stored access token and refresh token');
