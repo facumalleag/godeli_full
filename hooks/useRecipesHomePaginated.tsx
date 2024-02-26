@@ -20,11 +20,11 @@ import * as SecureStore from 'expo-secure-store'
     setIsLoading(true);
     let recetas = "http://godeli.mooo.com:3000/api/v1/recipes?limit=15";
     
-    //const clave = await SecureStore.getItemAsync('access_token');
+    const clave = await SecureStore.getItemAsync('access_token');
     const resp = await recipesApi.get(recetas, {
-      // headers: {
-      //   Authorization: `Bearer ${clave}`
-      // }
+      headers: {
+        Authorization: `Bearer ${clave}`
+      }
     })
     if(resp.status !== 200) {
       setIsError(true)
