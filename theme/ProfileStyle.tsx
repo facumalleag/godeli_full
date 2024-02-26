@@ -32,7 +32,7 @@ export const  styles = StyleSheet.create({
         paddingVertical: 10,
         alignSelf:"center",
         marginTop:100,
-        marginBottom:20,
+        marginBottom:10,
     },
     textBtnGreen:{
         color:'white',
@@ -45,7 +45,7 @@ export const  styles = StyleSheet.create({
     btnRed:{
         backgroundColor:'#951A12',
         borderRadius:15,
-        marginTop: 10,
+        marginTop: 0,
         width:'90%',
         paddingVertical: 10,
         alignSelf:"center"
