@@ -48,6 +48,15 @@ const RecipesValues: React.FC<RecipesValuesProps> = ({
   const [valorEditado, setValorEditado] = useState('');
   const [editValue, setEditValue] = useState('');
 
+  useEffect(() => {
+    setCaloriasState(recipeCal)
+    setProteinasState(recipePro)
+    setGrasasState(recipeGra)
+    setTiempoState(recipeTime)
+    setPorcionesState(recipePer)
+    setCantidadIngredientesState(recipeIngCount)
+  }, [recipeCal, recipeGra, recipePro, recipeGra, recipeTime, recipePer, recipeIngCount])
+
   const handleEditValue = (valor: string, valorActual: number) => {
     setValorEditado(valor);
     setEditValue(valorActual.toString());

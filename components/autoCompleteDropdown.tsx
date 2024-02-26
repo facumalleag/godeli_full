@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput, FlatList, StyleSheet } from 'react-native';
+import useIngredients from '../hooks/useIngredients';
 
 
 interface AutocompleteDropdownProps {
@@ -8,20 +9,31 @@ interface AutocompleteDropdownProps {
 }
 
 
-const AutocompleteDropdown: React.FC<AutocompleteDropdownProps> = ({ data, onSelect }) => {
+const AutocompleteDropdown: React.FC<AutocompleteDropdownProps> = ({ onSelect }) => {
   const [query, setQuery] = useState('');
   const [showResults, setShowResults] = useState(false);
   const [selectedItem, setSelectedItem] = useState('');
-  console.log("En prop")
-  console.log(data)
-  const filteredData = data.filter(item => item.descripcion.toLowerCase().includes(query.toLowerCase()));
-
+  const [ingredientes, setIngredientes] = useState([])
+  
+  const {getIngredients, ingredients} = useIngredients()
+  
   const handleSelect = (item: { id: number; descripcion: string }) => {
     onSelect(item);
     setSelectedItem(item);
     setQuery(item.descripcion);
     setShowResults(false);
   };
+  
+  const filteredData = ingredientes.filter(item => item.descripcion.toLowerCase().includes(query.toLowerCase()));
+
+  useEffect(() => {
+    setIngredientes(ingredients)
+  }, [ingredients])
+
+
+  useEffect(() => {
+    getIngredients('')
+  }, [])
 
   return (
     <View style={{ 
@@ -35,6 +47,7 @@ const AutocompleteDropdown: React.FC<AutocompleteDropdownProps> = ({ data, onSel
         value={query}
         onChangeText={text => {
           setQuery(text);
+          getIngredients(text)
           setShowResults(true);
         }}
         style={{

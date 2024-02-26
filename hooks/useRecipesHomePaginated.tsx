@@ -51,6 +51,7 @@ import * as SecureStore from 'expo-secure-store'
           Authorization: `Bearer ${clave}`
         }
       })
+      console.log('recetaaas: ', resp.data)
       if(resp.status === 200) {
         setIsSuccess(true) 
       } else {
