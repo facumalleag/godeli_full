@@ -65,7 +65,6 @@ export default function Login() {
         console.log('Login successful');
 
         try {
-          setClientToken(response.data.access_token)
           await SecureStore.setItemAsync('access_token', response.data.access_token);
           await SecureStore.setItemAsync('refresh_token', response.data.refresh_token);
           console.log('Stored access token and refresh token');

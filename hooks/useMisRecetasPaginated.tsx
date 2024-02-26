@@ -18,11 +18,11 @@ import { Datum } from '../interfaces/MisRecetasInterface'
     setIsLoading(true);
     let misRecetas = "http://godeli.mooo.com:3000/api/v1/recipes/?user=me"
     
-    // const clave = await SecureStore.getItemAsync('access_token');
+    const clave = await SecureStore.getItemAsync('access_token');
     const resp = await misRecetasApi.get(misRecetas, {
-      // headers: {
-      //   Authorization: `Bearer ${clave}`
-      // }
+      headers: {
+        Authorization: `Bearer ${clave}`
+      }
     })
     if(resp.status !== 200) {
       setIsError(true)
