@@ -62,7 +62,7 @@ const RecipeScreenEdit: React.FC = () => {
 
   const handleAceptar = () => {
     setModalVisible(false);
-    router.replace('/tabs/HomeScreen')
+    if(isSuccess) router.replace('/tabs/HomeScreen')
   };
 
   useEffect(() => {
@@ -263,7 +263,7 @@ useEffect(() => {
           <CustomModal
             visible={modalVisible}
             titulo={isSuccess ? "Receta Cargada" : '¡Ups! Ocurrió un error'}
-            descripcion={isSuccess ? "Ya puedes verla en mis recetas" : "Por favor, intentá nuevamente más tarde."}
+            descripcion={isSuccess ? "Ya podés verla en tus recetas" : "Por favor, intentá nuevamente más tarde."}
             onAceptar={handleAceptar}
           />
           {editable && (

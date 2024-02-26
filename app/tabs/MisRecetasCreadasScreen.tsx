@@ -51,8 +51,8 @@ const MisRecetasCreadasScreen = () => {
           data={simpleMisRecetasList}//{}simpleFavoriteList
           keyExtractor={(receta) => receta.id_receta.toString()}
           numColumns={2}
-          contentContainerStyle={{flex: 1}}
-          onEndReached={getMisRecetas}
+          // contentContainerStyle={{flex: 1}}
+          // onEndReached={getMisRecetas}
           onEndReachedThreshold={0.4}
           renderItem={({ item }) =>
             <RecetaItem editable recetaKey={item.id_receta.toString()} recetaImagen={item.imagen} recetaNombre={item.nombre} recetaPuntaje={item.puntaje} recetaTitulo={item.titulo} />
