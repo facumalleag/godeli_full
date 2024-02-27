@@ -3,11 +3,13 @@ import * as SecureStore from 'expo-secure-store'
 import { crearRecetaApi } from '../api/crearMiRecetaApi';
 import { CreateRecipePaginatedPost } from '../interfaces/CreateRecipeInterface';
 import axios, { AxiosHeaders } from 'axios';
+import { createTokenSlice } from '../stores/tokenService';
 
 
 
 
 const usePostMisRecetaPaginated = (data) => {
+    const store = createTokenSlice(state => state)
     //console.log(data)
     const [isLoading, setIsLoading] = useState(true)
     const [isError, setIsError] = useState(false)
@@ -92,7 +94,7 @@ const usePostMisRecetaPaginated = (data) => {
             
       
         setIsLoading(false); */
-        const clave = await SecureStore.getItemAsync('access_token');
+        const clave = store.token
 
         axios({
             method: "POST",

@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import { favoritosApi } from '../api/favoritosApi'
 import * as SecureStore from 'expo-secure-store'
+import { createTokenSlice } from '../stores/tokenService'
 
 
   const useRating = () => {
+    const store = createTokenSlice(state => state)
   const [isLoading, setIsLoading] = useState(true)
   const [isError, setIsError] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
@@ -12,7 +14,7 @@ import * as SecureStore from 'expo-secure-store'
     try {
       setIsLoading(true);
       let addRating = "http://godeli.mooo.com:3000/api/v1/ratings"
-      const clave = await SecureStore.getItemAsync('access_token');
+      const clave = store.token
       const resp = await favoritosApi.post(addRating, {
         id_recipe: id, rating
       }, {

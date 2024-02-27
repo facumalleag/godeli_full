@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import { favoritosApi } from '../api/favoritosApi'
 import * as SecureStore from 'expo-secure-store'
+import { createTokenSlice } from '../stores/tokenService'
 
 
   const useIngredients = () => {
+    const store = createTokenSlice(state => state)
   const [isLoading, setIsLoading] = useState(true)
   const [isError, setIsError] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
@@ -13,7 +15,7 @@ import * as SecureStore from 'expo-secure-store'
     try {
       setIsLoading(true);
       let getIngredients = "http://godeli.mooo.com:3000/api/v1/ingredients?limit=500&offset=2&descripcion=" + desc
-      const clave = await SecureStore.getItemAsync('access_token');
+      const clave = store.token
       const resp = await favoritosApi.get(getIngredients, {
         headers: {
           Authorization: `Bearer ${clave}`

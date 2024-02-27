@@ -2,15 +2,17 @@ import { useState } from 'react';
 import axios from "axios";
 import * as SecureStore from 'expo-secure-store'
 import { recipesApi } from '../api/recipesApi';
+import { createTokenSlice } from '../stores/tokenService';
 
 const useRecipeCreation = () => {
+    const store = createTokenSlice(state => state)
     const [loading, setLoading] = useState(false);
     const [isError, setIsError] = useState(false)
     const [isSuccess, setIsSuccess] = useState(false)
 
     const createRecipe = async (datos, imagen) => {
         setLoading(true);
-        const clave = await SecureStore.getItemAsync('access_token');
+        const clave = store.token
         try {
             let data = new FormData();
             if (imagen) {
@@ -54,7 +56,7 @@ const useRecipeCreation = () => {
     const editRecipe = async (datos, imagen, id) => {
         const newDatos = JSON.stringify({...datos, ingredients: datos.ingredientes})
         setLoading(true);
-        const clave = await SecureStore.getItemAsync('access_token');
+        const clave = store.token
         try {
             let data = new FormData();
             if (imagen) {
@@ -97,7 +99,7 @@ const useRecipeCreation = () => {
     const deleteRecipeImage = async (idRecipe, idImage) => {
         console.log('deleteImage: ', idImage, idRecipe)
         setLoading(true);
-        const clave = await SecureStore.getItemAsync('access_token');
+        const clave = store.token
         try {
             const deteleImageRecipe = `http://godeli.mooo.com:3000/api/v1/recipes/${idRecipe}/image/${idImage}`
             const resp = await recipesApi.delete(deteleImageRecipe, {

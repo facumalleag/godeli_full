@@ -2,10 +2,12 @@ import { useEffect, useRef, useState } from 'react';
 import { profileApi } from "../api/profileApi"
 import { Datum } from '../interfaces/ProfileInterface';
 import * as SecureStore from 'expo-secure-store'
+import { createTokenSlice } from '../stores/tokenService';
 
 
 
 const useProfilePaginated = () => {
+  const store = createTokenSlice(state => state)
   const [nombre, setNombre] = useState('')
   const [email, setEmail] = useState('')
   const [foto, setFoto] = useState('')
@@ -27,7 +29,7 @@ const useProfilePaginated = () => {
 
   const loadProfile = async () => {
 
-    const clave = await SecureStore.getItemAsync('access_token');
+    const clave = store.token
     await profileApi.get(nextPageUrl.current, {
       headers: {
         Authorization: `Bearer ${clave}`

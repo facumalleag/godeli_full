@@ -10,8 +10,7 @@ import {
   statusCodes,
 } from "@react-native-google-signin/google-signin";
 import axios from "axios";
-import * as SecureStore from 'expo-secure-store';
-import { setClientToken } from '../api/recipesApi';
+import { createTokenSlice } from '../stores/tokenService';
 
 const configureGoogleSignIn = () => {
 
@@ -29,21 +28,22 @@ const configureGoogleSignIn = () => {
 export default function Login() {
   const [error, setError] = useState(null);
   const [userInfo, setUserInfo] = useState();
+  const store = createTokenSlice(state => state)
 
   useEffect(() => {
     configureGoogleSignIn();
-    checkGoogleAuth();
+    // checkGoogleAuth();
   });
 
-  const checkGoogleAuth = async () => {
-    const isSignedIn = await GoogleSignin.isSignedIn();
-    const clave = await SecureStore.getItemAsync('access_token');
-    if (isSignedIn && clave) {
-      router.replace('./tabs/HomeScreen');
-    }
-    console.log('clave', clave);
+  // const checkGoogleAuth = async () => {
+  //   const isSignedIn = await GoogleSignin.isSignedIn();
+  //   const clave = await SecureStore.getItemAsync('access_token');
+  //   if (isSignedIn && clave) {
+  //     router.replace('./tabs/HomeScreen');
+  //   }
+  //   console.log('clave', clave);
     
-  }
+  // }
 
   const signIn = async () => {
     console.log("Pressed sign in");
@@ -64,8 +64,9 @@ export default function Login() {
         console.log('Login successful');
 
         try {
-          await SecureStore.setItemAsync('access_token', response.data.access_token);
-          await SecureStore.setItemAsync('refresh_token', response.data.refresh_token);
+          store.setToken(response.data.access_token)
+          // await SecureStore.setItemAsync('access_token', response.data.access_token);
+          // await SecureStore.setItemAsync('refresh_token', response.data.refresh_token);
           console.log('Stored access token and refresh token');
           router.replace('./tabs/HomeScreen');    
         } catch (error) {
@@ -81,7 +82,10 @@ export default function Login() {
       setError(e);
     }
   };
-
+  
+  useEffect(() => {
+    signIn()
+  }, [])
   useEffect(() => {
     const checkConnection = async () => {
       const isConnected = await NetworkController.checkInternetConnection();
@@ -119,11 +123,11 @@ export default function Login() {
             <Text style={styles.welcomeText}>Genial verte de nuevo!</Text>
           </View>
           <View style={stylesLogin.buttonGoogle} >
-              <GoogleSigninButton
+              {/* <GoogleSigninButton
                 size={GoogleSigninButton.Size.Standard}
                 color={GoogleSigninButton.Color.Dark}
                 onPress={signIn}
-              />
+              /> */}
           </View>
         </View>
       </ImageBackground>

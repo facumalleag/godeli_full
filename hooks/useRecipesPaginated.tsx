@@ -2,10 +2,12 @@ import React, { useEffect, useRef, useState } from 'react'
 import { recipesFullApi } from '../api/recipesFullApi'
 import * as SecureStore from 'expo-secure-store'
 import { Ingrediente } from '../interfaces/RecipesInterface';
+import { createTokenSlice } from '../stores/tokenService';
 
 
 
 const useRecipesPaginated = (id) => {
+  const store = createTokenSlice(state => state)
 const [isLoading, setIsLoading] = useState(true)
 
   const [calorias, setCalorias] = useState('')
@@ -34,7 +36,7 @@ const [isLoading, setIsLoading] = useState(true)
   const getRecipes = async () => {
     setIsLoading(true);
 
-    const clave = await SecureStore.getItemAsync('access_token');
+    const clave = store.token
     const resp = await recipesFullApi.get(nextPageUrl.current, {
       headers: {
         Authorization: `Bearer ${clave}`

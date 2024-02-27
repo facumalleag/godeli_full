@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { favoritosApi } from '../api/favoritosApi'
 import * as SecureStore from 'expo-secure-store'
 import { Datum } from '../interfaces/FavoritesInterface'
+import { createTokenSlice } from '../stores/tokenService'
 
 
   const useFavoritesPaginated = () => {
+    const store = createTokenSlice(state => state)
   const [isLoading, setIsLoading] = useState(true)
   const [simpleFavoriteList, setSimpleFavoriteList] = useState<Datum[]>([])
   const [isError, setIsError] = useState(false)
@@ -17,7 +19,7 @@ import { Datum } from '../interfaces/FavoritesInterface'
   const getFavorites = async () => {
     setIsLoading(true);
     let favoritos = "http://godeli.mooo.com:3000/api/v1/favorites"
-    const clave = await SecureStore.getItemAsync('access_token');
+    const clave = store.token
     const resp = await favoritosApi.get(favoritos, {
       headers: {
         Authorization: `Bearer ${clave}`
@@ -41,7 +43,7 @@ import { Datum } from '../interfaces/FavoritesInterface'
     try {
       setIsLoading(true);
       let addFavorito = "http://godeli.mooo.com:3000/api/v1/favorites/" + id
-      const clave = await SecureStore.getItemAsync('access_token');
+      const clave = store.token
       const resp = await favoritosApi.post(addFavorito, {}, {
         headers: {
           Authorization: `Bearer ${clave}`

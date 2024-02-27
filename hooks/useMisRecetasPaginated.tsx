@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { misRecetasApi } from '../api/misRecetasApi'
 import * as SecureStore from 'expo-secure-store'
 import { Datum } from '../interfaces/MisRecetasInterface'
+import { createTokenSlice } from '../stores/tokenService'
 
 
   const useMisRecetasPaginated = () => {
+    const store = createTokenSlice(state => state)
   const [isLoading, setIsLoading] = useState(true)
   const [simpleMisRecetasList, setSimpleMisRecetasList] = useState<Datum[]>([])
   const [isError, setIsError] = useState(false)
@@ -18,7 +20,7 @@ import { Datum } from '../interfaces/MisRecetasInterface'
     setIsLoading(true);
     let misRecetas = "http://godeli.mooo.com:3000/api/v1/recipes/?user=me"
     
-    const clave = await SecureStore.getItemAsync('access_token');
+    const clave = store.token
     const resp = await misRecetasApi.get(misRecetas, {
       headers: {
         Authorization: `Bearer ${clave}`
