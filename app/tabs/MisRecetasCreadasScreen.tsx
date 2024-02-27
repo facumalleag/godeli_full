@@ -15,19 +15,24 @@ const MisRecetasCreadasScreen = () => {
 
   const [title, setTitle] = useState('')
   const [desc, setDesc] = useState('')
+  const [misRecetas, setMisRecetas] = useState([])
 
   const { simpleMisRecetasList, getMisRecetas, isError, setIsError } = useMisRecetasPaginated()
   //const { simpleFavoriteList, getFavorites } = useFavoritesPaginated()
 
   const handleAccept = () => {
     setIsError(false)
-
   }
 
   useEffect(() => {
     setTitle(isError && "¡Ups! Ha ocurrido un error.")
     setDesc(isError && "Por favor, intentalo nuevamente más tarde.")
   }, [isError])
+
+  useEffect(() => {
+    setMisRecetas(simpleMisRecetasList)
+  }, [simpleMisRecetasList])
+
 
   return (
     <View
@@ -48,7 +53,7 @@ const MisRecetasCreadasScreen = () => {
         </View>
         <FlatList
           showsVerticalScrollIndicator={false}
-          data={simpleMisRecetasList}//{}simpleFavoriteList
+          data={misRecetas}//{}simpleFavoriteList
           keyExtractor={(receta) => receta.id_receta.toString()}
           numColumns={2}
           // contentContainerStyle={{flex: 1}}

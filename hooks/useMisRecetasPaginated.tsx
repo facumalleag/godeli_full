@@ -36,20 +36,16 @@ import { createTokenSlice } from '../stores/tokenService'
         setIsLoading(true);
         return; 
     }else{
-      mapMisRecetasList(resp.data.data)
-      //setPage(page + 15);
+      const newMisRecetasList: Datum[] = resp.data.data.length.map(({ id_receta,nombre,imagen,puntaje,tiempo_preparacion,titulo }) => {
+        return {
+          id_receta,nombre,imagen,puntaje,tiempo_preparacion,titulo
+        }
+      });
+      setSimpleMisRecetasList([...simpleMisRecetasList,...newMisRecetasList])
+      setIsLoading(false)
+      return newMisRecetasList;
     }
 //    console.log(resp)
-  }
-
-  const mapMisRecetasList = (misRecetasList: Datum[]) => {
-    const newMisRecetasList: Datum[] = misRecetasList.map(({ id_receta,nombre,imagen,puntaje,tiempo_preparacion,titulo }) => {
-      return {
-        id_receta,nombre,imagen,puntaje,tiempo_preparacion,titulo
-      }
-    });
-    setSimpleMisRecetasList([...simpleMisRecetasList,...newMisRecetasList])
-    setIsLoading(false)
   }
 
   return{
