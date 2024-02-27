@@ -185,6 +185,7 @@ const RecipeScreen = () => {
       <Pressable onPress={() => setIsOptionsView(!isOptionsView)} style={{alignItems: 'flex-end'}}>
         <Text style={{color: 'black', fontWeight: 'bold', fontSize: 30}}>...</Text>
       </Pressable>
+       <ScrollView>
       <View style={[styles.carrousel]}>
         <FlatList
           showsHorizontalScrollIndicator={false}
@@ -321,12 +322,23 @@ const RecipeScreen = () => {
       }
       <Modal visible={isRating} transparent>
         <View style={{justifyContent: 'center', alignItems: 'center', flex: 1, backgroundColor: 'rgba(0,0,0,0.2)'}}>
-          <View style={{backgroundColor: 'white', width: '55%', height: '18%', borderRadius: 10, justifyContent: 'space-around', alignItems: 'center'}}>
+          <View style={{backgroundColor: 'white', width: '55%', height: '20%', borderRadius: 10, justifyContent: 'space-evenly', alignItems: 'center'}}>
             <Text style={{fontSize: 16}}>Calificar</Text>
-            <StarRating
-              rating={rating}
-              onChange={setRating}
-            />
+            <View style={{
+                          backgroundColor: '#fff',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          padding: 20,}}>
+                <View style={{
+                            display: 'flex',
+                            flexDirection: 'row',}}>
+                  <MaterialIcons onPress={() => setRating(1)} name={rating < 1 ? "star-border": "star"} size={32} style={{color: '#ffad30',}} />
+                  <MaterialIcons onPress={() => setRating(2)} name={rating < 2 ? "star-border": "star"} size={32} style={{color: '#ffad30',}} />
+                  <MaterialIcons onPress={() => setRating(3)} name={rating < 3 ? "star-border": "star"} size={32} style={{color: '#ffad30',}} />
+                  <MaterialIcons onPress={() => setRating(4)} name={rating < 4 ? "star-border": "star"} size={32} style={{color: '#ffad30',}} />
+                  <MaterialIcons onPress={() => setRating(5)} name={rating < 5 ? "star-border": "star"} size={32} style={{color: '#ffad30',}} />
+                </View>
+              </View>
             <Pressable 
               disabled={rating === 0}
               onPress={() => handleAddRating()}
@@ -374,6 +386,7 @@ const RecipeScreen = () => {
           </View>
         </View>
       </Modal>
+      </ScrollView>
 
     </SafeAreaView>}
     </>
