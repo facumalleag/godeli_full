@@ -17,15 +17,14 @@ import {
   BackHandler,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { router, useLocalSearchParams } from 'expo-router';
 import useRecipesPaginated from '../../hooks/useRecipesPaginated';
-import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { FontAwesome6 } from '@expo/vector-icons';
 import { styles } from '../../theme/RecipesScreenStyle';
 import YouTubePlayer from '../../YoutubePlayer';
 import useProfilePaginated from '../../hooks/useProfilePaginated';
 import useFavoritesPaginated from '../../hooks/useFavoritesPaginated';
-import StarRating from 'react-native-star-rating-widget';
 import useRating from '../../hooks/useRating';
 import CustomModal from '../../components/CustomModal';
 
@@ -87,18 +86,10 @@ const RecipeScreen = () => {
       })
     }
   
-
     useEffect(() => {
       setTitle(isError || isErrorProfilePaginated || isErrorRating ? "¡Ups! Ha ocurrido un error." : isSuccess || isSuccessRating ? "¡Felicidades!" : "")
       setDesc(isError || isErrorProfilePaginated || isErrorRating ? "Por favor, intentalo nuevamente más tarde." : isSuccess ? "Agregaste esta receta a tus favoritas" : isSuccessRating && "Calificación agregaga con éxito")
     },[isError, isSuccess, isSuccessRating, isErrorRating, isErrorProfilePaginated])
-
-    useEffect(() => {
-      BackHandler.addEventListener('hardwareBackPress', () => {
-        router.replace('/tabs/MisRecetasCreadasScreen')
-        return true
-      })
-    }, [])
 
     const onShare = async () => {
       try {
@@ -126,9 +117,9 @@ const RecipeScreen = () => {
     }
 
     const handleAddRating = async () => {
-        setRating(0)
-        setIsRating(false)
-        await addRating(id, rating)
+      setIsRating(false)
+      await addRating(id, rating)
+      setRating(0)
     }
 
   return (
@@ -185,7 +176,7 @@ const RecipeScreen = () => {
       <Pressable onPress={() => setIsOptionsView(!isOptionsView)} style={{alignItems: 'flex-end'}}>
         <Text style={{color: 'black', fontWeight: 'bold', fontSize: 30}}>...</Text>
       </Pressable>
-       <ScrollView>
+      <ScrollView>
       <View style={[styles.carrousel]}>
         <FlatList
           showsHorizontalScrollIndicator={false}
@@ -387,7 +378,6 @@ const RecipeScreen = () => {
         </View>
       </Modal>
       </ScrollView>
-
     </SafeAreaView>}
     </>
   );
