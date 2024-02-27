@@ -20,7 +20,7 @@ import React, { useEffect, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { router, useLocalSearchParams } from 'expo-router';
 import useRecipesPaginated from '../../hooks/useRecipesPaginated';
-import { FontAwesome6 } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { styles } from '../../theme/RecipesScreenStyle';
 import YouTubePlayer from '../../YoutubePlayer';
 import useProfilePaginated from '../../hooks/useProfilePaginated';
