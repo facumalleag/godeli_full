@@ -93,12 +93,12 @@ useEffect(() => {
 }, [allTags])
 
   useEffect(() => {
-    if (newTitle && newDesc && (newIngredients && newIngredients.length > 0) && caloriasState && proteinasState && grasasState && tiempoState && porcionesState) {
+    if (newTitle && newDesc && (newIngredients && newProc && newIngredients.length > 0) && caloriasState && proteinasState && grasasState && tiempoState && porcionesState) {
       setIsComplete(true);
     } else {
       setIsComplete(false);
     }
-  }, [newTitle, newDesc, newIngredients, caloriasState, proteinasState, grasasState, tiempoState, porcionesState, linkVideo]);
+  }, [newTitle, newDesc, newIngredients, caloriasState, proteinasState, grasasState, tiempoState, porcionesState, linkVideo, newProc]);
 
   const updateRecipeValues = (newRecipeValues) => {
     setCaloriasState(newRecipeValues.recipeCal);
@@ -247,8 +247,8 @@ useEffect(() => {
             modoEdicion={editable}
             recipeCal={caloriasState}
             recipePro={proteinasState}
-            recipeGra={recipeGra}
-            recipeTime={recipeTime}
+            recipeGra={grasasState}
+            recipeTime={tiempoState}
             recipePer={porcionesState}
             recipeIngCount={newIngredients && newIngredients.length}
             updateRecipeValues={updateRecipeValues}
@@ -347,3 +347,4 @@ const styles = StyleSheet.create({
 });
 
 export default RecipeScreenEdit;
+
