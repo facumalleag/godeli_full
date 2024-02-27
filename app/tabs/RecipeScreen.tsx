@@ -185,6 +185,7 @@ const RecipeScreen = () => {
       <Pressable onPress={() => setIsOptionsView(!isOptionsView)} style={{alignItems: 'flex-end'}}>
         <Text style={{color: 'black', fontWeight: 'bold', fontSize: 30}}>...</Text>
       </Pressable>
+      <ScrollView>
       <View style={[styles.carrousel]}>
         <FlatList
           showsHorizontalScrollIndicator={false}
@@ -374,7 +375,7 @@ const RecipeScreen = () => {
           </View>
         </View>
       </Modal>
-
+      </ScrollView>
     </SafeAreaView>}
     </>
   );
