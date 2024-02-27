@@ -12,12 +12,12 @@ import * as SecureStore from 'expo-secure-store'
     try {
       setIsLoading(true);
       let addRating = "http://godeli.mooo.com:3000/api/v1/ratings"
-      const clave = await SecureStore.getItemAsync('access_token');
+      // const clave = await SecureStore.getItemAsync('access_token');
       const resp = await favoritosApi.post(addRating, {
         id_recipe: id, rating
       }, {
         headers: {
-          Authorization: `Bearer ${clave}`
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcwODk5NzMwMjIzNiwiZXhwIjoxNzA5MDAwOTAyMjM2fQ.qUrCi4QS460MNZ0D1H9Rq7k7sPGrodzfcFqIzRW4LpQ`
         }
       })
       console.log(resp.status)

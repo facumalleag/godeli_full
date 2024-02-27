@@ -34,10 +34,10 @@ const [isLoading, setIsLoading] = useState(true)
   const getRecipes = async () => {
     setIsLoading(true);
 
-    const clave = await SecureStore.getItemAsync('access_token');
+    // const clave = await SecureStore.getItemAsync('access_token');
     const resp = await recipesFullApi.get(nextPageUrl.current, {
       headers: {
-        Authorization: `Bearer ${clave}`
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcwODk5NzMwMjIzNiwiZXhwIjoxNzA5MDAwOTAyMjM2fQ.qUrCi4QS460MNZ0D1H9Rq7k7sPGrodzfcFqIzRW4LpQ`
       }
       
     })

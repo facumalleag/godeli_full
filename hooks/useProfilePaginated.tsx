@@ -27,10 +27,10 @@ const useProfilePaginated = () => {
 
   const loadProfile = async () => {
 
-    const clave = await SecureStore.getItemAsync('access_token');
+    // const clave = await SecureStore.getItemAsync('access_token');
     await profileApi.get(nextPageUrl.current, {
       headers: {
-        Authorization: `Bearer ${clave}`
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcwODk5NzMwMjIzNiwiZXhwIjoxNzA5MDAwOTAyMjM2fQ.qUrCi4QS460MNZ0D1H9Rq7k7sPGrodzfcFqIzRW4LpQ`
       }
     }).then(resp => {
       setIsSuccess(true)

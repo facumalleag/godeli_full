@@ -32,7 +32,15 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.xxx.desarrollos.godeli"
+      "package": "com.xxx.desarrollos.godeli",
+      "permissions": [
+        "INTERNET", 
+        "CAMERA", 
+        "READ_EXTERNAL_STORAGE", 
+        "WRITE_EXTERNAL_STORAGE",
+        "READ_MEDIA_IMAGES",
+        "SYSTEM_ALERT_WINDOW"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -46,7 +54,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "35690cb1-e7af-4517-9411-364e99ffd7c1"
+        "projectId": "01725307-f957-4d75-8ce5-100d9c0d7525"
       }
     }
   }

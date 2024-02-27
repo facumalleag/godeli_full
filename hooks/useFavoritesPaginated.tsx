@@ -17,10 +17,10 @@ import { Datum } from '../interfaces/FavoritesInterface'
   const getFavorites = async () => {
     setIsLoading(true);
     let favoritos = "http://godeli.mooo.com:3000/api/v1/favorites"
-    const clave = await SecureStore.getItemAsync('access_token');
+    // const clave = await SecureStore.getItemAsync('access_token');
     const resp = await favoritosApi.get(favoritos, {
       headers: {
-        Authorization: `Bearer ${clave}`
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcwODk5NzMwMjIzNiwiZXhwIjoxNzA5MDAwOTAyMjM2fQ.qUrCi4QS460MNZ0D1H9Rq7k7sPGrodzfcFqIzRW4LpQ`
       }
     })
 
@@ -41,10 +41,10 @@ import { Datum } from '../interfaces/FavoritesInterface'
     try {
       setIsLoading(true);
       let addFavorito = "http://godeli.mooo.com:3000/api/v1/favorites/" + id
-      const clave = await SecureStore.getItemAsync('access_token');
+      // const clave = await SecureStore.getItemAsync('access_token');
       const resp = await favoritosApi.post(addFavorito, {}, {
         headers: {
-          Authorization: `Bearer ${clave}`
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcwODk5NzMwMjIzNiwiZXhwIjoxNzA5MDAwOTAyMjM2fQ.qUrCi4QS460MNZ0D1H9Rq7k7sPGrodzfcFqIzRW4LpQ`
         }
       })
       console.log(resp.status)

@@ -10,7 +10,7 @@ const useRecipeCreation = () => {
 
     const createRecipe = async (datos, imagen) => {
         setLoading(true);
-        const clave = await SecureStore.getItemAsync('access_token');
+        // const clave = await SecureStore.getItemAsync('access_token');
         try {
             let data = new FormData();
             if (imagen) {
@@ -28,7 +28,7 @@ const useRecipeCreation = () => {
                 url: 'http://godeli.mooo.com:3000/api/v1/recipes',
 
                 headers: {
-                    'Authorization': `Bearer ${clave}`,
+                    'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcwODk5NzMwMjIzNiwiZXhwIjoxNzA5MDAwOTAyMjM2fQ.qUrCi4QS460MNZ0D1H9Rq7k7sPGrodzfcFqIzRW4LpQ`,
                     'Accept': '*/*',
                     'Host': 'http://godeli.mooo.com:3000/api/v1/recipes',
                     'Accept-Encoding': 'gzip, deflate, br',
@@ -54,7 +54,7 @@ const useRecipeCreation = () => {
     const editRecipe = async (datos, imagen, id) => {
         const newDatos = JSON.stringify({...datos, ingredients: datos.ingredientes})
         setLoading(true);
-        const clave = await SecureStore.getItemAsync('access_token');
+        // const clave = await SecureStore.getItemAsync('access_token');
         try {
             let data = new FormData();
             if (imagen) {
@@ -70,7 +70,7 @@ const useRecipeCreation = () => {
                 maxBodyLength: Infinity,
                 url: 'http://godeli.mooo.com:3000/api/v1/recipes/' + id,
                 headers: {
-                    'Authorization': `Bearer ${clave}`,
+                    'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcwODk5NzMwMjIzNiwiZXhwIjoxNzA5MDAwOTAyMjM2fQ.qUrCi4QS460MNZ0D1H9Rq7k7sPGrodzfcFqIzRW4LpQ`,
                     'Accept': '*/*',
                     'Host': 'http://godeli.mooo.com:3000/api/v1/recipes',
                     'Accept-Encoding': 'gzip, deflate, br',
@@ -97,12 +97,12 @@ const useRecipeCreation = () => {
     const deleteRecipeImage = async (idRecipe, idImage) => {
         console.log('deleteImage: ', idImage, idRecipe)
         setLoading(true);
-        const clave = await SecureStore.getItemAsync('access_token');
+        // const clave = await SecureStore.getItemAsync('access_token');
         try {
             const deteleImageRecipe = `http://godeli.mooo.com:3000/api/v1/recipes/${idRecipe}/image/${idImage}`
             const resp = await recipesApi.delete(deteleImageRecipe, {
                 headers: {
-                Authorization: `Bearer ${clave}`
+                Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcwODk5NzMwMjIzNiwiZXhwIjoxNzA5MDAwOTAyMjM2fQ.qUrCi4QS460MNZ0D1H9Rq7k7sPGrodzfcFqIzRW4LpQ`
                 }
             })
             if(resp.status === 200) {

@@ -10,7 +10,7 @@ import {
   statusCodes,
 } from "@react-native-google-signin/google-signin";
 import axios from "axios";
-import * as SecureStore from 'expo-secure-store';
+// import * as SecureStore from 'expo-secure-store';
 import { setClientToken } from '../api/recipesApi';
 
 const configureGoogleSignIn = () => {
@@ -38,11 +38,11 @@ export default function Login() {
 
   const checkGoogleAuth = async () => {
     const isSignedIn = await GoogleSignin.isSignedIn();
-    const clave = await SecureStore.getItemAsync('access_token');
-    if (isSignedIn && clave) {
+    // const clave = await SecureStore.getItemAsync('access_token');
+    if (isSignedIn) { //&& clave
       router.replace('./tabs/HomeScreen');
     }
-    console.log('clave', clave);
+    // console.log('clave', clave);
     
   }
 
@@ -65,8 +65,8 @@ export default function Login() {
         console.log('Login successful');
 
         try {
-          await SecureStore.setItemAsync('access_token', response.data.access_token);
-          await SecureStore.setItemAsync('refresh_token', response.data.refresh_token);
+          // await SecureStore.setItemAsync('access_token', response.data.access_token);
+          // await SecureStore.setItemAsync('refresh_token', response.data.refresh_token);
           console.log('Stored access token and refresh token');
           router.replace('./tabs/HomeScreen');    
         } catch (error) {
