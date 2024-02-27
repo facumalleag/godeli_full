@@ -17,7 +17,7 @@ import {
   BackHandler,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { router, useLocalSearchParams } from 'expo-router';
 import useRecipesPaginated from '../../hooks/useRecipesPaginated';
 import { FontAwesome6 } from '@expo/vector-icons';
@@ -25,7 +25,6 @@ import { styles } from '../../theme/RecipesScreenStyle';
 import YouTubePlayer from '../../YoutubePlayer';
 import useProfilePaginated from '../../hooks/useProfilePaginated';
 import useFavoritesPaginated from '../../hooks/useFavoritesPaginated';
-import StarRating from 'react-native-star-rating-widget';
 import useRating from '../../hooks/useRating';
 import CustomModal from '../../components/CustomModal';
 
@@ -87,18 +86,10 @@ const RecipeScreen = () => {
       })
     }
   
-
     useEffect(() => {
       setTitle(isError || isErrorProfilePaginated || isErrorRating ? "¡Ups! Ha ocurrido un error." : isSuccess || isSuccessRating ? "¡Felicidades!" : "")
       setDesc(isError || isErrorProfilePaginated || isErrorRating ? "Por favor, intentalo nuevamente más tarde." : isSuccess ? "Agregaste esta receta a tus favoritas" : isSuccessRating && "Calificación agregaga con éxito")
     },[isError, isSuccess, isSuccessRating, isErrorRating, isErrorProfilePaginated])
-
-    useEffect(() => {
-      BackHandler.addEventListener('hardwareBackPress', () => {
-        router.replace('/tabs/MisRecetasCreadasScreen')
-        return true
-      })
-    }, [])
 
     const onShare = async () => {
       try {
@@ -126,9 +117,9 @@ const RecipeScreen = () => {
     }
 
     const handleAddRating = async () => {
-        setRating(0)
-        setIsRating(false)
-        await addRating(id, rating)
+      setIsRating(false)
+      await addRating(id, rating)
+      setRating(0)
     }
 
   return (
@@ -322,12 +313,23 @@ const RecipeScreen = () => {
       }
       <Modal visible={isRating} transparent>
         <View style={{justifyContent: 'center', alignItems: 'center', flex: 1, backgroundColor: 'rgba(0,0,0,0.2)'}}>
-          <View style={{backgroundColor: 'white', width: '55%', height: '18%', borderRadius: 10, justifyContent: 'space-around', alignItems: 'center'}}>
+          <View style={{backgroundColor: 'white', width: '55%', height: '20%', borderRadius: 10, justifyContent: 'space-evenly', alignItems: 'center'}}>
             <Text style={{fontSize: 16}}>Calificar</Text>
-            <StarRating
-              rating={rating}
-              onChange={setRating}
-            />
+            <View style={{
+                          backgroundColor: '#fff',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          padding: 20,}}>
+                <View style={{
+                            display: 'flex',
+                            flexDirection: 'row',}}>
+                  <MaterialIcons onPress={() => setRating(1)} name={rating < 1 ? "star-border": "star"} size={32} style={{color: '#ffad30',}} />
+                  <MaterialIcons onPress={() => setRating(2)} name={rating < 2 ? "star-border": "star"} size={32} style={{color: '#ffad30',}} />
+                  <MaterialIcons onPress={() => setRating(3)} name={rating < 3 ? "star-border": "star"} size={32} style={{color: '#ffad30',}} />
+                  <MaterialIcons onPress={() => setRating(4)} name={rating < 4 ? "star-border": "star"} size={32} style={{color: '#ffad30',}} />
+                  <MaterialIcons onPress={() => setRating(5)} name={rating < 5 ? "star-border": "star"} size={32} style={{color: '#ffad30',}} />
+                </View>
+              </View>
             <Pressable 
               disabled={rating === 0}
               onPress={() => handleAddRating()}
