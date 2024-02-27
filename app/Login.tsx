@@ -15,9 +15,9 @@ import { createTokenSlice } from '../stores/tokenService';
 const configureGoogleSignIn = () => {
 
   GoogleSignin.configure({
-    webClientId:'595358216050-bv7tduumn5qi23u49sufqg547dmpmtmf.apps.googleusercontent.com',
-    androidClientId:'595358216050-4gkd63v4v0mglm3ipvrg9e1qejrafile.apps.googleusercontent.com',
-    iosClientId:'595358216050-qhkqbc0u2g8uuhc28mtl27c9psk3h750.apps.googleusercontent.com',/* 
+    webClientId:'1077814903053-ssjq34un2viuo61c2ltu8nusdj11f127.apps.googleusercontent.com',
+    androidClientId:'1077814903053-87horp4vnlqkql6hruv1g7jj76o6cq0p.apps.googleusercontent.com',
+    iosClientId:'1077814903053-lue6hqvhrkp7v80mh1dpe4er56tt7pb0.apps.googleusercontent.com',/* 
     webClientId: process.env.WEB_CLIENT_ID,
     androidClientId: process.env.ANDROID_CLIENT_ID,
     iosClientId: process.env.IOS_CLIENT_ID  */
@@ -32,18 +32,16 @@ export default function Login() {
 
   useEffect(() => {
     configureGoogleSignIn();
-    // checkGoogleAuth();
-  });
+    checkGoogleAuth();
+  }, []);
 
-  // const checkGoogleAuth = async () => {
-  //   const isSignedIn = await GoogleSignin.isSignedIn();
-  //   const clave = await SecureStore.getItemAsync('access_token');
-  //   if (isSignedIn && clave) {
-  //     router.replace('./tabs/HomeScreen');
-  //   }
-  //   console.log('clave', clave);
-    
-  // }
+  const checkGoogleAuth = async () => {
+    const isSignedIn = await GoogleSignin.isSignedIn();
+    const clave = store.token
+    if (isSignedIn && clave && clave !== '') {
+      return router.replace('./tabs/HomeScreen');
+    }    
+  }
 
   const signIn = async () => {
     console.log("Pressed sign in");
@@ -123,11 +121,11 @@ export default function Login() {
             <Text style={styles.welcomeText}>Genial verte de nuevo!</Text>
           </View>
           <View style={stylesLogin.buttonGoogle} >
-              {/* <GoogleSigninButton
+              <GoogleSigninButton
                 size={GoogleSigninButton.Size.Standard}
                 color={GoogleSigninButton.Color.Dark}
                 onPress={signIn}
-              /> */}
+              />
           </View>
         </View>
       </ImageBackground>

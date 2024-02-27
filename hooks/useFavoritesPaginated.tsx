@@ -63,6 +63,30 @@ import { createTokenSlice } from '../stores/tokenService'
       console.log('error al intentar agregar un favorito: ', error)
     }
   }
+  const deletFavorite = async (id) => {
+    try {
+      setIsLoading(true);
+      let addFavorito = "http://godeli.mooo.com:3000/api/v1/favorites/" + id
+      const clave = store.token
+      const resp = await favoritosApi.delete(addFavorito, {
+        headers: {
+          Authorization: `Bearer ${clave}`
+        }
+      })
+      console.log(resp.status)
+      if(resp.status === 200){
+          setIsLoading(false);
+          setIsSuccess(true)
+          return; 
+      }else{
+        setIsError(true)
+        console.log('error al agregar un favorito')
+      }
+    } catch(error) {
+      setIsError(true)
+      console.log('error al intentar agregar un favorito: ', error)
+    }
+  }
 
   const mapSimplefavoriteList = (favoriteList: Datum[]) => {
     const newFavoriteList: Datum[] = favoriteList.map(({ id_receta,nombre,imagen,puntaje,tiempo_preparacion,titulo }) => {
@@ -82,7 +106,8 @@ import { createTokenSlice } from '../stores/tokenService'
     isError,
     isSuccess,
     setIsError,
-    setIsSuccess
+    setIsSuccess,
+    deletFavorite
   }
 }
 

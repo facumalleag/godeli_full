@@ -1,20 +1,16 @@
 import {
   Text,
   View,
-  StyleSheet,
   Dimensions,
   TouchableOpacity,
-  TextInput,
   Pressable,
   FlatList,
   Image,
   ScrollView,
-  Button,
   SafeAreaView,
   Share,
   Alert,
   Modal,
-  BackHandler,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
@@ -40,7 +36,7 @@ const RecipeScreen = () => {
   const [title, setTitle] = useState('')
   const [desc, setDesc] = useState('')
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null)
 
   const {isError: isErrorProfilePaginated, setIsError: setIsErrorProfilePaginated} = useProfilePaginated()
   const {addRating, isError: isErrorRating, isSuccess: isSuccessRating, setIsError: setIsErrorRating, setIsSuccess: setIsSuccesRating} = useRating()
@@ -57,7 +53,10 @@ const RecipeScreen = () => {
     puntaje,
     imagenes
   } = useRecipesPaginated(id)
-    const {addFavorite, isError, isSuccess, setIsSuccess, setIsError, getFavorites} = useFavoritesPaginated()
+    const {addFavorite, isError, isSuccess, setIsSuccess, setIsError, getFavorites, simpleFavoriteList, deletFavorite} = useFavoritesPaginated()
+
+
+    const favorites = simpleFavoriteList.map(fav => fav.id_receta)
 
 
     const handleAccept = () => {
@@ -111,9 +110,14 @@ const RecipeScreen = () => {
       }
     };
 
-    const handleAddFavorite = async () => {
+
+    const handlerFavorite = async () => {
+      if(favorites.includes(Number(id))) {
+        await deletFavorite(id)
+      } else {
         await addFavorite(id)
-        await getFavorites()
+      }
+      await getFavorites()
     }
 
     const handleAddRating = async () => {
@@ -176,7 +180,7 @@ const RecipeScreen = () => {
       <Pressable onPress={() => setIsOptionsView(!isOptionsView)} style={{alignItems: 'flex-end'}}>
         <Text style={{color: 'black', fontWeight: 'bold', fontSize: 30}}>...</Text>
       </Pressable>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
       <View style={[styles.carrousel]}>
         <FlatList
           showsHorizontalScrollIndicator={false}
@@ -202,12 +206,12 @@ const RecipeScreen = () => {
         />
         <Ionicons name="arrow-back-circle-outline" onPress={() => router.replace('/tabs/MisRecetasCreadasScreen')} size={40} color="white" style={{ position: 'absolute', left: 10, top: 35 }} />
         <TouchableOpacity
-            onPress={() => handleAddFavorite()} 
+            onPress={() => handlerFavorite()} 
             style={{
                 position: 'absolute', 
                 right: 40, 
                 bottom: 15, 
-                backgroundColor: 'white',
+                backgroundColor: favorites.includes(Number(id)) ? 'white' : 'transparent',
                 padding: 10, 
                 borderRadius: 100
               }}

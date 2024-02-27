@@ -3,6 +3,7 @@ import { profileApi } from "../api/profileApi"
 import { Datum } from '../interfaces/ProfileInterface';
 import * as SecureStore from 'expo-secure-store'
 import { createTokenSlice } from '../stores/tokenService';
+import { Alert } from 'react-native';
 
 
 

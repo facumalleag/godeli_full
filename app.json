@@ -17,12 +17,12 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.xxx.facu.godeli",
+      "bundleIdentifier": "com.godeli",
       "infoPlist": {
         "CFBundleURLTypes": [
           {
             "CFBundleURLSchemes": [
-              "com.googleusercontent.apps.441344649242-ie1h43u7hl6b9676vhetiom8qninilsr"
+              "com.googleusercontent.apps.1077814903053-lue6hqvhrkp7v80mh1dpe4er56tt7pb0"
             ]
           }
         ]
@@ -33,7 +33,15 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.xxx.facu.godeli"
+      "package": "com.godeli",
+      "permissions": [
+        "INTERNET", 
+        "CAMERA", 
+        "READ_EXTERNAL_STORAGE", 
+        "WRITE_EXTERNAL_STORAGE",
+        "READ_MEDIA_IMAGES",
+        "SYSTEM_ALERT_WINDOW"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -47,7 +55,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "a58fe4f2-9bb8-4abc-b098-e60edc6d2109"
+        "projectId": "eb25b6a8-1035-4529-bdec-ea779101f11c"
       }
     }
   }

@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { recipesApi } from '../api/recipesApi'
-import { Datum, SimpleRecipe } from '../interfaces/RecipesHomeInterface';
-import * as SecureStore from 'expo-secure-store'
+import { SimpleRecipe } from '../interfaces/RecipesHomeInterface';
 import { createTokenSlice } from '../stores/tokenService';
 
 
